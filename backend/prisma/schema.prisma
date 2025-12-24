@@ -1,0 +1,94 @@
+// Twitter-like application Prisma schema
+// Includes Users, Tweets with media, and Follower/Following relationships
+
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  moduleFormat    = "cjs"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        Int       @default(autoincrement()) @id
+  email     String    @unique
+  username  String    @unique
+  name      String
+  bio       String?   @default("")
+  avatar    String?   // URL to avatar image
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Tweets authored by this user
+  tweets    Tweet[]   @relation("author")
+  
+  // Comments authored by this user
+  comments  Comment[]
+
+  // Followers (users who follow this user)
+  followers UserFollow[] @relation("following")
+
+  // Following (users that this user follows)
+  following UserFollow[] @relation("follower")
+}
+
+model UserFollow {
+  id          Int     @default(autoincrement()) @id
+  follower    User    @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  followerId  Int
+  following   User    @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
+  followingId Int
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId]) // Prevent duplicate follows
+  @@index([followerId])
+  @@index([followingId])
+}
+
+model Tweet {
+  id          Int       @default(autoincrement()) @id
+  content     String    // Tweet text content
+  author      User      @relation("author", fields: [authorId], references: [id], onDelete: Cascade)
+  authorId    Int
+  likeCount   Int       @default(0)     // Number of likes
+  retweetCount Int      @default(0)     // Number of retweets
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Tweet images/media
+  media       TweetMedia[]
+  
+  // Tweet comments
+  comments    Comment[]
+
+  @@index([authorId])
+  @@index([createdAt])
+}
+
+model TweetMedia {
+  id        Int       @default(autoincrement()) @id
+  tweet     Tweet     @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+  tweetId   Int
+  mediaUrl  String    // URL to image
+  mediaType String    @default("image") // image, video, etc.
+  createdAt DateTime  @default(now())
+
+  @@index([tweetId])
+}
+
+model Comment {
+  id        Int       @default(autoincrement()) @id
+  content   String    // Comment text content
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  Int
+  tweet     Tweet     @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+  tweetId   Int
+  likeCount Int       @default(0)     // Number of likes on the comment
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([authorId])
+  @@index([tweetId])
+}
