@@ -101,6 +101,3 @@ X-clone/
 └── README.md
 ```
 
-## License
-
-MIT
