@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { X, Camera } from 'lucide-react';
 import { useTheme } from '@/providers/theme-provider';
 import { userAPI } from '@/lib/api';
@@ -12,6 +12,7 @@ interface EditProfileModalProps {
   currentName: string;
   currentUsername: string;
   currentBio?: string;
+  currentAvatar?: string;
   onProfileUpdated?: () => void;
 }
 
@@ -22,19 +23,40 @@ export function EditProfileModal({
   currentName,
   currentUsername,
   currentBio = '',
+  currentAvatar = '',
   onProfileUpdated 
 }: EditProfileModalProps) {
   const { theme } = useTheme();
   const [name, setName] = useState(currentName);
   const [bio, setBio] = useState(currentBio);
+  const [avatar, setAvatar] = useState(currentAvatar);
+  const [avatarPreview, setAvatarPreview] = useState(currentAvatar);
   const [isSaving, setIsSaving] = useState(false);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setName(currentName);
     setBio(currentBio);
-  }, [currentName, currentBio]);
+    setAvatar(currentAvatar);
+    setAvatarPreview(currentAvatar);
+  }, [currentName, currentBio, currentAvatar]);
 
   if (!isOpen) return null;
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const result = event.target?.result as string;
+        setAvatarPreview(result);
+        // For now, we'll use the data URL directly
+        // In production, you'd upload to a cloud storage
+        setAvatar(result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSave = async () => {
     if (!userId) return;
@@ -44,6 +66,7 @@ export function EditProfileModal({
       await userAPI.updateUser(userId, {
         name: name.trim(),
         bio: bio.trim(),
+        avatar: avatar || undefined,
       });
       onClose();
       onProfileUpdated?.();
@@ -107,13 +130,26 @@ export function EditProfileModal({
 
         {/* Avatar */}
         <div className="px-4">
-          <div className={`relative -mt-12 w-24 h-24 rounded-full border-4 ${
+          <div className={`relative -mt-12 w-24 h-24 rounded-full border-4 overflow-hidden ${
             theme === 'dark' 
               ? 'border-black bg-gray-700' 
               : 'border-white bg-gray-300'
           }`}>
-            <div className="absolute inset-0 flex items-center justify-center rounded-full">
-              <button className="p-2 rounded-full bg-black/50 hover:bg-black/70 transition-colors">
+            {avatarPreview && (
+              <img src={avatarPreview} alt="Avatar" className="w-full h-full object-cover" />
+            )}
+            <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/30">
+              <input
+                type="file"
+                ref={avatarInputRef}
+                onChange={handleAvatarChange}
+                accept="image/*"
+                className="hidden"
+              />
+              <button 
+                onClick={() => avatarInputRef.current?.click()}
+                className="p-2 rounded-full bg-black/50 hover:bg-black/70 transition-colors"
+              >
                 <Camera size={16} className="text-white" />
               </button>
             </div>

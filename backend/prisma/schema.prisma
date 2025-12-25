@@ -32,6 +32,45 @@ model User {
 
   // Following (users that this user follows)
   following UserFollow[] @relation("follower")
+
+  // Bookmarked tweets
+  bookmarks Bookmark[]
+
+  // Chat memberships
+  chatMembers ChatMember[]
+
+  // Messages sent by user
+  messages Message[]
+
+  // Users blocked by this user
+  blockedUsers Block[] @relation("blocker")
+  
+  // Users who blocked this user
+  blockedBy Block[] @relation("blocked")
+
+  // Users muted by this user
+  mutedUsers Mute[] @relation("muter")
+  
+  // Users who muted this user
+  mutedBy Mute[] @relation("muted")
+
+  // Reports made by this user
+  reportsMade Report[] @relation("reporter")
+  
+  // Reports against this user
+  reportsReceived Report[] @relation("reported")
+
+  // Notifications received by this user
+  notificationsReceived Notification[] @relation("notificationRecipient")
+  
+  // Notifications triggered by this user (as actor)
+  notificationsTriggered Notification[] @relation("notificationActor")
+
+  // Retweets by this user
+  retweets Retweet[]
+
+  // Likes by this user
+  likes Like[]
 }
 
 model UserFollow {
@@ -48,14 +87,19 @@ model UserFollow {
 }
 
 model Tweet {
-  id          Int       @default(autoincrement()) @id
-  content     String    // Tweet text content
-  author      User      @relation("author", fields: [authorId], references: [id], onDelete: Cascade)
-  authorId    Int
-  likeCount   Int       @default(0)     // Number of likes
-  retweetCount Int      @default(0)     // Number of retweets
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id              Int       @default(autoincrement()) @id
+  content         String    // Tweet text content
+  author          User      @relation("author", fields: [authorId], references: [id], onDelete: Cascade)
+  authorId        Int
+  likeCount       Int       @default(0)     // Number of likes
+  retweetCount    Int       @default(0)     // Number of retweets
+  viewCount       Int       @default(0)     // Number of views
+  commentsEnabled Boolean   @default(true)  // Whether comments are enabled for this tweet
+  location        String?   // Location string (city, country)
+  latitude        Float?    // GPS latitude
+  longitude       Float?    // GPS longitude
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   // Tweet images/media
   media       TweetMedia[]
@@ -63,8 +107,43 @@ model Tweet {
   // Tweet comments
   comments    Comment[]
 
+  // Bookmarks for this tweet
+  bookmarks   Bookmark[]
+
+  // Retweets of this tweet
+  retweets    Retweet[]
+
+  // Likes of this tweet
+  likes       Like[]
+
   @@index([authorId])
   @@index([createdAt])
+}
+
+model Retweet {
+  id        Int       @default(autoincrement()) @id
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  tweet     Tweet     @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+  tweetId   Int
+  createdAt DateTime  @default(now())
+
+  @@unique([userId, tweetId]) // Prevent duplicate retweets
+  @@index([userId])
+  @@index([tweetId])
+}
+
+model Like {
+  id        Int       @default(autoincrement()) @id
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  tweet     Tweet     @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+  tweetId   Int
+  createdAt DateTime  @default(now())
+
+  @@unique([userId, tweetId]) // Prevent duplicate likes
+  @@index([userId])
+  @@index([tweetId])
 }
 
 model TweetMedia {
@@ -91,4 +170,136 @@ model Comment {
 
   @@index([authorId])
   @@index([tweetId])
+}
+
+model Bookmark {
+  id        Int       @default(autoincrement()) @id
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  tweet     Tweet     @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+  tweetId   Int
+  createdAt DateTime  @default(now())
+
+  @@unique([userId, tweetId]) // Prevent duplicate bookmarks
+  @@index([userId])
+  @@index([tweetId])
+}
+
+model Chat {
+  id        Int       @default(autoincrement()) @id
+  name      String?   // Optional name for group chats
+  isGroup   Boolean   @default(false) // Whether this is a group chat
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Chat participants
+  members   ChatMember[]
+  
+  // Messages in this chat
+  messages  Message[]
+}
+
+model ChatMember {
+  id        Int       @default(autoincrement()) @id
+  chat      Chat      @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId    Int
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  isAdmin   Boolean   @default(false) // For group chats
+  joinedAt  DateTime  @default(now())
+
+  @@unique([chatId, userId]) // Prevent duplicate memberships
+  @@index([chatId])
+  @@index([userId])
+}
+
+model Message {
+  id        Int       @default(autoincrement()) @id
+  content   String    // Message text
+  chat      Chat      @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId    Int
+  sender    User      @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  senderId  Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Message media (images, files)
+  media     MessageMedia[]
+
+  @@index([chatId])
+  @@index([senderId])
+  @@index([createdAt])
+}
+
+model MessageMedia {
+  id         Int       @default(autoincrement()) @id
+  message    Message   @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  messageId  Int
+  mediaUrl   String    // URL or base64 of the file
+  mediaType  String    // image, file, video, etc.
+  fileName   String?   // Original file name
+  fileSize   Int?      // File size in bytes
+  createdAt  DateTime  @default(now())
+
+  @@index([messageId])
+}
+
+model Block {
+  id        Int       @default(autoincrement()) @id
+  blocker   User      @relation("blocker", fields: [blockerId], references: [id], onDelete: Cascade)
+  blockerId Int
+  blocked   User      @relation("blocked", fields: [blockedId], references: [id], onDelete: Cascade)
+  blockedId Int
+  createdAt DateTime  @default(now())
+
+  @@unique([blockerId, blockedId])
+  @@index([blockerId])
+  @@index([blockedId])
+}
+
+model Mute {
+  id        Int       @default(autoincrement()) @id
+  muter     User      @relation("muter", fields: [muterId], references: [id], onDelete: Cascade)
+  muterId   Int
+  muted     User      @relation("muted", fields: [mutedId], references: [id], onDelete: Cascade)
+  mutedId   Int
+  createdAt DateTime  @default(now())
+
+  @@unique([muterId, mutedId])
+  @@index([muterId])
+  @@index([mutedId])
+}
+
+model Report {
+  id         Int       @default(autoincrement()) @id
+  reporter   User      @relation("reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  reporterId Int
+  reported   User      @relation("reported", fields: [reportedId], references: [id], onDelete: Cascade)
+  reportedId Int
+  reason     String    // Reason for reporting
+  status     String    @default("pending") // pending, reviewed, dismissed
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([reporterId])
+  @@index([reportedId])
+  @@index([status])
+}
+
+model Notification {
+  id          Int       @default(autoincrement()) @id
+  type        String    // "like", "retweet", "comment", "follow"
+  user        User      @relation("notificationRecipient", fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int       // User who receives the notification
+  actor       User      @relation("notificationActor", fields: [actorId], references: [id], onDelete: Cascade)
+  actorId     Int       // User who triggered the notification
+  tweetId     Int?      // Related tweet (for like, retweet, comment)
+  commentId   Int?      // Related comment (for comment notifications)
+  read        Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  @@index([userId])
+  @@index([actorId])
+  @@index([createdAt])
+  @@index([read])
 }

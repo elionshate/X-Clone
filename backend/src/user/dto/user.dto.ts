@@ -29,6 +29,11 @@ export class UpdateUserDto {
   bio?: string;
 
   @IsOptional()
-  @IsUrl()
+  @IsString()
   avatar?: string;
+}
+
+export class DeleteUserDto {
+  @IsString()
+  clerkUserId: string;
 }

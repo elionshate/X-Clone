@@ -33,6 +33,16 @@ export type UserFollow = Prisma.UserFollowModel
  */
 export type Tweet = Prisma.TweetModel
 /**
+ * Model Retweet
+ * 
+ */
+export type Retweet = Prisma.RetweetModel
+/**
+ * Model Like
+ * 
+ */
+export type Like = Prisma.LikeModel
+/**
  * Model TweetMedia
  * 
  */
@@ -42,3 +52,48 @@ export type TweetMedia = Prisma.TweetMediaModel
  * 
  */
 export type Comment = Prisma.CommentModel
+/**
+ * Model Bookmark
+ * 
+ */
+export type Bookmark = Prisma.BookmarkModel
+/**
+ * Model Chat
+ * 
+ */
+export type Chat = Prisma.ChatModel
+/**
+ * Model ChatMember
+ * 
+ */
+export type ChatMember = Prisma.ChatMemberModel
+/**
+ * Model Message
+ * 
+ */
+export type Message = Prisma.MessageModel
+/**
+ * Model MessageMedia
+ * 
+ */
+export type MessageMedia = Prisma.MessageMediaModel
+/**
+ * Model Block
+ * 
+ */
+export type Block = Prisma.BlockModel
+/**
+ * Model Mute
+ * 
+ */
+export type Mute = Prisma.MuteModel
+/**
+ * Model Report
+ * 
+ */
+export type Report = Prisma.ReportModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel

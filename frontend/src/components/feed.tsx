@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { MessageCircle, Repeat2, Heart, Share, Trash2, MoreHorizontal } from 'lucide-react';
+import Link from 'next/link';
+import { MessageCircle, Repeat2, Heart, Share, Trash2, MoreHorizontal, Bookmark, Eye, MapPin } from 'lucide-react';
 import { useTheme } from '@/providers/theme-provider';
 import { useUser } from '@clerk/nextjs';
-import { tweetAPI, userAPI, commentAPI } from '@/lib/api';
+import { tweetAPI, userAPI, commentAPI, bookmarkAPI } from '@/lib/api';
 import { CommentModal } from './comment-modal';
 
 interface Tweet {
@@ -16,10 +17,19 @@ interface Tweet {
     name: string;
     username: string;
     email: string;
+    avatar?: string;
   };
+  media?: Array<{
+    id: number;
+    mediaUrl: string;
+    mediaType: string;
+  }>;
   likeCount: number;
   retweetCount: number;
+  viewCount: number;
   commentCount?: number;
+  commentsEnabled: boolean;
+  location?: string;
   createdAt: string;
 }
 
@@ -38,6 +48,7 @@ export function Feed({ tab, onTabChange }: FeedProps) {
   const observerTarget = useRef<HTMLDivElement>(null);
   const [liked, setLiked] = useState<Set<number>>(new Set());
   const [retweeted, setRetweeted] = useState<Set<number>>(new Set());
+  const [bookmarked, setBookmarked] = useState<Set<number>>(new Set());
   const [backendUserId, setBackendUserId] = useState<number | undefined>();
   
   // Comment modal state
@@ -66,19 +77,61 @@ export function Feed({ tab, onTabChange }: FeedProps) {
           setBackendUserId(newUser.id);
         }
       } catch (error) {
-        try {
-          const newUser = await userAPI.createUser({ name, email, username });
-          if (newUser?.id) {
-            setBackendUserId(newUser.id);
-          }
-        } catch (createError) {
-          console.error('Error creating user:', createError);
-        }
+        console.error('Error in getOrCreateUser:', error);
       }
     };
 
     getOrCreateUser();
   }, [clerkUser]);
+
+  // Load bookmarked tweet IDs
+  useEffect(() => {
+    const loadBookmarks = async () => {
+      if (!backendUserId) return;
+      try {
+        const bookmarkedIds = await bookmarkAPI.getBookmarkedTweetIds(backendUserId);
+        setBookmarked(new Set(bookmarkedIds));
+      } catch (error) {
+        console.error('Error loading bookmarks:', error);
+      }
+    };
+
+    loadBookmarks();
+  }, [backendUserId]);
+
+  // Load liked tweet IDs
+  useEffect(() => {
+    const loadLikes = async () => {
+      if (!backendUserId) return;
+      try {
+        const likedIds = await tweetAPI.getLikedTweetIds(backendUserId);
+        setLiked(new Set(likedIds));
+      } catch (error) {
+        console.error('Error loading likes:', error);
+      }
+    };
+
+    loadLikes();
+  }, [backendUserId]);
+
+  // Track views when tweets are displayed
+  useEffect(() => {
+    const trackViews = async () => {
+      if (tweets.length === 0) return;
+      const tweetIds = tweets.map(t => t.id);
+      try {
+        await tweetAPI.incrementViewsBatch(tweetIds);
+        // Update local view counts
+        setTweets(prev => prev.map(t => ({ ...t, viewCount: (t.viewCount || 0) + 1 })));
+      } catch (error) {
+        console.error('Error tracking views:', error);
+      }
+    };
+    
+    // Debounce view tracking
+    const timer = setTimeout(trackViews, 500);
+    return () => clearTimeout(timer);
+  }, [tweets.length]); // Only run when number of tweets changes
 
   // Load initial tweets - depends on tab and backendUserId
   useEffect(() => {
@@ -93,8 +146,12 @@ export function Feed({ tab, onTabChange }: FeedProps) {
         if (tab === 'following' && backendUserId) {
           console.log('Loading following tweets for user:', backendUserId);
           data = await tweetAPI.getFollowingTweets(backendUserId, 0, 10);
+        } else if (backendUserId) {
+          console.log('Loading For You tweets (unfollowed accounts)...');
+          // For "For You" tab, show posts from accounts NOT followed
+          data = await tweetAPI.getForYouTweets(backendUserId, 0, 10);
         } else {
-          console.log('Loading all tweets...');
+          console.log('Loading all tweets (no user)...');
           data = await tweetAPI.getAllTweets(0, 10);
         }
         console.log('Tweets data:', data);
@@ -103,7 +160,9 @@ export function Feed({ tab, onTabChange }: FeedProps) {
         if (Array.isArray(data)) {
           const enrichedTweets = data.map(tweet => ({
             ...tweet,
-            commentCount: tweet.comments?.length || 0
+            commentCount: tweet.comments?.length || 0,
+            commentsEnabled: tweet.commentsEnabled ?? true,
+            viewCount: tweet.viewCount || 0,
           }));
           setTweets(enrichedTweets);
           if (data.length < 10) {
@@ -136,6 +195,9 @@ export function Feed({ tab, onTabChange }: FeedProps) {
       let data;
       if (tab === 'following' && backendUserId) {
         data = await tweetAPI.getFollowingTweets(backendUserId, skip, 10);
+      } else if (backendUserId) {
+        // For "For You" tab, show posts from accounts NOT followed
+        data = await tweetAPI.getForYouTweets(backendUserId, skip, 10);
       } else {
         data = await tweetAPI.getAllTweets(skip, 10);
       }
@@ -148,7 +210,8 @@ export function Feed({ tab, onTabChange }: FeedProps) {
       // The backend already includes author data
       const enrichedTweets = data.map(tweet => ({
         ...tweet,
-        commentCount: tweet.comments?.length || 0
+        commentCount: tweet.comments?.length || 0,
+        commentsEnabled: tweet.commentsEnabled ?? true,
       }));
 
       setTweets(prev => [...prev, ...enrichedTweets]);
@@ -195,14 +258,14 @@ export function Feed({ tab, onTabChange }: FeedProps) {
   const handleLike = async (tweetId: number) => {
     try {
       if (liked.has(tweetId)) {
-        await tweetAPI.unlikeTweet(tweetId);
+        await tweetAPI.unlikeTweet(tweetId, backendUserId);
         setLiked(prev => {
           const newSet = new Set(prev);
           newSet.delete(tweetId);
           return newSet;
         });
       } else {
-        await tweetAPI.likeTweet(tweetId);
+        await tweetAPI.likeTweet(tweetId, backendUserId);
         setLiked(prev => new Set([...prev, tweetId]));
       }
       
@@ -229,7 +292,7 @@ export function Feed({ tab, onTabChange }: FeedProps) {
           return newSet;
         });
       } else {
-        await tweetAPI.retweetTweet(tweetId);
+        await tweetAPI.retweetTweet(tweetId, backendUserId);
         setRetweeted(prev => new Set([...prev, tweetId]));
       }
 
@@ -247,8 +310,32 @@ export function Feed({ tab, onTabChange }: FeedProps) {
   };
 
   const handleOpenCommentModal = (tweet: Tweet) => {
+    if (!tweet.commentsEnabled) {
+      alert('Comments are disabled for this post');
+      return;
+    }
     setSelectedTweet(tweet);
     setIsCommentModalOpen(true);
+  };
+
+  const handleBookmark = async (tweetId: number) => {
+    if (!backendUserId) return;
+
+    try {
+      if (bookmarked.has(tweetId)) {
+        await bookmarkAPI.removeBookmark(backendUserId, tweetId);
+        setBookmarked(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(tweetId);
+          return newSet;
+        });
+      } else {
+        await bookmarkAPI.createBookmark(backendUserId, tweetId);
+        setBookmarked(prev => new Set([...prev, tweetId]));
+      }
+    } catch (error) {
+      console.error('Error toggling bookmark:', error);
+    }
   };
 
   const handleCommentCreated = () => {
@@ -341,20 +428,36 @@ export function Feed({ tab, onTabChange }: FeedProps) {
                 }`}
               >
                 <div className="flex gap-4">
-                  <div className={`w-12 h-12 rounded-full flex-shrink-0 ${
-                    theme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'
-                  }`}></div>
+                  <Link 
+                    href={`/pages/user/${tweet.author?.username || 'unknown'}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className={`w-12 h-12 rounded-full flex-shrink-0 overflow-hidden ${
+                      theme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'
+                    }`}
+                  >
+                    {tweet.author?.avatar && (
+                      <img src={tweet.author.avatar} alt="" className="w-full h-full object-cover" />
+                    )}
+                  </Link>
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className={`font-bold ${
-                          theme === 'dark' ? 'text-white' : 'text-black'
-                        }`}>
+                        <Link 
+                          href={`/pages/user/${tweet.author?.username || 'unknown'}`}
+                          onClick={(e) => e.stopPropagation()}
+                          className={`font-bold hover:underline ${
+                            theme === 'dark' ? 'text-white' : 'text-black'
+                          }`}
+                        >
                           {tweet.author?.name || 'Unknown User'}
-                        </span>
-                        <span className={theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}>
+                        </Link>
+                        <Link 
+                          href={`/pages/user/${tweet.author?.username || 'unknown'}`}
+                          onClick={(e) => e.stopPropagation()}
+                          className={`hover:underline ${theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}`}
+                        >
                           @{tweet.author?.username || 'unknown'}
-                        </span>
+                        </Link>
                         <span className={theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}>·</span>
                         <span className={theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}>
                           {formatDate(tweet.createdAt)}
@@ -382,7 +485,38 @@ export function Feed({ tab, onTabChange }: FeedProps) {
                     }`}>
                       {tweet.content}
                     </p>
-                    <div className={`flex justify-between mt-3 max-w-xs text-sm ${
+                    
+                    {/* Location */}
+                    {tweet.location && (
+                      <div className={`flex items-center gap-1 mt-1 ${
+                        theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
+                      }`}>
+                        <MapPin size={14} />
+                        <span className="text-sm">{tweet.location}</span>
+                      </div>
+                    )}
+                    
+                    {/* Tweet Media/Images */}
+                    {tweet.media && tweet.media.length > 0 && (
+                      <div className={`mt-3 rounded-2xl overflow-hidden ${
+                        tweet.media.length === 1 ? '' : 'grid grid-cols-2 gap-0.5'
+                      }`}>
+                        {tweet.media.map((media, index) => (
+                          <img 
+                            key={media.id || index}
+                            src={media.mediaUrl} 
+                            alt={`Tweet media ${index + 1}`}
+                            className={`w-full object-cover ${
+                              tweet.media!.length === 1 
+                                ? 'max-h-96 rounded-2xl' 
+                                : 'h-48'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    )}
+                    
+                    <div className={`flex justify-between mt-3 max-w-md text-sm ${
                       theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
                     }`}>
                       <button 
@@ -390,9 +524,14 @@ export function Feed({ tab, onTabChange }: FeedProps) {
                           e.stopPropagation();
                           handleOpenCommentModal(tweet);
                         }}
-                        className="flex items-center gap-2 hover:text-blue-500 transition-colors"
+                        className={`flex items-center gap-2 transition-colors ${
+                          !tweet.commentsEnabled 
+                            ? 'opacity-50 cursor-not-allowed' 
+                            : 'hover:text-blue-500'
+                        }`}
+                        title={tweet.commentsEnabled ? 'Comment' : 'Comments disabled'}
                       >
-                        <MessageCircle size={16} /> {tweet.commentCount || 0}
+                        <MessageCircle size={16} /> {tweet.commentsEnabled ? (tweet.commentCount || 0) : 'Off'}
                       </button>
                       <button
                         onClick={(e) => {
@@ -416,6 +555,21 @@ export function Feed({ tab, onTabChange }: FeedProps) {
                       >
                         <Heart size={16} fill={liked.has(tweet.id) ? 'currentColor' : 'none'} /> {tweet.likeCount}
                       </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleBookmark(tweet.id);
+                        }}
+                        className={`flex items-center gap-2 transition-colors ${
+                          bookmarked.has(tweet.id) ? 'text-blue-500' : 'hover:text-blue-500'
+                        }`}
+                        title={bookmarked.has(tweet.id) ? 'Remove bookmark' : 'Bookmark'}
+                      >
+                        <Bookmark size={16} fill={bookmarked.has(tweet.id) ? 'currentColor' : 'none'} />
+                      </button>
+                      <span className="flex items-center gap-1" title="Views">
+                        <Eye size={16} /> {tweet.viewCount || 0}
+                      </span>
                       <button 
                         onClick={(e) => e.stopPropagation()}
                         className="flex items-center gap-2 hover:text-blue-500 transition-colors"

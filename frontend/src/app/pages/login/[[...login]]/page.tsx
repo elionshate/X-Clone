@@ -16,7 +16,17 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {isSignUp ? <SignUp /> : <SignIn />}
+        {isSignUp ? (
+          <SignUp 
+            fallbackRedirectUrl="/pages/home"
+            signInUrl="/pages/login"
+          />
+        ) : (
+          <SignIn 
+            fallbackRedirectUrl="/pages/home"
+            signUpUrl="/pages/login"
+          />
+        )}
 
         <div className="mt-6 text-center">
           <p className="text-gray-600">

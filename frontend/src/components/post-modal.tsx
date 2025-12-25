@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { X, Image, Smile, MapPin, Calendar } from 'lucide-react';
+import { X, Image, Smile, MapPin, Calendar, MessageCircle } from 'lucide-react';
 import { useTheme } from '@/providers/theme-provider';
 import { tweetAPI } from '@/lib/api';
 
@@ -17,9 +17,54 @@ export function PostModal({ isOpen, onClose, onPostCreated, userId }: PostModalP
   const [content, setContent] = useState('');
   const [images, setImages] = useState<string[]>([]);
   const [isPosting, setIsPosting] = useState(false);
+  const [commentsEnabled, setCommentsEnabled] = useState(true);
+  const [location, setLocation] = useState<string | null>(null);
+  const [locationCoords, setLocationCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [isGettingLocation, setIsGettingLocation] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!isOpen) return null;
+
+  const handleGetLocation = async () => {
+    if (location) {
+      // Clear location if already set
+      setLocation(null);
+      setLocationCoords(null);
+      return;
+    }
+
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser');
+      return;
+    }
+
+    setIsGettingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        setLocationCoords({ lat: latitude, lng: longitude });
+        
+        // Try to get location name from coordinates using reverse geocoding
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await response.json();
+          const locationName = data.address?.city || data.address?.town || data.address?.village || data.address?.county || 'Unknown location';
+          const country = data.address?.country || '';
+          setLocation(`${locationName}${country ? `, ${country}` : ''}`);
+        } catch {
+          setLocation(`${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
+        }
+        setIsGettingLocation(false);
+      },
+      (error) => {
+        console.error('Error getting location:', error);
+        alert('Unable to get your location. Please check your permissions.');
+        setIsGettingLocation(false);
+      }
+    );
+  };
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -53,13 +98,21 @@ export function PostModal({ isOpen, onClose, onPostCreated, userId }: PostModalP
     
     setIsPosting(true);
     try {
-      console.log('Creating tweet with userId:', userId, 'content:', content.trim());
+      console.log('Creating tweet with userId:', userId, 'content:', content.trim(), 'images:', images.length);
       await tweetAPI.createTweet({
         content: content.trim(),
         authorId: userId,
+        commentsEnabled,
+        mediaUrls: images.length > 0 ? images : undefined,
+        location: location || undefined,
+        latitude: locationCoords?.lat,
+        longitude: locationCoords?.lng,
       });
       setContent('');
       setImages([]);
+      setCommentsEnabled(true);
+      setLocation(null);
+      setLocationCoords(null);
       onClose();
       onPostCreated?.();
     } catch (error) {
@@ -152,7 +205,7 @@ export function PostModal({ isOpen, onClose, onPostCreated, userId }: PostModalP
         <div className={`flex items-center justify-between p-4 border-t ${
           theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
         }`}>
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
             <input
               type="file"
               ref={fileInputRef}
@@ -170,12 +223,49 @@ export function PostModal({ isOpen, onClose, onPostCreated, userId }: PostModalP
             <button className="text-blue-500 hover:bg-blue-500/10 p-2 rounded-full">
               <Smile size={20} />
             </button>
-            <button className="text-blue-500 hover:bg-blue-500/10 p-2 rounded-full">
+            <button 
+              onClick={handleGetLocation}
+              disabled={isGettingLocation}
+              className={`p-2 rounded-full transition-colors ${
+                location
+                  ? 'text-green-500 bg-green-500/10'
+                  : 'text-blue-500 hover:bg-blue-500/10'
+              }`}
+              title={location || 'Add location'}
+            >
               <MapPin size={20} />
             </button>
             <button className="text-blue-500 hover:bg-blue-500/10 p-2 rounded-full">
               <Calendar size={20} />
             </button>
+            
+            {/* Location Display */}
+            {location && (
+              <span className={`text-xs truncate max-w-[150px] ${
+                theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+              }`}>
+                📍 {location}
+              </span>
+            )}
+            
+            {/* Comments Toggle */}
+            <div className={`flex items-center gap-2 ml-2 pl-2 border-l ${
+              theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
+            }`}>
+              <button
+                onClick={() => setCommentsEnabled(!commentsEnabled)}
+                className={`flex items-center gap-1 px-2 py-1 rounded-full text-sm transition-colors ${
+                  commentsEnabled
+                    ? 'text-blue-500 bg-blue-500/10'
+                    : theme === 'dark'
+                      ? 'text-gray-500 bg-gray-800'
+                      : 'text-gray-400 bg-gray-100'
+                }`}
+              >
+                <MessageCircle size={16} />
+                <span>{commentsEnabled ? 'Comments On' : 'Comments Off'}</span>
+              </button>
+            </div>
           </div>
           <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
             {content.length}/280

@@ -54,8 +54,19 @@ export const ModelName = {
   User: 'User',
   UserFollow: 'UserFollow',
   Tweet: 'Tweet',
+  Retweet: 'Retweet',
+  Like: 'Like',
   TweetMedia: 'TweetMedia',
-  Comment: 'Comment'
+  Comment: 'Comment',
+  Bookmark: 'Bookmark',
+  Chat: 'Chat',
+  ChatMember: 'ChatMember',
+  Message: 'Message',
+  MessageMedia: 'MessageMedia',
+  Block: 'Block',
+  Mute: 'Mute',
+  Report: 'Report',
+  Notification: 'Notification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -101,11 +112,36 @@ export const TweetScalarFieldEnum = {
   authorId: 'authorId',
   likeCount: 'likeCount',
   retweetCount: 'retweetCount',
+  viewCount: 'viewCount',
+  commentsEnabled: 'commentsEnabled',
+  location: 'location',
+  latitude: 'latitude',
+  longitude: 'longitude',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type TweetScalarFieldEnum = (typeof TweetScalarFieldEnum)[keyof typeof TweetScalarFieldEnum]
+
+
+export const RetweetScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tweetId: 'tweetId',
+  createdAt: 'createdAt'
+} as const
+
+export type RetweetScalarFieldEnum = (typeof RetweetScalarFieldEnum)[keyof typeof RetweetScalarFieldEnum]
+
+
+export const LikeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tweetId: 'tweetId',
+  createdAt: 'createdAt'
+} as const
+
+export type LikeScalarFieldEnum = (typeof LikeScalarFieldEnum)[keyof typeof LikeScalarFieldEnum]
 
 
 export const TweetMediaScalarFieldEnum = {
@@ -130,6 +166,110 @@ export const CommentScalarFieldEnum = {
 } as const
 
 export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+
+
+export const BookmarkScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tweetId: 'tweetId',
+  createdAt: 'createdAt'
+} as const
+
+export type BookmarkScalarFieldEnum = (typeof BookmarkScalarFieldEnum)[keyof typeof BookmarkScalarFieldEnum]
+
+
+export const ChatScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  isGroup: 'isGroup',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ChatScalarFieldEnum = (typeof ChatScalarFieldEnum)[keyof typeof ChatScalarFieldEnum]
+
+
+export const ChatMemberScalarFieldEnum = {
+  id: 'id',
+  chatId: 'chatId',
+  userId: 'userId',
+  isAdmin: 'isAdmin',
+  joinedAt: 'joinedAt'
+} as const
+
+export type ChatMemberScalarFieldEnum = (typeof ChatMemberScalarFieldEnum)[keyof typeof ChatMemberScalarFieldEnum]
+
+
+export const MessageScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  chatId: 'chatId',
+  senderId: 'senderId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+export const MessageMediaScalarFieldEnum = {
+  id: 'id',
+  messageId: 'messageId',
+  mediaUrl: 'mediaUrl',
+  mediaType: 'mediaType',
+  fileName: 'fileName',
+  fileSize: 'fileSize',
+  createdAt: 'createdAt'
+} as const
+
+export type MessageMediaScalarFieldEnum = (typeof MessageMediaScalarFieldEnum)[keyof typeof MessageMediaScalarFieldEnum]
+
+
+export const BlockScalarFieldEnum = {
+  id: 'id',
+  blockerId: 'blockerId',
+  blockedId: 'blockedId',
+  createdAt: 'createdAt'
+} as const
+
+export type BlockScalarFieldEnum = (typeof BlockScalarFieldEnum)[keyof typeof BlockScalarFieldEnum]
+
+
+export const MuteScalarFieldEnum = {
+  id: 'id',
+  muterId: 'muterId',
+  mutedId: 'mutedId',
+  createdAt: 'createdAt'
+} as const
+
+export type MuteScalarFieldEnum = (typeof MuteScalarFieldEnum)[keyof typeof MuteScalarFieldEnum]
+
+
+export const ReportScalarFieldEnum = {
+  id: 'id',
+  reporterId: 'reporterId',
+  reportedId: 'reportedId',
+  reason: 'reason',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReportScalarFieldEnum = (typeof ReportScalarFieldEnum)[keyof typeof ReportScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  userId: 'userId',
+  actorId: 'actorId',
+  tweetId: 'tweetId',
+  commentId: 'commentId',
+  read: 'read',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
 export const SortOrder = {

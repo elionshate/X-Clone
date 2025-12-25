@@ -18,16 +18,17 @@ function ExploreContent() {
   ];
 
   return (
-    <div className={`flex min-h-screen ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
-      {/* Left Sidebar */}
-      <Sidebar />
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
+      <div className="flex justify-center max-w-[1400px] mx-auto">
+        {/* Left Sidebar */}
+        <Sidebar />
 
-      {/* Main Explore Area */}
-      <main className={`flex-1 border-r max-w-2xl ${
-        theme === 'dark'
-          ? 'border-gray-700 bg-black'
-          : 'border-gray-200 bg-white'
-      }`}>
+        {/* Main Explore Area */}
+        <main className={`flex-1 border-r max-w-2xl ${
+          theme === 'dark'
+            ? 'border-gray-700 bg-black'
+            : 'border-gray-200 bg-white'
+        }`}>
         {/* Search Bar */}
         <div className={`sticky top-0 backdrop-blur z-10 p-4 ${
           theme === 'dark'
@@ -84,6 +85,7 @@ function ExploreContent() {
           ))}
         </div>
       </main>
+      </div>
     </div>
   );
 }

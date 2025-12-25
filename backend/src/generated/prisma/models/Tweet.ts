@@ -31,6 +31,9 @@ export type TweetAvgAggregateOutputType = {
   authorId: number | null
   likeCount: number | null
   retweetCount: number | null
+  viewCount: number | null
+  latitude: number | null
+  longitude: number | null
 }
 
 export type TweetSumAggregateOutputType = {
@@ -38,6 +41,9 @@ export type TweetSumAggregateOutputType = {
   authorId: number | null
   likeCount: number | null
   retweetCount: number | null
+  viewCount: number | null
+  latitude: number | null
+  longitude: number | null
 }
 
 export type TweetMinAggregateOutputType = {
@@ -46,6 +52,11 @@ export type TweetMinAggregateOutputType = {
   authorId: number | null
   likeCount: number | null
   retweetCount: number | null
+  viewCount: number | null
+  commentsEnabled: boolean | null
+  location: string | null
+  latitude: number | null
+  longitude: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +67,11 @@ export type TweetMaxAggregateOutputType = {
   authorId: number | null
   likeCount: number | null
   retweetCount: number | null
+  viewCount: number | null
+  commentsEnabled: boolean | null
+  location: string | null
+  latitude: number | null
+  longitude: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -66,6 +82,11 @@ export type TweetCountAggregateOutputType = {
   authorId: number
   likeCount: number
   retweetCount: number
+  viewCount: number
+  commentsEnabled: number
+  location: number
+  latitude: number
+  longitude: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -77,6 +98,9 @@ export type TweetAvgAggregateInputType = {
   authorId?: true
   likeCount?: true
   retweetCount?: true
+  viewCount?: true
+  latitude?: true
+  longitude?: true
 }
 
 export type TweetSumAggregateInputType = {
@@ -84,6 +108,9 @@ export type TweetSumAggregateInputType = {
   authorId?: true
   likeCount?: true
   retweetCount?: true
+  viewCount?: true
+  latitude?: true
+  longitude?: true
 }
 
 export type TweetMinAggregateInputType = {
@@ -92,6 +119,11 @@ export type TweetMinAggregateInputType = {
   authorId?: true
   likeCount?: true
   retweetCount?: true
+  viewCount?: true
+  commentsEnabled?: true
+  location?: true
+  latitude?: true
+  longitude?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -102,6 +134,11 @@ export type TweetMaxAggregateInputType = {
   authorId?: true
   likeCount?: true
   retweetCount?: true
+  viewCount?: true
+  commentsEnabled?: true
+  location?: true
+  latitude?: true
+  longitude?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,6 +149,11 @@ export type TweetCountAggregateInputType = {
   authorId?: true
   likeCount?: true
   retweetCount?: true
+  viewCount?: true
+  commentsEnabled?: true
+  location?: true
+  latitude?: true
+  longitude?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -209,6 +251,11 @@ export type TweetGroupByOutputType = {
   authorId: number
   likeCount: number
   retweetCount: number
+  viewCount: number
+  commentsEnabled: boolean
+  location: string | null
+  latitude: number | null
+  longitude: number | null
   createdAt: Date
   updatedAt: Date
   _count: TweetCountAggregateOutputType | null
@@ -242,11 +289,19 @@ export type TweetWhereInput = {
   authorId?: Prisma.IntFilter<"Tweet"> | number
   likeCount?: Prisma.IntFilter<"Tweet"> | number
   retweetCount?: Prisma.IntFilter<"Tweet"> | number
+  viewCount?: Prisma.IntFilter<"Tweet"> | number
+  commentsEnabled?: Prisma.BoolFilter<"Tweet"> | boolean
+  location?: Prisma.StringNullableFilter<"Tweet"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Tweet"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Tweet"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Tweet"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tweet"> | Date | string
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   media?: Prisma.TweetMediaListRelationFilter
   comments?: Prisma.CommentListRelationFilter
+  bookmarks?: Prisma.BookmarkListRelationFilter
+  retweets?: Prisma.RetweetListRelationFilter
+  likes?: Prisma.LikeListRelationFilter
 }
 
 export type TweetOrderByWithRelationInput = {
@@ -255,11 +310,19 @@ export type TweetOrderByWithRelationInput = {
   authorId?: Prisma.SortOrder
   likeCount?: Prisma.SortOrder
   retweetCount?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  commentsEnabled?: Prisma.SortOrder
+  location?: Prisma.SortOrderInput | Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   author?: Prisma.UserOrderByWithRelationInput
   media?: Prisma.TweetMediaOrderByRelationAggregateInput
   comments?: Prisma.CommentOrderByRelationAggregateInput
+  bookmarks?: Prisma.BookmarkOrderByRelationAggregateInput
+  retweets?: Prisma.RetweetOrderByRelationAggregateInput
+  likes?: Prisma.LikeOrderByRelationAggregateInput
 }
 
 export type TweetWhereUniqueInput = Prisma.AtLeast<{
@@ -271,11 +334,19 @@ export type TweetWhereUniqueInput = Prisma.AtLeast<{
   authorId?: Prisma.IntFilter<"Tweet"> | number
   likeCount?: Prisma.IntFilter<"Tweet"> | number
   retweetCount?: Prisma.IntFilter<"Tweet"> | number
+  viewCount?: Prisma.IntFilter<"Tweet"> | number
+  commentsEnabled?: Prisma.BoolFilter<"Tweet"> | boolean
+  location?: Prisma.StringNullableFilter<"Tweet"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Tweet"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Tweet"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Tweet"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tweet"> | Date | string
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   media?: Prisma.TweetMediaListRelationFilter
   comments?: Prisma.CommentListRelationFilter
+  bookmarks?: Prisma.BookmarkListRelationFilter
+  retweets?: Prisma.RetweetListRelationFilter
+  likes?: Prisma.LikeListRelationFilter
 }, "id">
 
 export type TweetOrderByWithAggregationInput = {
@@ -284,6 +355,11 @@ export type TweetOrderByWithAggregationInput = {
   authorId?: Prisma.SortOrder
   likeCount?: Prisma.SortOrder
   retweetCount?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  commentsEnabled?: Prisma.SortOrder
+  location?: Prisma.SortOrderInput | Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.TweetCountOrderByAggregateInput
@@ -302,6 +378,11 @@ export type TweetScalarWhereWithAggregatesInput = {
   authorId?: Prisma.IntWithAggregatesFilter<"Tweet"> | number
   likeCount?: Prisma.IntWithAggregatesFilter<"Tweet"> | number
   retweetCount?: Prisma.IntWithAggregatesFilter<"Tweet"> | number
+  viewCount?: Prisma.IntWithAggregatesFilter<"Tweet"> | number
+  commentsEnabled?: Prisma.BoolWithAggregatesFilter<"Tweet"> | boolean
+  location?: Prisma.StringNullableWithAggregatesFilter<"Tweet"> | string | null
+  latitude?: Prisma.FloatNullableWithAggregatesFilter<"Tweet"> | number | null
+  longitude?: Prisma.FloatNullableWithAggregatesFilter<"Tweet"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Tweet"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Tweet"> | Date | string
 }
@@ -310,11 +391,19 @@ export type TweetCreateInput = {
   content: string
   likeCount?: number
   retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutTweetsInput
   media?: Prisma.TweetMediaCreateNestedManyWithoutTweetInput
   comments?: Prisma.CommentCreateNestedManyWithoutTweetInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutTweetInput
+  retweets?: Prisma.RetweetCreateNestedManyWithoutTweetInput
+  likes?: Prisma.LikeCreateNestedManyWithoutTweetInput
 }
 
 export type TweetUncheckedCreateInput = {
@@ -323,21 +412,37 @@ export type TweetUncheckedCreateInput = {
   authorId: number
   likeCount?: number
   retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   media?: Prisma.TweetMediaUncheckedCreateNestedManyWithoutTweetInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutTweetInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutTweetInput
+  retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutTweetInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutTweetInput
 }
 
 export type TweetUpdateInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutTweetsNestedInput
   media?: Prisma.TweetMediaUpdateManyWithoutTweetNestedInput
   comments?: Prisma.CommentUpdateManyWithoutTweetNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutTweetNestedInput
+  retweets?: Prisma.RetweetUpdateManyWithoutTweetNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutTweetNestedInput
 }
 
 export type TweetUncheckedUpdateInput = {
@@ -346,10 +451,18 @@ export type TweetUncheckedUpdateInput = {
   authorId?: Prisma.IntFieldUpdateOperationsInput | number
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   media?: Prisma.TweetMediaUncheckedUpdateManyWithoutTweetNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutTweetNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutTweetNestedInput
+  retweets?: Prisma.RetweetUncheckedUpdateManyWithoutTweetNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutTweetNestedInput
 }
 
 export type TweetCreateManyInput = {
@@ -358,6 +471,11 @@ export type TweetCreateManyInput = {
   authorId: number
   likeCount?: number
   retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -366,6 +484,11 @@ export type TweetUpdateManyMutationInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -376,6 +499,11 @@ export type TweetUncheckedUpdateManyInput = {
   authorId?: Prisma.IntFieldUpdateOperationsInput | number
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -396,6 +524,11 @@ export type TweetCountOrderByAggregateInput = {
   authorId?: Prisma.SortOrder
   likeCount?: Prisma.SortOrder
   retweetCount?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  commentsEnabled?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -405,6 +538,9 @@ export type TweetAvgOrderByAggregateInput = {
   authorId?: Prisma.SortOrder
   likeCount?: Prisma.SortOrder
   retweetCount?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type TweetMaxOrderByAggregateInput = {
@@ -413,6 +549,11 @@ export type TweetMaxOrderByAggregateInput = {
   authorId?: Prisma.SortOrder
   likeCount?: Prisma.SortOrder
   retweetCount?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  commentsEnabled?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -423,6 +564,11 @@ export type TweetMinOrderByAggregateInput = {
   authorId?: Prisma.SortOrder
   likeCount?: Prisma.SortOrder
   retweetCount?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  commentsEnabled?: Prisma.SortOrder
+  location?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -432,6 +578,9 @@ export type TweetSumOrderByAggregateInput = {
   authorId?: Prisma.SortOrder
   likeCount?: Prisma.SortOrder
   retweetCount?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type TweetScalarRelationFilter = {
@@ -481,6 +630,46 @@ export type TweetUncheckedUpdateManyWithoutAuthorNestedInput = {
   deleteMany?: Prisma.TweetScalarWhereInput | Prisma.TweetScalarWhereInput[]
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type TweetCreateNestedOneWithoutRetweetsInput = {
+  create?: Prisma.XOR<Prisma.TweetCreateWithoutRetweetsInput, Prisma.TweetUncheckedCreateWithoutRetweetsInput>
+  connectOrCreate?: Prisma.TweetCreateOrConnectWithoutRetweetsInput
+  connect?: Prisma.TweetWhereUniqueInput
+}
+
+export type TweetUpdateOneRequiredWithoutRetweetsNestedInput = {
+  create?: Prisma.XOR<Prisma.TweetCreateWithoutRetweetsInput, Prisma.TweetUncheckedCreateWithoutRetweetsInput>
+  connectOrCreate?: Prisma.TweetCreateOrConnectWithoutRetweetsInput
+  upsert?: Prisma.TweetUpsertWithoutRetweetsInput
+  connect?: Prisma.TweetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TweetUpdateToOneWithWhereWithoutRetweetsInput, Prisma.TweetUpdateWithoutRetweetsInput>, Prisma.TweetUncheckedUpdateWithoutRetweetsInput>
+}
+
+export type TweetCreateNestedOneWithoutLikesInput = {
+  create?: Prisma.XOR<Prisma.TweetCreateWithoutLikesInput, Prisma.TweetUncheckedCreateWithoutLikesInput>
+  connectOrCreate?: Prisma.TweetCreateOrConnectWithoutLikesInput
+  connect?: Prisma.TweetWhereUniqueInput
+}
+
+export type TweetUpdateOneRequiredWithoutLikesNestedInput = {
+  create?: Prisma.XOR<Prisma.TweetCreateWithoutLikesInput, Prisma.TweetUncheckedCreateWithoutLikesInput>
+  connectOrCreate?: Prisma.TweetCreateOrConnectWithoutLikesInput
+  upsert?: Prisma.TweetUpsertWithoutLikesInput
+  connect?: Prisma.TweetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TweetUpdateToOneWithWhereWithoutLikesInput, Prisma.TweetUpdateWithoutLikesInput>, Prisma.TweetUncheckedUpdateWithoutLikesInput>
+}
+
 export type TweetCreateNestedOneWithoutMediaInput = {
   create?: Prisma.XOR<Prisma.TweetCreateWithoutMediaInput, Prisma.TweetUncheckedCreateWithoutMediaInput>
   connectOrCreate?: Prisma.TweetCreateOrConnectWithoutMediaInput
@@ -509,14 +698,36 @@ export type TweetUpdateOneRequiredWithoutCommentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TweetUpdateToOneWithWhereWithoutCommentsInput, Prisma.TweetUpdateWithoutCommentsInput>, Prisma.TweetUncheckedUpdateWithoutCommentsInput>
 }
 
+export type TweetCreateNestedOneWithoutBookmarksInput = {
+  create?: Prisma.XOR<Prisma.TweetCreateWithoutBookmarksInput, Prisma.TweetUncheckedCreateWithoutBookmarksInput>
+  connectOrCreate?: Prisma.TweetCreateOrConnectWithoutBookmarksInput
+  connect?: Prisma.TweetWhereUniqueInput
+}
+
+export type TweetUpdateOneRequiredWithoutBookmarksNestedInput = {
+  create?: Prisma.XOR<Prisma.TweetCreateWithoutBookmarksInput, Prisma.TweetUncheckedCreateWithoutBookmarksInput>
+  connectOrCreate?: Prisma.TweetCreateOrConnectWithoutBookmarksInput
+  upsert?: Prisma.TweetUpsertWithoutBookmarksInput
+  connect?: Prisma.TweetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TweetUpdateToOneWithWhereWithoutBookmarksInput, Prisma.TweetUpdateWithoutBookmarksInput>, Prisma.TweetUncheckedUpdateWithoutBookmarksInput>
+}
+
 export type TweetCreateWithoutAuthorInput = {
   content: string
   likeCount?: number
   retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   media?: Prisma.TweetMediaCreateNestedManyWithoutTweetInput
   comments?: Prisma.CommentCreateNestedManyWithoutTweetInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutTweetInput
+  retweets?: Prisma.RetweetCreateNestedManyWithoutTweetInput
+  likes?: Prisma.LikeCreateNestedManyWithoutTweetInput
 }
 
 export type TweetUncheckedCreateWithoutAuthorInput = {
@@ -524,10 +735,18 @@ export type TweetUncheckedCreateWithoutAuthorInput = {
   content: string
   likeCount?: number
   retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   media?: Prisma.TweetMediaUncheckedCreateNestedManyWithoutTweetInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutTweetInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutTweetInput
+  retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutTweetInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutTweetInput
 }
 
 export type TweetCreateOrConnectWithoutAuthorInput = {
@@ -564,18 +783,211 @@ export type TweetScalarWhereInput = {
   authorId?: Prisma.IntFilter<"Tweet"> | number
   likeCount?: Prisma.IntFilter<"Tweet"> | number
   retweetCount?: Prisma.IntFilter<"Tweet"> | number
+  viewCount?: Prisma.IntFilter<"Tweet"> | number
+  commentsEnabled?: Prisma.BoolFilter<"Tweet"> | boolean
+  location?: Prisma.StringNullableFilter<"Tweet"> | string | null
+  latitude?: Prisma.FloatNullableFilter<"Tweet"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Tweet"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Tweet"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tweet"> | Date | string
+}
+
+export type TweetCreateWithoutRetweetsInput = {
+  content: string
+  likeCount?: number
+  retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  author: Prisma.UserCreateNestedOneWithoutTweetsInput
+  media?: Prisma.TweetMediaCreateNestedManyWithoutTweetInput
+  comments?: Prisma.CommentCreateNestedManyWithoutTweetInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutTweetInput
+  likes?: Prisma.LikeCreateNestedManyWithoutTweetInput
+}
+
+export type TweetUncheckedCreateWithoutRetweetsInput = {
+  id?: number
+  content: string
+  authorId: number
+  likeCount?: number
+  retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  media?: Prisma.TweetMediaUncheckedCreateNestedManyWithoutTweetInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutTweetInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutTweetInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutTweetInput
+}
+
+export type TweetCreateOrConnectWithoutRetweetsInput = {
+  where: Prisma.TweetWhereUniqueInput
+  create: Prisma.XOR<Prisma.TweetCreateWithoutRetweetsInput, Prisma.TweetUncheckedCreateWithoutRetweetsInput>
+}
+
+export type TweetUpsertWithoutRetweetsInput = {
+  update: Prisma.XOR<Prisma.TweetUpdateWithoutRetweetsInput, Prisma.TweetUncheckedUpdateWithoutRetweetsInput>
+  create: Prisma.XOR<Prisma.TweetCreateWithoutRetweetsInput, Prisma.TweetUncheckedCreateWithoutRetweetsInput>
+  where?: Prisma.TweetWhereInput
+}
+
+export type TweetUpdateToOneWithWhereWithoutRetweetsInput = {
+  where?: Prisma.TweetWhereInput
+  data: Prisma.XOR<Prisma.TweetUpdateWithoutRetweetsInput, Prisma.TweetUncheckedUpdateWithoutRetweetsInput>
+}
+
+export type TweetUpdateWithoutRetweetsInput = {
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  author?: Prisma.UserUpdateOneRequiredWithoutTweetsNestedInput
+  media?: Prisma.TweetMediaUpdateManyWithoutTweetNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutTweetNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutTweetNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutTweetNestedInput
+}
+
+export type TweetUncheckedUpdateWithoutRetweetsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  media?: Prisma.TweetMediaUncheckedUpdateManyWithoutTweetNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutTweetNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutTweetNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutTweetNestedInput
+}
+
+export type TweetCreateWithoutLikesInput = {
+  content: string
+  likeCount?: number
+  retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  author: Prisma.UserCreateNestedOneWithoutTweetsInput
+  media?: Prisma.TweetMediaCreateNestedManyWithoutTweetInput
+  comments?: Prisma.CommentCreateNestedManyWithoutTweetInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutTweetInput
+  retweets?: Prisma.RetweetCreateNestedManyWithoutTweetInput
+}
+
+export type TweetUncheckedCreateWithoutLikesInput = {
+  id?: number
+  content: string
+  authorId: number
+  likeCount?: number
+  retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  media?: Prisma.TweetMediaUncheckedCreateNestedManyWithoutTweetInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutTweetInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutTweetInput
+  retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutTweetInput
+}
+
+export type TweetCreateOrConnectWithoutLikesInput = {
+  where: Prisma.TweetWhereUniqueInput
+  create: Prisma.XOR<Prisma.TweetCreateWithoutLikesInput, Prisma.TweetUncheckedCreateWithoutLikesInput>
+}
+
+export type TweetUpsertWithoutLikesInput = {
+  update: Prisma.XOR<Prisma.TweetUpdateWithoutLikesInput, Prisma.TweetUncheckedUpdateWithoutLikesInput>
+  create: Prisma.XOR<Prisma.TweetCreateWithoutLikesInput, Prisma.TweetUncheckedCreateWithoutLikesInput>
+  where?: Prisma.TweetWhereInput
+}
+
+export type TweetUpdateToOneWithWhereWithoutLikesInput = {
+  where?: Prisma.TweetWhereInput
+  data: Prisma.XOR<Prisma.TweetUpdateWithoutLikesInput, Prisma.TweetUncheckedUpdateWithoutLikesInput>
+}
+
+export type TweetUpdateWithoutLikesInput = {
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  author?: Prisma.UserUpdateOneRequiredWithoutTweetsNestedInput
+  media?: Prisma.TweetMediaUpdateManyWithoutTweetNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutTweetNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutTweetNestedInput
+  retweets?: Prisma.RetweetUpdateManyWithoutTweetNestedInput
+}
+
+export type TweetUncheckedUpdateWithoutLikesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  media?: Prisma.TweetMediaUncheckedUpdateManyWithoutTweetNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutTweetNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutTweetNestedInput
+  retweets?: Prisma.RetweetUncheckedUpdateManyWithoutTweetNestedInput
 }
 
 export type TweetCreateWithoutMediaInput = {
   content: string
   likeCount?: number
   retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutTweetsInput
   comments?: Prisma.CommentCreateNestedManyWithoutTweetInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutTweetInput
+  retweets?: Prisma.RetweetCreateNestedManyWithoutTweetInput
+  likes?: Prisma.LikeCreateNestedManyWithoutTweetInput
 }
 
 export type TweetUncheckedCreateWithoutMediaInput = {
@@ -584,9 +996,17 @@ export type TweetUncheckedCreateWithoutMediaInput = {
   authorId: number
   likeCount?: number
   retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutTweetInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutTweetInput
+  retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutTweetInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutTweetInput
 }
 
 export type TweetCreateOrConnectWithoutMediaInput = {
@@ -609,10 +1029,18 @@ export type TweetUpdateWithoutMediaInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutTweetsNestedInput
   comments?: Prisma.CommentUpdateManyWithoutTweetNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutTweetNestedInput
+  retweets?: Prisma.RetweetUpdateManyWithoutTweetNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutTweetNestedInput
 }
 
 export type TweetUncheckedUpdateWithoutMediaInput = {
@@ -621,19 +1049,35 @@ export type TweetUncheckedUpdateWithoutMediaInput = {
   authorId?: Prisma.IntFieldUpdateOperationsInput | number
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.CommentUncheckedUpdateManyWithoutTweetNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutTweetNestedInput
+  retweets?: Prisma.RetweetUncheckedUpdateManyWithoutTweetNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutTweetNestedInput
 }
 
 export type TweetCreateWithoutCommentsInput = {
   content: string
   likeCount?: number
   retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutTweetsInput
   media?: Prisma.TweetMediaCreateNestedManyWithoutTweetInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutTweetInput
+  retweets?: Prisma.RetweetCreateNestedManyWithoutTweetInput
+  likes?: Prisma.LikeCreateNestedManyWithoutTweetInput
 }
 
 export type TweetUncheckedCreateWithoutCommentsInput = {
@@ -642,9 +1086,17 @@ export type TweetUncheckedCreateWithoutCommentsInput = {
   authorId: number
   likeCount?: number
   retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
   media?: Prisma.TweetMediaUncheckedCreateNestedManyWithoutTweetInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutTweetInput
+  retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutTweetInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutTweetInput
 }
 
 export type TweetCreateOrConnectWithoutCommentsInput = {
@@ -667,10 +1119,18 @@ export type TweetUpdateWithoutCommentsInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutTweetsNestedInput
   media?: Prisma.TweetMediaUpdateManyWithoutTweetNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutTweetNestedInput
+  retweets?: Prisma.RetweetUpdateManyWithoutTweetNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutTweetNestedInput
 }
 
 export type TweetUncheckedUpdateWithoutCommentsInput = {
@@ -679,9 +1139,107 @@ export type TweetUncheckedUpdateWithoutCommentsInput = {
   authorId?: Prisma.IntFieldUpdateOperationsInput | number
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   media?: Prisma.TweetMediaUncheckedUpdateManyWithoutTweetNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutTweetNestedInput
+  retweets?: Prisma.RetweetUncheckedUpdateManyWithoutTweetNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutTweetNestedInput
+}
+
+export type TweetCreateWithoutBookmarksInput = {
+  content: string
+  likeCount?: number
+  retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  author: Prisma.UserCreateNestedOneWithoutTweetsInput
+  media?: Prisma.TweetMediaCreateNestedManyWithoutTweetInput
+  comments?: Prisma.CommentCreateNestedManyWithoutTweetInput
+  retweets?: Prisma.RetweetCreateNestedManyWithoutTweetInput
+  likes?: Prisma.LikeCreateNestedManyWithoutTweetInput
+}
+
+export type TweetUncheckedCreateWithoutBookmarksInput = {
+  id?: number
+  content: string
+  authorId: number
+  likeCount?: number
+  retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  media?: Prisma.TweetMediaUncheckedCreateNestedManyWithoutTweetInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutTweetInput
+  retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutTweetInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutTweetInput
+}
+
+export type TweetCreateOrConnectWithoutBookmarksInput = {
+  where: Prisma.TweetWhereUniqueInput
+  create: Prisma.XOR<Prisma.TweetCreateWithoutBookmarksInput, Prisma.TweetUncheckedCreateWithoutBookmarksInput>
+}
+
+export type TweetUpsertWithoutBookmarksInput = {
+  update: Prisma.XOR<Prisma.TweetUpdateWithoutBookmarksInput, Prisma.TweetUncheckedUpdateWithoutBookmarksInput>
+  create: Prisma.XOR<Prisma.TweetCreateWithoutBookmarksInput, Prisma.TweetUncheckedCreateWithoutBookmarksInput>
+  where?: Prisma.TweetWhereInput
+}
+
+export type TweetUpdateToOneWithWhereWithoutBookmarksInput = {
+  where?: Prisma.TweetWhereInput
+  data: Prisma.XOR<Prisma.TweetUpdateWithoutBookmarksInput, Prisma.TweetUncheckedUpdateWithoutBookmarksInput>
+}
+
+export type TweetUpdateWithoutBookmarksInput = {
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  author?: Prisma.UserUpdateOneRequiredWithoutTweetsNestedInput
+  media?: Prisma.TweetMediaUpdateManyWithoutTweetNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutTweetNestedInput
+  retweets?: Prisma.RetweetUpdateManyWithoutTweetNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutTweetNestedInput
+}
+
+export type TweetUncheckedUpdateWithoutBookmarksInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  media?: Prisma.TweetMediaUncheckedUpdateManyWithoutTweetNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutTweetNestedInput
+  retweets?: Prisma.RetweetUncheckedUpdateManyWithoutTweetNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutTweetNestedInput
 }
 
 export type TweetCreateManyAuthorInput = {
@@ -689,6 +1247,11 @@ export type TweetCreateManyAuthorInput = {
   content: string
   likeCount?: number
   retweetCount?: number
+  viewCount?: number
+  commentsEnabled?: boolean
+  location?: string | null
+  latitude?: number | null
+  longitude?: number | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -697,10 +1260,18 @@ export type TweetUpdateWithoutAuthorInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   media?: Prisma.TweetMediaUpdateManyWithoutTweetNestedInput
   comments?: Prisma.CommentUpdateManyWithoutTweetNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutTweetNestedInput
+  retweets?: Prisma.RetweetUpdateManyWithoutTweetNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutTweetNestedInput
 }
 
 export type TweetUncheckedUpdateWithoutAuthorInput = {
@@ -708,10 +1279,18 @@ export type TweetUncheckedUpdateWithoutAuthorInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   media?: Prisma.TweetMediaUncheckedUpdateManyWithoutTweetNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutTweetNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutTweetNestedInput
+  retweets?: Prisma.RetweetUncheckedUpdateManyWithoutTweetNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutTweetNestedInput
 }
 
 export type TweetUncheckedUpdateManyWithoutAuthorInput = {
@@ -719,6 +1298,11 @@ export type TweetUncheckedUpdateManyWithoutAuthorInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
   retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  commentsEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -731,11 +1315,17 @@ export type TweetUncheckedUpdateManyWithoutAuthorInput = {
 export type TweetCountOutputType = {
   media: number
   comments: number
+  bookmarks: number
+  retweets: number
+  likes: number
 }
 
 export type TweetCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   media?: boolean | TweetCountOutputTypeCountMediaArgs
   comments?: boolean | TweetCountOutputTypeCountCommentsArgs
+  bookmarks?: boolean | TweetCountOutputTypeCountBookmarksArgs
+  retweets?: boolean | TweetCountOutputTypeCountRetweetsArgs
+  likes?: boolean | TweetCountOutputTypeCountLikesArgs
 }
 
 /**
@@ -762,6 +1352,27 @@ export type TweetCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types.
   where?: Prisma.CommentWhereInput
 }
 
+/**
+ * TweetCountOutputType without action
+ */
+export type TweetCountOutputTypeCountBookmarksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookmarkWhereInput
+}
+
+/**
+ * TweetCountOutputType without action
+ */
+export type TweetCountOutputTypeCountRetweetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RetweetWhereInput
+}
+
+/**
+ * TweetCountOutputType without action
+ */
+export type TweetCountOutputTypeCountLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LikeWhereInput
+}
+
 
 export type TweetSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -769,11 +1380,19 @@ export type TweetSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   authorId?: boolean
   likeCount?: boolean
   retweetCount?: boolean
+  viewCount?: boolean
+  commentsEnabled?: boolean
+  location?: boolean
+  latitude?: boolean
+  longitude?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   media?: boolean | Prisma.Tweet$mediaArgs<ExtArgs>
   comments?: boolean | Prisma.Tweet$commentsArgs<ExtArgs>
+  bookmarks?: boolean | Prisma.Tweet$bookmarksArgs<ExtArgs>
+  retweets?: boolean | Prisma.Tweet$retweetsArgs<ExtArgs>
+  likes?: boolean | Prisma.Tweet$likesArgs<ExtArgs>
   _count?: boolean | Prisma.TweetCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tweet"]>
 
@@ -783,6 +1402,11 @@ export type TweetSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   authorId?: boolean
   likeCount?: boolean
   retweetCount?: boolean
+  viewCount?: boolean
+  commentsEnabled?: boolean
+  location?: boolean
+  latitude?: boolean
+  longitude?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -794,6 +1418,11 @@ export type TweetSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   authorId?: boolean
   likeCount?: boolean
   retweetCount?: boolean
+  viewCount?: boolean
+  commentsEnabled?: boolean
+  location?: boolean
+  latitude?: boolean
+  longitude?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -805,15 +1434,23 @@ export type TweetSelectScalar = {
   authorId?: boolean
   likeCount?: boolean
   retweetCount?: boolean
+  viewCount?: boolean
+  commentsEnabled?: boolean
+  location?: boolean
+  latitude?: boolean
+  longitude?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TweetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "content" | "authorId" | "likeCount" | "retweetCount" | "createdAt" | "updatedAt", ExtArgs["result"]["tweet"]>
+export type TweetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "content" | "authorId" | "likeCount" | "retweetCount" | "viewCount" | "commentsEnabled" | "location" | "latitude" | "longitude" | "createdAt" | "updatedAt", ExtArgs["result"]["tweet"]>
 export type TweetInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   media?: boolean | Prisma.Tweet$mediaArgs<ExtArgs>
   comments?: boolean | Prisma.Tweet$commentsArgs<ExtArgs>
+  bookmarks?: boolean | Prisma.Tweet$bookmarksArgs<ExtArgs>
+  retweets?: boolean | Prisma.Tweet$retweetsArgs<ExtArgs>
+  likes?: boolean | Prisma.Tweet$likesArgs<ExtArgs>
   _count?: boolean | Prisma.TweetCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TweetIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -829,6 +1466,9 @@ export type $TweetPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     author: Prisma.$UserPayload<ExtArgs>
     media: Prisma.$TweetMediaPayload<ExtArgs>[]
     comments: Prisma.$CommentPayload<ExtArgs>[]
+    bookmarks: Prisma.$BookmarkPayload<ExtArgs>[]
+    retweets: Prisma.$RetweetPayload<ExtArgs>[]
+    likes: Prisma.$LikePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -836,6 +1476,11 @@ export type $TweetPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     authorId: number
     likeCount: number
     retweetCount: number
+    viewCount: number
+    commentsEnabled: boolean
+    location: string | null
+    latitude: number | null
+    longitude: number | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["tweet"]>
@@ -1235,6 +1880,9 @@ export interface Prisma__TweetClient<T, Null = never, ExtArgs extends runtime.Ty
   author<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   media<T extends Prisma.Tweet$mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tweet$mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TweetMediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comments<T extends Prisma.Tweet$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tweet$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bookmarks<T extends Prisma.Tweet$bookmarksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tweet$bookmarksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookmarkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  retweets<T extends Prisma.Tweet$retweetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tweet$retweetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RetweetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  likes<T extends Prisma.Tweet$likesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tweet$likesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1269,6 +1917,11 @@ export interface TweetFieldRefs {
   readonly authorId: Prisma.FieldRef<"Tweet", 'Int'>
   readonly likeCount: Prisma.FieldRef<"Tweet", 'Int'>
   readonly retweetCount: Prisma.FieldRef<"Tweet", 'Int'>
+  readonly viewCount: Prisma.FieldRef<"Tweet", 'Int'>
+  readonly commentsEnabled: Prisma.FieldRef<"Tweet", 'Boolean'>
+  readonly location: Prisma.FieldRef<"Tweet", 'String'>
+  readonly latitude: Prisma.FieldRef<"Tweet", 'Float'>
+  readonly longitude: Prisma.FieldRef<"Tweet", 'Float'>
   readonly createdAt: Prisma.FieldRef<"Tweet", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Tweet", 'DateTime'>
 }
@@ -1710,6 +2363,78 @@ export type Tweet$commentsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
+}
+
+/**
+ * Tweet.bookmarks
+ */
+export type Tweet$bookmarksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Bookmark
+   */
+  select?: Prisma.BookmarkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Bookmark
+   */
+  omit?: Prisma.BookmarkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookmarkInclude<ExtArgs> | null
+  where?: Prisma.BookmarkWhereInput
+  orderBy?: Prisma.BookmarkOrderByWithRelationInput | Prisma.BookmarkOrderByWithRelationInput[]
+  cursor?: Prisma.BookmarkWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookmarkScalarFieldEnum | Prisma.BookmarkScalarFieldEnum[]
+}
+
+/**
+ * Tweet.retweets
+ */
+export type Tweet$retweetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Retweet
+   */
+  select?: Prisma.RetweetSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Retweet
+   */
+  omit?: Prisma.RetweetOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RetweetInclude<ExtArgs> | null
+  where?: Prisma.RetweetWhereInput
+  orderBy?: Prisma.RetweetOrderByWithRelationInput | Prisma.RetweetOrderByWithRelationInput[]
+  cursor?: Prisma.RetweetWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RetweetScalarFieldEnum | Prisma.RetweetScalarFieldEnum[]
+}
+
+/**
+ * Tweet.likes
+ */
+export type Tweet$likesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Like
+   */
+  select?: Prisma.LikeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Like
+   */
+  omit?: Prisma.LikeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LikeInclude<ExtArgs> | null
+  where?: Prisma.LikeWhereInput
+  orderBy?: Prisma.LikeOrderByWithRelationInput | Prisma.LikeOrderByWithRelationInput[]
+  cursor?: Prisma.LikeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LikeScalarFieldEnum | Prisma.LikeScalarFieldEnum[]
 }
 
 /**

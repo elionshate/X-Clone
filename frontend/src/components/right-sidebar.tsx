@@ -36,11 +36,11 @@ export function RightSidebar() {
   const { theme } = useTheme();
 
   return (
-    <aside className={`w-80 p-4 sticky top-0 h-screen overflow-y-auto hidden xl:block ${
+    <aside className={`w-80 p-4 sticky top-0 h-screen hidden xl:flex flex-col ${
       theme === 'dark' ? 'bg-black' : 'bg-white'
     }`}>
       {/* Search Bar */}
-      <div className={`relative mb-4 p-0 rounded-full flex items-center gap-3 ${
+      <div className={`relative mb-4 p-0 rounded-full flex items-center gap-3 flex-shrink-0 ${
         theme === 'dark'
           ? 'bg-gray-900 text-gray-500'
           : 'bg-gray-100 text-gray-600'
@@ -57,80 +57,78 @@ export function RightSidebar() {
         />
       </div>
 
-      {/* What's Happening Section */}
-      <div className={`rounded-2xl p-4 mb-4 ${
-        theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'
-      }`}>
-        <h3 className={`text-2xl font-bold mb-4 flex items-center gap-2 ${
-          theme === 'dark' ? 'text-white' : 'text-black'
+      {/* Content container with overflow hidden */}
+      <div className="flex-1 overflow-hidden flex flex-col gap-4">
+        {/* What's Happening Section */}
+        <div className={`rounded-2xl p-4 flex-shrink-0 ${
+          theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'
         }`}>
-          <TrendingUp size={24} className="text-blue-500" />
-          What's happening!?
-        </h3>
+          <h3 className={`text-xl font-bold mb-3 flex items-center gap-2 ${
+            theme === 'dark' ? 'text-white' : 'text-black'
+          }`}>
+            <TrendingUp size={20} className="text-blue-500" />
+            What's happening!?
+          </h3>
 
-        <div className="space-y-4">
-          {trendingItems.map((item, idx) => (
-            <div
-              key={idx}
-              className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                theme === 'dark'
-                  ? 'hover:bg-gray-800'
-                  : 'hover:bg-gray-200'
-              }`}
-            >
-              <p className={`text-sm ${theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}`}>
-                {item.category}
-              </p>
-              <p className={`font-bold text-lg ${
-                theme === 'dark' ? 'text-white' : 'text-black'
-              }`}>
-                {item.topic}
-              </p>
-              <p className={`text-sm ${theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}`}>
-                {item.posts}
-              </p>
-            </div>
-          ))}
+          <div className="space-y-2">
+            {trendingItems.slice(0, 3).map((item, idx) => (
+              <div
+                key={idx}
+                className={`p-2 rounded-lg cursor-pointer transition-colors ${
+                  theme === 'dark'
+                    ? 'hover:bg-gray-800'
+                    : 'hover:bg-gray-200'
+                }`}
+              >
+                <p className={`text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}`}>
+                  {item.category}
+                </p>
+                <p className={`font-bold text-sm ${
+                  theme === 'dark' ? 'text-white' : 'text-black'
+                }`}>
+                  {item.topic}
+                </p>
+                <p className={`text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}`}>
+                  {item.posts}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Today's News Section */}
-      <div className={`rounded-2xl p-4 ${
-        theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'
-      }`}>
-        <h3 className={`text-2xl font-bold mb-4 ${
-          theme === 'dark' ? 'text-white' : 'text-black'
+        {/* Today's News Section */}
+        <div className={`rounded-2xl p-4 flex-shrink-0 ${
+          theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'
         }`}>
-          Today's News
-        </h3>
+          <h3 className={`text-xl font-bold mb-3 ${
+            theme === 'dark' ? 'text-white' : 'text-black'
+          }`}>
+            Today's News
+          </h3>
 
-        <div className="space-y-4">
-          {newsItems.map((news, idx) => (
-            <div
-              key={idx}
-              className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                theme === 'dark'
-                  ? 'hover:bg-gray-800'
-                  : 'hover:bg-gray-200'
-              }`}
-            >
-              <p className={`text-sm font-semibold ${
-                theme === 'dark' ? 'text-blue-500' : 'text-blue-600'
-              }`}>
-                {news.source} · {news.time}
-              </p>
-              <p className={`font-bold text-base mt-1 ${
-                theme === 'dark' ? 'text-white' : 'text-black'
-              }`}>
-                {news.title}
-              </p>
-              <p className={`text-sm mt-1 ${
-                theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
-              }`}>
-                {news.description}
-              </p>
-            </div>
-          ))}
+          <div className="space-y-2">
+            {newsItems.slice(0, 2).map((news, idx) => (
+              <div
+                key={idx}
+                className={`p-2 rounded-lg cursor-pointer transition-colors ${
+                  theme === 'dark'
+                    ? 'hover:bg-gray-800'
+                    : 'hover:bg-gray-200'
+                }`}
+              >
+                <p className={`text-xs font-semibold ${
+                  theme === 'dark' ? 'text-blue-500' : 'text-blue-600'
+                }`}>
+                  {news.source} · {news.time}
+                </p>
+                <p className={`font-bold text-sm mt-1 ${
+                  theme === 'dark' ? 'text-white' : 'text-black'
+                }`}>
+                  {news.title}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </aside>

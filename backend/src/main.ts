@@ -1,17 +1,22 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
-  // Enable CORS for frontend
+  // Increase body parser limit for large payloads (like base64 avatars)
+  app.use(bodyParser.json({ limit: '10mb' }));
+  app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+  
+  // Enable CORS for frontend - allow all origins in development
   app.enableCors({
-    origin: ['http://localhost:3001', 'http://localhost:3002', 'http://localhost:3000'],
+    origin: true, // Allow all origins in development
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   });
   
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();

@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsArray, IsOptional, IsUrl } from 'class-validator';
+import { IsString, IsNumber, IsArray, IsOptional, IsUrl, IsBoolean } from 'class-validator';
 
 export class CreateTweetDto {
   @IsString()
@@ -9,8 +9,53 @@ export class CreateTweetDto {
 
   @IsOptional()
   @IsArray()
-  @IsUrl({}, { each: true })
   mediaUrls?: string[];
+
+  @IsOptional()
+  @IsBoolean()
+  commentsEnabled?: boolean;
+
+  @IsOptional()
+  @IsString()
+  location?: string;
+
+  @IsOptional()
+  @IsNumber()
+  latitude?: number;
+
+  @IsOptional()
+  @IsNumber()
+  longitude?: number;
+}
+
+export class UpdateTweetDto {
+  @IsOptional()
+  @IsString()
+  content?: string;
+
+  @IsOptional()
+  @IsArray()
+  mediaUrls?: string[];
+
+  @IsOptional()
+  @IsArray()
+  mediaIdsToRemove?: number[];
+
+  @IsOptional()
+  @IsString()
+  location?: string;
+
+  @IsOptional()
+  @IsNumber()
+  latitude?: number;
+
+  @IsOptional()
+  @IsNumber()
+  longitude?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  commentsEnabled?: boolean;
 }
 
 export class UpdateTweetLikesDto {

@@ -12,15 +12,17 @@ function HomeContent() {
   const [tab, setTab] = useState<'for-you' | 'following'>('for-you');
 
   return (
-    <div className={`flex min-h-screen ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
-      {/* Left Sidebar */}
-      <Sidebar />
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
+      <div className="flex justify-center max-w-[1400px] mx-auto">
+        {/* Left Sidebar */}
+        <Sidebar />
 
-      {/* Main Feed */}
-      <Feed tab={tab} onTabChange={setTab} />
+        {/* Main Feed */}
+        <Feed tab={tab} onTabChange={setTab} />
 
-      {/* Right Sidebar */}
-      <RightSidebar />
+        {/* Right Sidebar */}
+        <RightSidebar />
+      </div>
     </div>
   );
 }

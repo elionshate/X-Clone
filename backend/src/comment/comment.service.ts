@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { CreateCommentDto, UpdateCommentLikesDto } from './dto/comment.dto';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class CommentService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private notificationService: NotificationService,
+  ) {}
 
   async createComment(createCommentDto: CreateCommentDto) {
-    return this.prisma.comment.create({
+    const comment = await this.prisma.comment.create({
       data: {
         content: createCommentDto.content,
         authorId: createCommentDto.authorId,
@@ -15,9 +19,24 @@ export class CommentService {
       },
       include: {
         author: true,
-        tweet: true,
+        tweet: {
+          include: { author: true },
+        },
       },
     });
+
+    // Create notification for the tweet owner
+    if (comment.tweet.authorId !== createCommentDto.authorId) {
+      await this.notificationService.createNotification({
+        type: 'comment',
+        userId: comment.tweet.authorId,
+        actorId: createCommentDto.authorId,
+        tweetId: createCommentDto.tweetId,
+        commentId: comment.id,
+      });
+    }
+
+    return comment;
   }
 
   async getCommentById(id: number) {
