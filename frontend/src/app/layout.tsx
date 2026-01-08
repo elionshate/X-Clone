@@ -4,6 +4,7 @@ import {
   ClerkProvider,
 } from "@clerk/nextjs";
 import { ThemeProvider } from "@/providers/theme-provider";
+import { TestAuthProvider } from "@/providers/test-auth-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -38,8 +39,10 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <ThemeProvider>
-            {/* Top Navigation Bar - Only show for signed in users */}
-            {children}
+            <TestAuthProvider>
+              {/* Top Navigation Bar - Only show for signed in users */}
+              {children}
+            </TestAuthProvider>
           </ThemeProvider>
         </body>
       </html>

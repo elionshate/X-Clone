@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { SignedIn, SignedOut, RedirectToSignIn, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { Sidebar } from "@/components/sidebar";
 import { RightSidebar } from "@/components/right-sidebar";
 import { userAPI, tweetAPI, commentAPI } from "@/lib/api";
 import { useTheme } from "@/providers/theme-provider";
+import { useTestAuth, ProtectedRoute } from "@/providers/test-auth-provider";
 import { Trash2, MessageCircle, Repeat2, Heart, Edit2, MapPin, Reply, Send } from 'lucide-react';
 import { EditProfileModal } from "@/components/edit-profile-modal";
 import { EditPostModal } from "@/components/edit-post-modal";
@@ -58,6 +59,7 @@ type ProfileTab = 'posts' | 'reposts' | 'likes' | 'comments';
 function ProfileContent() {
   const { theme } = useTheme();
   const { user: clerkUser } = useUser();
+  const { user: authUser, isLocalUser } = useTestAuth();
   const [profile, setProfile] = useState<ProfileUser | null>(null);
   const [tweets, setTweets] = useState<any[]>([]);
   const [retweets, setRetweets] = useState<any[]>([]);
@@ -74,11 +76,14 @@ function ProfileContent() {
   const [selectedTweet, setSelectedTweet] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<ProfileTab>('posts');
 
+  // Get username from either local user or Clerk user
+  const currentUsername = isLocalUser ? authUser?.username : clerkUser?.username;
+
   const loadProfile = async () => {
     try {
-      if (clerkUser?.username) {
+      if (currentUsername) {
         // Fetch user profile by username
-        const userProfile = await userAPI.getUserByUsername(clerkUser.username);
+        const userProfile = await userAPI.getUserByUsername(currentUsername);
         setProfile(userProfile);
 
         // Fetch user's tweets
@@ -123,7 +128,7 @@ function ProfileContent() {
 
   useEffect(() => {
     loadProfile();
-  }, [clerkUser?.username]);
+  }, [currentUsername]);
 
   // Comment handlers
   const handleDeleteComment = async (commentId: number) => {
@@ -854,13 +859,8 @@ function ProfileContent() {
 
 export default function ProfilePage() {
   return (
-    <>
-      <SignedIn>
-        <ProfileContent />
-      </SignedIn>
-      <SignedOut>
-        <RedirectToSignIn />
-      </SignedOut>
-    </>
+    <ProtectedRoute>
+      <ProfileContent />
+    </ProtectedRoute>
   );
 }

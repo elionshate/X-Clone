@@ -1,4 +1,16 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
+
+// Routes that should completely bypass Clerk middleware
+const isAppRoute = createRouteMatcher([
+  '/pages/home(.*)',
+  '/pages/profile(.*)',
+  '/pages/explore(.*)',
+  '/pages/notifications(.*)',
+  '/pages/messages(.*)',
+  '/pages/bookmarks(.*)',
+  '/pages/settings(.*)',
+])
 
 // Define public routes that don't require authentication
 const isPublicRoute = createRouteMatcher([
@@ -9,7 +21,12 @@ const isPublicRoute = createRouteMatcher([
 ])
 
 export default clerkMiddleware(async (auth, req) => {
-  // If the route is not public, protect it
+  // For app routes, bypass Clerk entirely - auth is handled client-side
+  if (isAppRoute(req)) {
+    return NextResponse.next()
+  }
+  
+  // If the route is not public, protect it with Clerk
   if (!isPublicRoute(req)) {
     await auth.protect()
   }

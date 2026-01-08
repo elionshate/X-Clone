@@ -68,6 +68,10 @@ export function EditProfileModal({
         bio: bio.trim(),
         avatar: avatar || undefined,
       });
+      
+      // Dispatch custom event to notify sidebar and other components
+      window.dispatchEvent(new CustomEvent('profileUpdated'));
+      
       onClose();
       onProfileUpdated?.();
     } catch (error) {

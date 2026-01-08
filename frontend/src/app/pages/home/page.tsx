@@ -1,11 +1,11 @@
 'use client';
 
-import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/nextjs";
 import { useState } from "react";
 import { Sidebar } from "@/components/sidebar";
 import { Feed } from "@/components/feed";
 import { RightSidebar } from "@/components/right-sidebar";
 import { useTheme } from "@/providers/theme-provider";
+import { ProtectedRoute } from "@/providers/test-auth-provider";
 
 function HomeContent() {
   const { theme } = useTheme();
@@ -29,13 +29,8 @@ function HomeContent() {
 
 export default function HomePage() {
   return (
-    <>
-      <SignedIn>
-        <HomeContent />
-      </SignedIn>
-      <SignedOut>
-        <RedirectToSignIn />
-      </SignedOut>
-    </>
+    <ProtectedRoute>
+      <HomeContent />
+    </ProtectedRoute>
   );
 }

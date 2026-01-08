@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { MessageCircle, Repeat2, Heart, Share, Trash2, MoreHorizontal, Bookmark, Eye, MapPin } from 'lucide-react';
 import { useTheme } from '@/providers/theme-provider';
 import { useUser } from '@clerk/nextjs';
+import { useTestAuth } from '@/providers/test-auth-provider';
 import { tweetAPI, userAPI, commentAPI, bookmarkAPI } from '@/lib/api';
 import { CommentModal } from './comment-modal';
 import { PostDetailModal } from './post-detail-modal';
@@ -43,6 +44,7 @@ interface FeedProps {
 export function Feed({ tab, onTabChange }: FeedProps) {
   const { theme } = useTheme();
   const { user: clerkUser } = useUser();
+  const { isLocalUser, user: localAuthUser } = useTestAuth();
   const [tweets, setTweets] = useState<Tweet[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
@@ -67,6 +69,12 @@ export function Feed({ tab, onTabChange }: FeedProps) {
   // Get or create backend user
   useEffect(() => {
     const getOrCreateUser = async () => {
+      // Handle local user
+      if (isLocalUser && localAuthUser) {
+        setBackendUserId(localAuthUser.id as number);
+        return;
+      }
+      
       if (!clerkUser) return;
       
       const username = clerkUser.username || clerkUser.primaryEmailAddress?.emailAddress?.split('@')[0] || `user_${clerkUser.id.slice(0, 8)}`;
@@ -91,7 +99,7 @@ export function Feed({ tab, onTabChange }: FeedProps) {
     };
 
     getOrCreateUser();
-  }, [clerkUser]);
+  }, [clerkUser, isLocalUser, localAuthUser]);
 
   // Load bookmarked tweet IDs
   useEffect(() => {

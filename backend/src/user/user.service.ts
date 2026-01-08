@@ -19,11 +19,27 @@ export class UserService {
   }
 
   async createUser(createUserDto: CreateUserDto) {
-    // Use upsert to handle race conditions when multiple requests try to create the same user
-    const user = await this.prisma.user.upsert({
+    // First check if user already exists by username
+    const existingByUsername = await this.prisma.user.findUnique({
       where: { username: createUserDto.username },
-      update: {}, // Don't update anything if user exists
-      create: {
+    });
+    
+    if (existingByUsername) {
+      return existingByUsername;
+    }
+
+    // Check if user exists by email
+    const existingByEmail = await this.prisma.user.findUnique({
+      where: { email: createUserDto.email },
+    });
+
+    if (existingByEmail) {
+      return existingByEmail;
+    }
+
+    // Create new user
+    const user = await this.prisma.user.create({
+      data: {
         email: createUserDto.email,
         username: createUserDto.username,
         name: createUserDto.name,

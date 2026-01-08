@@ -8,6 +8,7 @@ import { ThemePopup } from './theme-popup';
 import { PostModal } from './post-modal';
 import { userAPI } from '@/lib/api';
 import { useUser, useClerk } from '@clerk/nextjs';
+import { useTestAuth } from '@/providers/test-auth-provider';
 
 interface BackendUser {
   id: number;
@@ -30,7 +31,8 @@ const navItems = [
 export function Sidebar() {
   const { theme } = useTheme();
   const { user: clerkUser } = useUser();
-  const { signOut } = useClerk();
+  const { signOut: clerkSignOut } = useClerk();
+  const { isLocalUser, user: localAuthUser, signOut: localSignOut } = useTestAuth();
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -39,53 +41,97 @@ export function Sidebar() {
   const [backendUser, setBackendUser] = useState<BackendUser | null>(null);
   const logoutPopupRef = useRef<HTMLDivElement>(null);
 
-  // Get or create backend user
-  useEffect(() => {
-    const getOrCreateUser = async () => {
-      // Wait for Clerk user to be available
-      if (!clerkUser) {
-        console.log('Clerk user not available yet');
+  // Dynamic user display data - prioritizes backend user (for updated profile), then local user, then Clerk user
+  const displayName = backendUser?.name || localAuthUser?.name || clerkUser?.firstName || 'User';
+  const displayUsername = backendUser?.username || localAuthUser?.username || clerkUser?.username || 'user';
+  const displayAvatar = backendUser?.avatar || localAuthUser?.avatar || clerkUser?.imageUrl;
+
+  // Function to fetch user data from backend
+  const fetchUserData = async () => {
+    // For local user, fetch the latest data from backend
+    if (isLocalUser && localAuthUser) {
+      console.log('Local user detected, fetching latest from backend:', localAuthUser.username);
+      try {
+        // Fetch latest user data from backend
+        const latestUser = await userAPI.getUserByUsername(localAuthUser.username);
+        if (latestUser && latestUser.id) {
+          console.log('Found latest user data:', latestUser);
+          setBackendUserId(latestUser.id);
+          setBackendUser(latestUser);
+          return;
+        }
+      } catch (error) {
+        console.log('Could not fetch latest user, using local data:', error);
+      }
+      // Fallback to local data if API fails
+      setBackendUserId(localAuthUser.id as number);
+      setBackendUser({
+        id: localAuthUser.id as number,
+        name: localAuthUser.name,
+        username: localAuthUser.username,
+        email: localAuthUser.email,
+        avatar: localAuthUser.avatar,
+      });
+      return;
+    }
+
+    // Wait for Clerk user to be available
+    if (!clerkUser) {
+      console.log('Clerk user not available yet');
+      return;
+    }
+    
+    const username = clerkUser.username || clerkUser.primaryEmailAddress?.emailAddress?.split('@')[0] || `user_${clerkUser.id.slice(0, 8)}`;
+    const email = clerkUser.primaryEmailAddress?.emailAddress || `${username}@example.com`;
+    const name = `${clerkUser.firstName || ''} ${clerkUser.lastName || ''}`.trim() || username;
+    
+    console.log('Looking for user with username:', username);
+    
+    try {
+      // Try to get existing user by username
+      const existingUser = await userAPI.getUserByUsername(username);
+      console.log('API response for getUserByUsername:', existingUser);
+      
+      // Check if user exists (API returns null if not found)
+      if (existingUser && existingUser.id) {
+        console.log('Found existing user with id:', existingUser.id);
+        setBackendUserId(existingUser.id);
+        setBackendUser(existingUser);
         return;
       }
       
-      const username = clerkUser.username || clerkUser.primaryEmailAddress?.emailAddress?.split('@')[0] || `user_${clerkUser.id.slice(0, 8)}`;
-      const email = clerkUser.primaryEmailAddress?.emailAddress || `${username}@example.com`;
-      const name = `${clerkUser.firstName || ''} ${clerkUser.lastName || ''}`.trim() || username;
-      
-      console.log('Looking for user with username:', username);
-      
-      try {
-        // Try to get existing user by username
-        const existingUser = await userAPI.getUserByUsername(username);
-        console.log('API response for getUserByUsername:', existingUser);
-        
-        // Check if user exists (API returns null if not found)
-        if (existingUser && existingUser.id) {
-          console.log('Found existing user with id:', existingUser.id);
-          setBackendUserId(existingUser.id);
-          setBackendUser(existingUser);
-          return;
-        }
-        
-        // User doesn't exist, create one
-        console.log('User not found in backend, creating new user...');
-        const newUser = await userAPI.createUser({
-          name,
-          email,
-          username,
-        });
-        console.log('Created new user:', newUser);
-        if (newUser?.id) {
-          setBackendUserId(newUser.id);
-          setBackendUser(newUser);
-        }
-      } catch (error) {
-        console.error('Error in getOrCreateUser:', error);
+      // User doesn't exist, create one
+      console.log('User not found in backend, creating new user...');
+      const newUser = await userAPI.createUser({
+        name,
+        email,
+        username,
+      });
+      console.log('Created new user:', newUser);
+      if (newUser?.id) {
+        setBackendUserId(newUser.id);
+        setBackendUser(newUser);
       }
+    } catch (error) {
+      console.error('Error in fetchUserData:', error);
+    }
+  };
+
+  // Listen for profile updates to refresh user data
+  useEffect(() => {
+    const handleProfileUpdate = () => {
+      console.log('Profile updated event received, refreshing user data...');
+      fetchUserData();
     };
 
-    getOrCreateUser();
-  }, [clerkUser]);
+    window.addEventListener('profileUpdated', handleProfileUpdate);
+    return () => window.removeEventListener('profileUpdated', handleProfileUpdate);
+  });
+
+  // Get or create backend user on mount or when auth changes
+  useEffect(() => {
+    fetchUserData();
+  }, [clerkUser, isLocalUser, localAuthUser]);
 
   // Close popup when clicking outside
   useEffect(() => {
@@ -101,8 +147,12 @@ export function Sidebar() {
 
   const handleLogout = async () => {
     try {
-      await signOut();
-      window.location.href = '/pages/login';
+      if (isLocalUser) {
+        localSignOut();
+      } else {
+        await clerkSignOut();
+        window.location.href = '/pages/login';
+      }
     } catch (error) {
       console.error('Error signing out:', error);
     }
@@ -115,7 +165,16 @@ export function Sidebar() {
   };
 
   const handleDeleteAccount = async () => {
-    if (!backendUserId || !clerkUser) return;
+    if (!backendUserId) return;
+    
+    // Prevent deleting local user (no Clerk account to delete)
+    if (isLocalUser) {
+      alert('Cannot delete local accounts from here. Please contact support.');
+      setShowDeleteConfirm(false);
+      return;
+    }
+    
+    if (!clerkUser) return;
     
     setIsDeleting(true);
     try {
@@ -123,7 +182,7 @@ export function Sidebar() {
       await userAPI.deleteUser(backendUserId, clerkUser.id);
       
       // Sign out after deletion
-      await signOut();
+      await clerkSignOut();
       window.location.href = '/pages/login';
     } catch (error) {
       console.error('Error deleting account:', error);
@@ -205,20 +264,20 @@ export function Sidebar() {
                   <div className={`w-10 h-10 rounded-full overflow-hidden ${
                     theme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'
                   }`}>
-                    {(backendUser?.avatar || clerkUser?.imageUrl) && (
-                      <img src={backendUser?.avatar || clerkUser?.imageUrl} alt="" className="w-full h-full object-cover" />
+                    {displayAvatar && (
+                      <img src={displayAvatar} alt="" className="w-full h-full object-cover" />
                     )}
                   </div>
                   <div>
                     <p className={`font-bold text-sm ${
                       theme === 'dark' ? 'text-white' : 'text-black'
                     }`}>
-                      {backendUser?.name || clerkUser?.firstName || 'User'}
+                      {displayName}
                     </p>
                     <p className={`text-sm ${
                       theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
                     }`}>
-                      @{clerkUser?.username || 'user'}
+                      @{displayUsername}
                     </p>
                   </div>
                 </div>
@@ -256,7 +315,7 @@ export function Sidebar() {
                 }`}
               >
                 <LogOut size={18} />
-                <span className="font-semibold">Log out @{clerkUser?.username || 'user'}</span>
+                <span className="font-semibold">Log out @{displayUsername}</span>
               </button>
 
               {/* Delete Account Option */}
@@ -286,20 +345,20 @@ export function Sidebar() {
               <div className={`w-10 h-10 rounded-full overflow-hidden ${
                 theme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'
               }`}>
-                {(backendUser?.avatar || clerkUser?.imageUrl) && (
-                  <img src={backendUser?.avatar || clerkUser?.imageUrl} alt="" className="w-full h-full object-cover" />
+                {displayAvatar && (
+                  <img src={displayAvatar} alt="" className="w-full h-full object-cover" />
                 )}
               </div>
               <div className="flex-1 min-w-0">
                 <p className={`font-bold text-sm truncate ${
                   theme === 'dark' ? 'text-white' : 'text-black'
                 }`}>
-                  {backendUser?.name || clerkUser?.firstName || 'User'}
+                  {displayName}
                 </p>
                 <p className={`text-sm truncate ${
                   theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
                 }`}>
-                  @{clerkUser?.username || 'user'}
+                  @{displayUsername}
                 </p>
               </div>
             </div>

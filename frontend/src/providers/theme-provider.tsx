@@ -49,10 +49,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     applyTheme(newTheme);
   };
 
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
+  // Always provide the context, even before mount
+  // This prevents "useTheme must be used within ThemeProvider" errors
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
       {children}
