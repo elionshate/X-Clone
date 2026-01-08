@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import {
   ClerkProvider,
-  SignedIn,
-  UserButton,
 } from "@clerk/nextjs";
 import { ThemeProvider } from "@/providers/theme-provider";
 import "./globals.css";

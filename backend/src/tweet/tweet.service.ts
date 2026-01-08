@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { CreateTweetDto, UpdateTweetLikesDto } from './dto/tweet.dto';
+import { CreateTweetDto, UpdateTweetLikesDto, MediaItem } from './dto/tweet.dto';
 import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
@@ -27,14 +27,41 @@ export class TweetService {
       },
     });
 
-    // Add media if provided
-    if (createTweetDto.mediaUrls && createTweetDto.mediaUrls.length > 0) {
+    // Add media items if provided (new format with type info)
+    if (createTweetDto.mediaItems && createTweetDto.mediaItems.length > 0) {
+      for (const item of createTweetDto.mediaItems) {
+        await this.prisma.tweetMedia.create({
+          data: {
+            tweetId: tweet.id,
+            mediaUrl: item.url,
+            mediaType: item.type,
+            thumbnailUrl: item.thumbnailUrl,
+            duration: item.duration,
+          },
+        });
+      }
+    }
+    // Legacy: Add images if provided via mediaUrls
+    else if (createTweetDto.mediaUrls && createTweetDto.mediaUrls.length > 0) {
       for (const mediaUrl of createTweetDto.mediaUrls) {
         await this.prisma.tweetMedia.create({
           data: {
             tweetId: tweet.id,
             mediaUrl,
             mediaType: 'image',
+          },
+        });
+      }
+    }
+
+    // Add videos if provided via videoUrls
+    if (createTweetDto.videoUrls && createTweetDto.videoUrls.length > 0) {
+      for (const videoUrl of createTweetDto.videoUrls) {
+        await this.prisma.tweetMedia.create({
+          data: {
+            tweetId: tweet.id,
+            mediaUrl: videoUrl,
+            mediaType: 'video',
           },
         });
       }

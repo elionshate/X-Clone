@@ -188,9 +188,27 @@ export const userAPI = {
   },
 };
 
+// Media item type for tweets
+interface MediaItem {
+  url: string;
+  type: 'image' | 'video';
+  thumbnailUrl?: string;
+  duration?: number;
+}
+
 // Tweet API endpoints
 export const tweetAPI = {
-  async createTweet(tweetData: { content: string; authorId: number; commentsEnabled?: boolean; mediaUrls?: string[]; location?: string; latitude?: number; longitude?: number }) {
+  async createTweet(tweetData: { 
+    content: string; 
+    authorId: number; 
+    commentsEnabled?: boolean; 
+    mediaUrls?: string[]; 
+    videoUrls?: string[];
+    mediaItems?: MediaItem[];
+    location?: string; 
+    latitude?: number; 
+    longitude?: number 
+  }) {
     return authenticatedFetch(`${API_BASE_URL}/tweets`, {
       method: 'POST',
       body: JSON.stringify(tweetData),
@@ -331,12 +349,35 @@ export const commentAPI = {
     });
   },
 
+  async createReply(replyData: { content: string; tweetId: number; authorId: number; parentId: number }) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/reply`, {
+      method: 'POST',
+      body: JSON.stringify(replyData),
+    });
+  },
+
+  async getCommentById(id: number) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/${id}`);
+  },
+
   async getCommentsByTweet(tweetId: number, skip = 0, take = 10) {
     return authenticatedFetch(`${API_BASE_URL}/comments/tweet/${tweetId}?skip=${skip}&take=${take}`);
   },
 
   async getCommentsByTweetId(tweetId: number, skip = 0, take = 10) {
     return authenticatedFetch(`${API_BASE_URL}/comments/tweet/${tweetId}?skip=${skip}&take=${take}`);
+  },
+
+  async getRepliesByCommentId(commentId: number, skip = 0, take = 10) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/${commentId}/replies?skip=${skip}&take=${take}`);
+  },
+
+  async getCommentsOnUserPosts(userId: number, skip = 0, take = 20) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/user/${userId}/posts?skip=${skip}&take=${take}`);
+  },
+
+  async getCommentsWithInteractions(tweetId: number, userId: number, skip = 0, take = 20) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/tweet/${tweetId}/interactions/${userId}?skip=${skip}&take=${take}`);
   },
 
   async deleteComment(id: number) {
@@ -352,16 +393,78 @@ export const commentAPI = {
     });
   },
 
-  async likeComment(id: number) {
+  async likeComment(id: number, userId: number) {
     return authenticatedFetch(`${API_BASE_URL}/comments/${id}/like`, {
+      method: 'POST',
+      body: JSON.stringify({ userId }),
+    });
+  },
+
+  async unlikeComment(id: number, userId: number) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/${id}/unlike`, {
+      method: 'POST',
+      body: JSON.stringify({ userId }),
+    });
+  },
+
+  async hasUserLikedComment(commentId: number, userId: number) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/${commentId}/hasLiked/${userId}`);
+  },
+
+  // View count
+  async incrementViewCount(id: number) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/${id}/view`, {
       method: 'POST',
     });
   },
 
-  async unlikeComment(id: number) {
-    return authenticatedFetch(`${API_BASE_URL}/comments/${id}/unlike`, {
+  async incrementViewCountBatch(ids: number[]) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/views/batch`, {
       method: 'POST',
+      body: JSON.stringify({ ids }),
     });
+  },
+
+  // Bookmark endpoints
+  async bookmarkComment(id: number, userId: number) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/${id}/bookmark`, {
+      method: 'POST',
+      body: JSON.stringify({ userId }),
+    });
+  },
+
+  async unbookmarkComment(id: number, userId: number) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/${id}/unbookmark`, {
+      method: 'POST',
+      body: JSON.stringify({ userId }),
+    });
+  },
+
+  async hasUserBookmarkedComment(commentId: number, userId: number) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/${commentId}/hasBookmarked/${userId}`);
+  },
+
+  async getBookmarkedComments(userId: number, skip = 0, take = 20) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/bookmarks/user/${userId}?skip=${skip}&take=${take}`);
+  },
+
+  // Retweet endpoints
+  async retweetComment(id: number, userId: number) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/${id}/retweet`, {
+      method: 'POST',
+      body: JSON.stringify({ userId }),
+    });
+  },
+
+  async unretweetComment(id: number, userId: number) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/${id}/unretweet`, {
+      method: 'POST',
+      body: JSON.stringify({ userId }),
+    });
+  },
+
+  async hasUserRetweetedComment(commentId: number, userId: number) {
+    return authenticatedFetch(`${API_BASE_URL}/comments/${commentId}/hasRetweeted/${userId}`);
   },
 };
 
@@ -554,13 +657,31 @@ export const newsAPI = {
     }
   },
 
-  // Get user's country using multiple free CORS-friendly APIs with fallbacks
+  // Get user's country using backend proxy (avoids CORS) with fallbacks
   async getUserCountry() {
-    // Try multiple free geolocation APIs
+    // First try the backend proxy (most reliable, avoids CORS)
+    try {
+      const response = await fetch(`${API_BASE_URL}/geolocation`, {
+        cache: 'no-store',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Geolocation from backend:', data);
+        return {
+          countryCode: data.countryCode?.toLowerCase() || 'us',
+          countryName: data.countryName || 'United States',
+          city: data.city || null,
+        };
+      }
+    } catch (error) {
+      console.log('Backend geolocation failed, trying client-side fallbacks...');
+    }
+
+    // Fallback to client-side APIs
     const apis = [
       {
         url: 'https://ipwho.is/',
-        parse: (data: any) => ({
+        parse: (data: { country_code?: string; country?: string; city?: string }) => ({
           countryCode: data.country_code?.toLowerCase() || 'us',
           countryName: data.country || 'United States',
           city: data.city || null,
@@ -568,7 +689,7 @@ export const newsAPI = {
       },
       {
         url: 'https://api.country.is/',
-        parse: (data: any) => {
+        parse: (data: { country?: string }) => {
           const countryNames: Record<string, string> = {
             US: 'United States', GB: 'United Kingdom', CA: 'Canada', AU: 'Australia',
             DE: 'Germany', FR: 'France', IT: 'Italy', ES: 'Spain', NL: 'Netherlands',
@@ -590,20 +711,12 @@ export const newsAPI = {
           };
         },
       },
-      {
-        url: 'https://freeipapi.com/api/json',
-        parse: (data: any) => ({
-          countryCode: data.countryCode?.toLowerCase() || 'us',
-          countryName: data.countryName || 'United States',
-          city: data.cityName || null,
-        }),
-      },
     ];
 
     for (const api of apis) {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
         
         const response = await fetch(api.url, { 
           signal: controller.signal,

@@ -24,11 +24,12 @@ interface Hashtag {
 
 interface NewsItem {
   title: string;
-  description?: string;
+  description?: string | null;
   source: string;
   url: string;
   publishedAt: string;
   image?: string;
+  score?: number;
 }
 
 interface LocationInfo {
@@ -50,7 +51,7 @@ export function RightSidebar() {
   const [userLocation, setUserLocation] = useState<LocationInfo | null>(null);
   const [loadingNews, setLoadingNews] = useState(true);
   const searchRef = useRef<HTMLDivElement>(null);
-  const debounceRef = useRef<NodeJS.Timeout>();
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -355,7 +356,7 @@ export function RightSidebar() {
             {loadingNews ? (
               <div className="animate-pulse space-y-3">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="p-2">
+                  <div key={`skeleton-global-${i}`} className="p-2">
                     <div className={`h-3 w-20 rounded ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-300'}`}></div>
                     <div className={`h-4 w-full rounded mt-2 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-300'}`}></div>
                   </div>
@@ -364,7 +365,7 @@ export function RightSidebar() {
             ) : globalNews.length > 0 ? (
               globalNews.slice(0, 3).map((news, idx) => (
                 <a
-                  key={idx}
+                  key={`global-news-${news.title.slice(0, 20)}-${idx}`}
                   href={news.url}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -393,7 +394,7 @@ export function RightSidebar() {
                 {trendingHashtags.length > 0 ? (
                   trendingHashtags.slice(0, 3).map((tag, idx) => (
                     <Link
-                      key={idx}
+                      key={`trending-tag-${tag.hashtag}-${idx}`}
                       href={`/pages/search?q=${encodeURIComponent(tag.hashtag)}`}
                       className={`block p-2 rounded-lg cursor-pointer transition-colors ${
                         theme === 'dark'
@@ -417,7 +418,7 @@ export function RightSidebar() {
                 ) : (
                   fallbackTrending.slice(0, 3).map((item, idx) => (
                     <div
-                      key={idx}
+                      key={`fallback-trend-${item.topic}-${idx}`}
                       className={`p-2 rounded-lg cursor-pointer transition-colors ${
                         theme === 'dark'
                           ? 'hover:bg-gray-800'
@@ -466,7 +467,7 @@ export function RightSidebar() {
             {loadingNews ? (
               <div className="animate-pulse space-y-3">
                 {[1, 2].map((i) => (
-                  <div key={i} className="p-2">
+                  <div key={`skeleton-local-${i}`} className="p-2">
                     <div className={`h-3 w-24 rounded ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-300'}`}></div>
                     <div className={`h-4 w-full rounded mt-2 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-300'}`}></div>
                   </div>
@@ -475,7 +476,7 @@ export function RightSidebar() {
             ) : localNews.length > 0 ? (
               localNews.slice(0, 3).map((news, idx) => (
                 <a
-                  key={idx}
+                  key={`local-news-${news.title.slice(0, 20)}-${idx}`}
                   href={news.url}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -502,7 +503,7 @@ export function RightSidebar() {
               // Fallback content
               fallbackNews.slice(0, 2).map((news, idx) => (
                 <div
-                  key={idx}
+                  key={`fallback-news-${news.title.slice(0, 15)}-${idx}`}
                   className={`p-2 rounded-lg cursor-pointer transition-colors ${
                     theme === 'dark'
                       ? 'hover:bg-gray-800'
@@ -540,7 +541,7 @@ export function RightSidebar() {
             <div className="space-y-2">
               {trendingHashtags.slice(0, 5).map((tag, idx) => (
                 <Link
-                  key={idx}
+                  key={`sidebar-hashtag-${tag.hashtag}-${idx}`}
                   href={`/pages/search?q=${encodeURIComponent(tag.hashtag)}`}
                   className={`block p-2 rounded-lg cursor-pointer transition-colors ${
                     theme === 'dark'

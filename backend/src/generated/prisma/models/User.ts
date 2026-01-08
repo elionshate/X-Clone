@@ -257,6 +257,9 @@ export type UserWhereInput = {
   notificationsTriggered?: Prisma.NotificationListRelationFilter
   retweets?: Prisma.RetweetListRelationFilter
   likes?: Prisma.LikeListRelationFilter
+  commentLikes?: Prisma.CommentLikeListRelationFilter
+  commentBookmarks?: Prisma.CommentBookmarkListRelationFilter
+  commentRetweets?: Prisma.CommentRetweetListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -285,6 +288,9 @@ export type UserOrderByWithRelationInput = {
   notificationsTriggered?: Prisma.NotificationOrderByRelationAggregateInput
   retweets?: Prisma.RetweetOrderByRelationAggregateInput
   likes?: Prisma.LikeOrderByRelationAggregateInput
+  commentLikes?: Prisma.CommentLikeOrderByRelationAggregateInput
+  commentBookmarks?: Prisma.CommentBookmarkOrderByRelationAggregateInput
+  commentRetweets?: Prisma.CommentRetweetOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -316,6 +322,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   notificationsTriggered?: Prisma.NotificationListRelationFilter
   retweets?: Prisma.RetweetListRelationFilter
   likes?: Prisma.LikeListRelationFilter
+  commentLikes?: Prisma.CommentLikeListRelationFilter
+  commentBookmarks?: Prisma.CommentBookmarkListRelationFilter
+  commentRetweets?: Prisma.CommentRetweetListRelationFilter
 }, "id" | "email" | "username">
 
 export type UserOrderByWithAggregationInput = {
@@ -373,6 +382,9 @@ export type UserCreateInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -401,6 +413,9 @@ export type UserUncheckedCreateInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -428,6 +443,9 @@ export type UserUpdateInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -456,6 +474,9 @@ export type UserUncheckedUpdateInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -640,6 +661,48 @@ export type UserUpdateOneRequiredWithoutCommentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCommentsInput, Prisma.UserUpdateWithoutCommentsInput>, Prisma.UserUncheckedUpdateWithoutCommentsInput>
 }
 
+export type UserCreateNestedOneWithoutCommentLikesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCommentLikesInput, Prisma.UserUncheckedCreateWithoutCommentLikesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCommentLikesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCommentLikesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCommentLikesInput, Prisma.UserUncheckedCreateWithoutCommentLikesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCommentLikesInput
+  upsert?: Prisma.UserUpsertWithoutCommentLikesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCommentLikesInput, Prisma.UserUpdateWithoutCommentLikesInput>, Prisma.UserUncheckedUpdateWithoutCommentLikesInput>
+}
+
+export type UserCreateNestedOneWithoutCommentBookmarksInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCommentBookmarksInput, Prisma.UserUncheckedCreateWithoutCommentBookmarksInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCommentBookmarksInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCommentBookmarksNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCommentBookmarksInput, Prisma.UserUncheckedCreateWithoutCommentBookmarksInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCommentBookmarksInput
+  upsert?: Prisma.UserUpsertWithoutCommentBookmarksInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCommentBookmarksInput, Prisma.UserUpdateWithoutCommentBookmarksInput>, Prisma.UserUncheckedUpdateWithoutCommentBookmarksInput>
+}
+
+export type UserCreateNestedOneWithoutCommentRetweetsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCommentRetweetsInput, Prisma.UserUncheckedCreateWithoutCommentRetweetsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCommentRetweetsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCommentRetweetsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCommentRetweetsInput, Prisma.UserUncheckedCreateWithoutCommentRetweetsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCommentRetweetsInput
+  upsert?: Prisma.UserUpsertWithoutCommentRetweetsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCommentRetweetsInput, Prisma.UserUpdateWithoutCommentRetweetsInput>, Prisma.UserUncheckedUpdateWithoutCommentRetweetsInput>
+}
+
 export type UserCreateNestedOneWithoutBookmarksInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutBookmarksInput, Prisma.UserUncheckedCreateWithoutBookmarksInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutBookmarksInput
@@ -818,6 +881,9 @@ export type UserCreateWithoutFollowingInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFollowingInput = {
@@ -845,6 +911,9 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFollowingInput = {
@@ -876,6 +945,9 @@ export type UserCreateWithoutFollowersInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFollowersInput = {
@@ -903,6 +975,9 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFollowersInput = {
@@ -945,6 +1020,9 @@ export type UserUpdateWithoutFollowingInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFollowingInput = {
@@ -972,6 +1050,9 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutFollowersInput = {
@@ -1009,6 +1090,9 @@ export type UserUpdateWithoutFollowersInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFollowersInput = {
@@ -1036,6 +1120,9 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTweetsInput = {
@@ -1062,6 +1149,9 @@ export type UserCreateWithoutTweetsInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTweetsInput = {
@@ -1089,6 +1179,9 @@ export type UserUncheckedCreateWithoutTweetsInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTweetsInput = {
@@ -1131,6 +1224,9 @@ export type UserUpdateWithoutTweetsInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTweetsInput = {
@@ -1158,6 +1254,9 @@ export type UserUncheckedUpdateWithoutTweetsInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRetweetsInput = {
@@ -1184,6 +1283,9 @@ export type UserCreateWithoutRetweetsInput = {
   notificationsReceived?: Prisma.NotificationCreateNestedManyWithoutUserInput
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRetweetsInput = {
@@ -1211,6 +1313,9 @@ export type UserUncheckedCreateWithoutRetweetsInput = {
   notificationsReceived?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRetweetsInput = {
@@ -1253,6 +1358,9 @@ export type UserUpdateWithoutRetweetsInput = {
   notificationsReceived?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRetweetsInput = {
@@ -1280,6 +1388,9 @@ export type UserUncheckedUpdateWithoutRetweetsInput = {
   notificationsReceived?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutLikesInput = {
@@ -1306,6 +1417,9 @@ export type UserCreateWithoutLikesInput = {
   notificationsReceived?: Prisma.NotificationCreateNestedManyWithoutUserInput
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLikesInput = {
@@ -1333,6 +1447,9 @@ export type UserUncheckedCreateWithoutLikesInput = {
   notificationsReceived?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLikesInput = {
@@ -1375,6 +1492,9 @@ export type UserUpdateWithoutLikesInput = {
   notificationsReceived?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLikesInput = {
@@ -1402,6 +1522,9 @@ export type UserUncheckedUpdateWithoutLikesInput = {
   notificationsReceived?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCommentsInput = {
@@ -1428,6 +1551,9 @@ export type UserCreateWithoutCommentsInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCommentsInput = {
@@ -1455,6 +1581,9 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCommentsInput = {
@@ -1497,6 +1626,9 @@ export type UserUpdateWithoutCommentsInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -1524,6 +1656,411 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCommentLikesInput = {
+  email: string
+  username: string
+  name: string
+  bio?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tweets?: Prisma.TweetCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  followers?: Prisma.UserFollowCreateNestedManyWithoutFollowingInput
+  following?: Prisma.UserFollowCreateNestedManyWithoutFollowerInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutUserInput
+  chatMembers?: Prisma.ChatMemberCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  blockedUsers?: Prisma.BlockCreateNestedManyWithoutBlockerInput
+  blockedBy?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  mutedUsers?: Prisma.MuteCreateNestedManyWithoutMuterInput
+  mutedBy?: Prisma.MuteCreateNestedManyWithoutMutedInput
+  reportsMade?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.ReportCreateNestedManyWithoutReportedInput
+  notificationsReceived?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
+  retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
+  likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCommentLikesInput = {
+  id?: number
+  email: string
+  username: string
+  name: string
+  bio?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tweets?: Prisma.TweetUncheckedCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  followers?: Prisma.UserFollowUncheckedCreateNestedManyWithoutFollowingInput
+  following?: Prisma.UserFollowUncheckedCreateNestedManyWithoutFollowerInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutUserInput
+  chatMembers?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  blockedUsers?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
+  blockedBy?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  mutedUsers?: Prisma.MuteUncheckedCreateNestedManyWithoutMuterInput
+  mutedBy?: Prisma.MuteUncheckedCreateNestedManyWithoutMutedInput
+  reportsMade?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.ReportUncheckedCreateNestedManyWithoutReportedInput
+  notificationsReceived?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+  retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCommentLikesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCommentLikesInput, Prisma.UserUncheckedCreateWithoutCommentLikesInput>
+}
+
+export type UserUpsertWithoutCommentLikesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCommentLikesInput, Prisma.UserUncheckedUpdateWithoutCommentLikesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCommentLikesInput, Prisma.UserUncheckedCreateWithoutCommentLikesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCommentLikesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCommentLikesInput, Prisma.UserUncheckedUpdateWithoutCommentLikesInput>
+}
+
+export type UserUpdateWithoutCommentLikesInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tweets?: Prisma.TweetUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  followers?: Prisma.UserFollowUpdateManyWithoutFollowingNestedInput
+  following?: Prisma.UserFollowUpdateManyWithoutFollowerNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutUserNestedInput
+  chatMembers?: Prisma.ChatMemberUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  blockedUsers?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
+  blockedBy?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  mutedUsers?: Prisma.MuteUpdateManyWithoutMuterNestedInput
+  mutedBy?: Prisma.MuteUpdateManyWithoutMutedNestedInput
+  reportsMade?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.ReportUpdateManyWithoutReportedNestedInput
+  notificationsReceived?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+  retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCommentLikesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tweets?: Prisma.TweetUncheckedUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  followers?: Prisma.UserFollowUncheckedUpdateManyWithoutFollowingNestedInput
+  following?: Prisma.UserFollowUncheckedUpdateManyWithoutFollowerNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutUserNestedInput
+  chatMembers?: Prisma.ChatMemberUncheckedUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  blockedUsers?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blockedBy?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  mutedUsers?: Prisma.MuteUncheckedUpdateManyWithoutMuterNestedInput
+  mutedBy?: Prisma.MuteUncheckedUpdateManyWithoutMutedNestedInput
+  reportsMade?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.ReportUncheckedUpdateManyWithoutReportedNestedInput
+  notificationsReceived?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+  retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCommentBookmarksInput = {
+  email: string
+  username: string
+  name: string
+  bio?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tweets?: Prisma.TweetCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  followers?: Prisma.UserFollowCreateNestedManyWithoutFollowingInput
+  following?: Prisma.UserFollowCreateNestedManyWithoutFollowerInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutUserInput
+  chatMembers?: Prisma.ChatMemberCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  blockedUsers?: Prisma.BlockCreateNestedManyWithoutBlockerInput
+  blockedBy?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  mutedUsers?: Prisma.MuteCreateNestedManyWithoutMuterInput
+  mutedBy?: Prisma.MuteCreateNestedManyWithoutMutedInput
+  reportsMade?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.ReportCreateNestedManyWithoutReportedInput
+  notificationsReceived?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
+  retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
+  likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCommentBookmarksInput = {
+  id?: number
+  email: string
+  username: string
+  name: string
+  bio?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tweets?: Prisma.TweetUncheckedCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  followers?: Prisma.UserFollowUncheckedCreateNestedManyWithoutFollowingInput
+  following?: Prisma.UserFollowUncheckedCreateNestedManyWithoutFollowerInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutUserInput
+  chatMembers?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  blockedUsers?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
+  blockedBy?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  mutedUsers?: Prisma.MuteUncheckedCreateNestedManyWithoutMuterInput
+  mutedBy?: Prisma.MuteUncheckedCreateNestedManyWithoutMutedInput
+  reportsMade?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.ReportUncheckedCreateNestedManyWithoutReportedInput
+  notificationsReceived?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+  retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCommentBookmarksInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCommentBookmarksInput, Prisma.UserUncheckedCreateWithoutCommentBookmarksInput>
+}
+
+export type UserUpsertWithoutCommentBookmarksInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCommentBookmarksInput, Prisma.UserUncheckedUpdateWithoutCommentBookmarksInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCommentBookmarksInput, Prisma.UserUncheckedCreateWithoutCommentBookmarksInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCommentBookmarksInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCommentBookmarksInput, Prisma.UserUncheckedUpdateWithoutCommentBookmarksInput>
+}
+
+export type UserUpdateWithoutCommentBookmarksInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tweets?: Prisma.TweetUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  followers?: Prisma.UserFollowUpdateManyWithoutFollowingNestedInput
+  following?: Prisma.UserFollowUpdateManyWithoutFollowerNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutUserNestedInput
+  chatMembers?: Prisma.ChatMemberUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  blockedUsers?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
+  blockedBy?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  mutedUsers?: Prisma.MuteUpdateManyWithoutMuterNestedInput
+  mutedBy?: Prisma.MuteUpdateManyWithoutMutedNestedInput
+  reportsMade?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.ReportUpdateManyWithoutReportedNestedInput
+  notificationsReceived?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+  retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCommentBookmarksInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tweets?: Prisma.TweetUncheckedUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  followers?: Prisma.UserFollowUncheckedUpdateManyWithoutFollowingNestedInput
+  following?: Prisma.UserFollowUncheckedUpdateManyWithoutFollowerNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutUserNestedInput
+  chatMembers?: Prisma.ChatMemberUncheckedUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  blockedUsers?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blockedBy?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  mutedUsers?: Prisma.MuteUncheckedUpdateManyWithoutMuterNestedInput
+  mutedBy?: Prisma.MuteUncheckedUpdateManyWithoutMutedNestedInput
+  reportsMade?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.ReportUncheckedUpdateManyWithoutReportedNestedInput
+  notificationsReceived?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+  retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCommentRetweetsInput = {
+  email: string
+  username: string
+  name: string
+  bio?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tweets?: Prisma.TweetCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  followers?: Prisma.UserFollowCreateNestedManyWithoutFollowingInput
+  following?: Prisma.UserFollowCreateNestedManyWithoutFollowerInput
+  bookmarks?: Prisma.BookmarkCreateNestedManyWithoutUserInput
+  chatMembers?: Prisma.ChatMemberCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSenderInput
+  blockedUsers?: Prisma.BlockCreateNestedManyWithoutBlockerInput
+  blockedBy?: Prisma.BlockCreateNestedManyWithoutBlockedInput
+  mutedUsers?: Prisma.MuteCreateNestedManyWithoutMuterInput
+  mutedBy?: Prisma.MuteCreateNestedManyWithoutMutedInput
+  reportsMade?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.ReportCreateNestedManyWithoutReportedInput
+  notificationsReceived?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
+  retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
+  likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCommentRetweetsInput = {
+  id?: number
+  email: string
+  username: string
+  name: string
+  bio?: string | null
+  avatar?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tweets?: Prisma.TweetUncheckedCreateNestedManyWithoutAuthorInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  followers?: Prisma.UserFollowUncheckedCreateNestedManyWithoutFollowingInput
+  following?: Prisma.UserFollowUncheckedCreateNestedManyWithoutFollowerInput
+  bookmarks?: Prisma.BookmarkUncheckedCreateNestedManyWithoutUserInput
+  chatMembers?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSenderInput
+  blockedUsers?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockerInput
+  blockedBy?: Prisma.BlockUncheckedCreateNestedManyWithoutBlockedInput
+  mutedUsers?: Prisma.MuteUncheckedCreateNestedManyWithoutMuterInput
+  mutedBy?: Prisma.MuteUncheckedCreateNestedManyWithoutMutedInput
+  reportsMade?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsReceived?: Prisma.ReportUncheckedCreateNestedManyWithoutReportedInput
+  notificationsReceived?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+  retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
+  likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCommentRetweetsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCommentRetweetsInput, Prisma.UserUncheckedCreateWithoutCommentRetweetsInput>
+}
+
+export type UserUpsertWithoutCommentRetweetsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCommentRetweetsInput, Prisma.UserUncheckedUpdateWithoutCommentRetweetsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCommentRetweetsInput, Prisma.UserUncheckedCreateWithoutCommentRetweetsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCommentRetweetsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCommentRetweetsInput, Prisma.UserUncheckedUpdateWithoutCommentRetweetsInput>
+}
+
+export type UserUpdateWithoutCommentRetweetsInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tweets?: Prisma.TweetUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  followers?: Prisma.UserFollowUpdateManyWithoutFollowingNestedInput
+  following?: Prisma.UserFollowUpdateManyWithoutFollowerNestedInput
+  bookmarks?: Prisma.BookmarkUpdateManyWithoutUserNestedInput
+  chatMembers?: Prisma.ChatMemberUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSenderNestedInput
+  blockedUsers?: Prisma.BlockUpdateManyWithoutBlockerNestedInput
+  blockedBy?: Prisma.BlockUpdateManyWithoutBlockedNestedInput
+  mutedUsers?: Prisma.MuteUpdateManyWithoutMuterNestedInput
+  mutedBy?: Prisma.MuteUpdateManyWithoutMutedNestedInput
+  reportsMade?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.ReportUpdateManyWithoutReportedNestedInput
+  notificationsReceived?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+  retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
+  likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCommentRetweetsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tweets?: Prisma.TweetUncheckedUpdateManyWithoutAuthorNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  followers?: Prisma.UserFollowUncheckedUpdateManyWithoutFollowingNestedInput
+  following?: Prisma.UserFollowUncheckedUpdateManyWithoutFollowerNestedInput
+  bookmarks?: Prisma.BookmarkUncheckedUpdateManyWithoutUserNestedInput
+  chatMembers?: Prisma.ChatMemberUncheckedUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSenderNestedInput
+  blockedUsers?: Prisma.BlockUncheckedUpdateManyWithoutBlockerNestedInput
+  blockedBy?: Prisma.BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  mutedUsers?: Prisma.MuteUncheckedUpdateManyWithoutMuterNestedInput
+  mutedBy?: Prisma.MuteUncheckedUpdateManyWithoutMutedNestedInput
+  reportsMade?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsReceived?: Prisma.ReportUncheckedUpdateManyWithoutReportedNestedInput
+  notificationsReceived?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+  retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
+  likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBookmarksInput = {
@@ -1550,6 +2087,9 @@ export type UserCreateWithoutBookmarksInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBookmarksInput = {
@@ -1577,6 +2117,9 @@ export type UserUncheckedCreateWithoutBookmarksInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBookmarksInput = {
@@ -1619,6 +2162,9 @@ export type UserUpdateWithoutBookmarksInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBookmarksInput = {
@@ -1646,6 +2192,9 @@ export type UserUncheckedUpdateWithoutBookmarksInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutChatMembersInput = {
@@ -1672,6 +2221,9 @@ export type UserCreateWithoutChatMembersInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChatMembersInput = {
@@ -1699,6 +2251,9 @@ export type UserUncheckedCreateWithoutChatMembersInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChatMembersInput = {
@@ -1741,6 +2296,9 @@ export type UserUpdateWithoutChatMembersInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatMembersInput = {
@@ -1768,6 +2326,9 @@ export type UserUncheckedUpdateWithoutChatMembersInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMessagesInput = {
@@ -1794,6 +2355,9 @@ export type UserCreateWithoutMessagesInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMessagesInput = {
@@ -1821,6 +2385,9 @@ export type UserUncheckedCreateWithoutMessagesInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMessagesInput = {
@@ -1863,6 +2430,9 @@ export type UserUpdateWithoutMessagesInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMessagesInput = {
@@ -1890,6 +2460,9 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBlockedUsersInput = {
@@ -1916,6 +2489,9 @@ export type UserCreateWithoutBlockedUsersInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBlockedUsersInput = {
@@ -1943,6 +2519,9 @@ export type UserUncheckedCreateWithoutBlockedUsersInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBlockedUsersInput = {
@@ -1974,6 +2553,9 @@ export type UserCreateWithoutBlockedByInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBlockedByInput = {
@@ -2001,6 +2583,9 @@ export type UserUncheckedCreateWithoutBlockedByInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBlockedByInput = {
@@ -2043,6 +2628,9 @@ export type UserUpdateWithoutBlockedUsersInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBlockedUsersInput = {
@@ -2070,6 +2658,9 @@ export type UserUncheckedUpdateWithoutBlockedUsersInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutBlockedByInput = {
@@ -2107,6 +2698,9 @@ export type UserUpdateWithoutBlockedByInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBlockedByInput = {
@@ -2134,6 +2728,9 @@ export type UserUncheckedUpdateWithoutBlockedByInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMutedUsersInput = {
@@ -2160,6 +2757,9 @@ export type UserCreateWithoutMutedUsersInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMutedUsersInput = {
@@ -2187,6 +2787,9 @@ export type UserUncheckedCreateWithoutMutedUsersInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMutedUsersInput = {
@@ -2218,6 +2821,9 @@ export type UserCreateWithoutMutedByInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMutedByInput = {
@@ -2245,6 +2851,9 @@ export type UserUncheckedCreateWithoutMutedByInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMutedByInput = {
@@ -2287,6 +2896,9 @@ export type UserUpdateWithoutMutedUsersInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMutedUsersInput = {
@@ -2314,6 +2926,9 @@ export type UserUncheckedUpdateWithoutMutedUsersInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutMutedByInput = {
@@ -2351,6 +2966,9 @@ export type UserUpdateWithoutMutedByInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMutedByInput = {
@@ -2378,6 +2996,9 @@ export type UserUncheckedUpdateWithoutMutedByInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReportsMadeInput = {
@@ -2404,6 +3025,9 @@ export type UserCreateWithoutReportsMadeInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReportsMadeInput = {
@@ -2431,6 +3055,9 @@ export type UserUncheckedCreateWithoutReportsMadeInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReportsMadeInput = {
@@ -2462,6 +3089,9 @@ export type UserCreateWithoutReportsReceivedInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReportsReceivedInput = {
@@ -2489,6 +3119,9 @@ export type UserUncheckedCreateWithoutReportsReceivedInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReportsReceivedInput = {
@@ -2531,6 +3164,9 @@ export type UserUpdateWithoutReportsMadeInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReportsMadeInput = {
@@ -2558,6 +3194,9 @@ export type UserUncheckedUpdateWithoutReportsMadeInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutReportsReceivedInput = {
@@ -2595,6 +3234,9 @@ export type UserUpdateWithoutReportsReceivedInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReportsReceivedInput = {
@@ -2622,6 +3264,9 @@ export type UserUncheckedUpdateWithoutReportsReceivedInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutNotificationsReceivedInput = {
@@ -2648,6 +3293,9 @@ export type UserCreateWithoutNotificationsReceivedInput = {
   notificationsTriggered?: Prisma.NotificationCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsReceivedInput = {
@@ -2675,6 +3323,9 @@ export type UserUncheckedCreateWithoutNotificationsReceivedInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsReceivedInput = {
@@ -2706,6 +3357,9 @@ export type UserCreateWithoutNotificationsTriggeredInput = {
   notificationsReceived?: Prisma.NotificationCreateNestedManyWithoutUserInput
   retweets?: Prisma.RetweetCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsTriggeredInput = {
@@ -2733,6 +3387,9 @@ export type UserUncheckedCreateWithoutNotificationsTriggeredInput = {
   notificationsReceived?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   retweets?: Prisma.RetweetUncheckedCreateNestedManyWithoutUserInput
   likes?: Prisma.LikeUncheckedCreateNestedManyWithoutUserInput
+  commentLikes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutUserInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutUserInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsTriggeredInput = {
@@ -2775,6 +3432,9 @@ export type UserUpdateWithoutNotificationsReceivedInput = {
   notificationsTriggered?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsReceivedInput = {
@@ -2802,6 +3462,9 @@ export type UserUncheckedUpdateWithoutNotificationsReceivedInput = {
   notificationsTriggered?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutNotificationsTriggeredInput = {
@@ -2839,6 +3502,9 @@ export type UserUpdateWithoutNotificationsTriggeredInput = {
   notificationsReceived?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   retweets?: Prisma.RetweetUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsTriggeredInput = {
@@ -2866,6 +3532,9 @@ export type UserUncheckedUpdateWithoutNotificationsTriggeredInput = {
   notificationsReceived?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   retweets?: Prisma.RetweetUncheckedUpdateManyWithoutUserNestedInput
   likes?: Prisma.LikeUncheckedUpdateManyWithoutUserNestedInput
+  commentLikes?: Prisma.CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+  commentBookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutUserNestedInput
+  commentRetweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -2891,6 +3560,9 @@ export type UserCountOutputType = {
   notificationsTriggered: number
   retweets: number
   likes: number
+  commentLikes: number
+  commentBookmarks: number
+  commentRetweets: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2911,6 +3583,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   notificationsTriggered?: boolean | UserCountOutputTypeCountNotificationsTriggeredArgs
   retweets?: boolean | UserCountOutputTypeCountRetweetsArgs
   likes?: boolean | UserCountOutputTypeCountLikesArgs
+  commentLikes?: boolean | UserCountOutputTypeCountCommentLikesArgs
+  commentBookmarks?: boolean | UserCountOutputTypeCountCommentBookmarksArgs
+  commentRetweets?: boolean | UserCountOutputTypeCountCommentRetweetsArgs
 }
 
 /**
@@ -3042,6 +3717,27 @@ export type UserCountOutputTypeCountLikesArgs<ExtArgs extends runtime.Types.Exte
   where?: Prisma.LikeWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCommentLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommentLikeWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCommentBookmarksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommentBookmarkWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCommentRetweetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommentRetweetWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3069,6 +3765,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   notificationsTriggered?: boolean | Prisma.User$notificationsTriggeredArgs<ExtArgs>
   retweets?: boolean | Prisma.User$retweetsArgs<ExtArgs>
   likes?: boolean | Prisma.User$likesArgs<ExtArgs>
+  commentLikes?: boolean | Prisma.User$commentLikesArgs<ExtArgs>
+  commentBookmarks?: boolean | Prisma.User$commentBookmarksArgs<ExtArgs>
+  commentRetweets?: boolean | Prisma.User$commentRetweetsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -3124,6 +3823,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   notificationsTriggered?: boolean | Prisma.User$notificationsTriggeredArgs<ExtArgs>
   retweets?: boolean | Prisma.User$retweetsArgs<ExtArgs>
   likes?: boolean | Prisma.User$likesArgs<ExtArgs>
+  commentLikes?: boolean | Prisma.User$commentLikesArgs<ExtArgs>
+  commentBookmarks?: boolean | Prisma.User$commentBookmarksArgs<ExtArgs>
+  commentRetweets?: boolean | Prisma.User$commentRetweetsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -3149,6 +3851,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     notificationsTriggered: Prisma.$NotificationPayload<ExtArgs>[]
     retweets: Prisma.$RetweetPayload<ExtArgs>[]
     likes: Prisma.$LikePayload<ExtArgs>[]
+    commentLikes: Prisma.$CommentLikePayload<ExtArgs>[]
+    commentBookmarks: Prisma.$CommentBookmarkPayload<ExtArgs>[]
+    commentRetweets: Prisma.$CommentRetweetPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -3570,6 +4275,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   notificationsTriggered<T extends Prisma.User$notificationsTriggeredArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsTriggeredArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   retweets<T extends Prisma.User$retweetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$retweetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RetweetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   likes<T extends Prisma.User$likesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$likesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  commentLikes<T extends Prisma.User$commentLikesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$commentLikesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  commentBookmarks<T extends Prisma.User$commentBookmarksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$commentBookmarksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentBookmarkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  commentRetweets<T extends Prisma.User$commentRetweetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$commentRetweetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentRetweetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4398,6 +5106,78 @@ export type User$likesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.LikeScalarFieldEnum | Prisma.LikeScalarFieldEnum[]
+}
+
+/**
+ * User.commentLikes
+ */
+export type User$commentLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommentLike
+   */
+  select?: Prisma.CommentLikeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CommentLike
+   */
+  omit?: Prisma.CommentLikeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentLikeInclude<ExtArgs> | null
+  where?: Prisma.CommentLikeWhereInput
+  orderBy?: Prisma.CommentLikeOrderByWithRelationInput | Prisma.CommentLikeOrderByWithRelationInput[]
+  cursor?: Prisma.CommentLikeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommentLikeScalarFieldEnum | Prisma.CommentLikeScalarFieldEnum[]
+}
+
+/**
+ * User.commentBookmarks
+ */
+export type User$commentBookmarksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommentBookmark
+   */
+  select?: Prisma.CommentBookmarkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CommentBookmark
+   */
+  omit?: Prisma.CommentBookmarkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentBookmarkInclude<ExtArgs> | null
+  where?: Prisma.CommentBookmarkWhereInput
+  orderBy?: Prisma.CommentBookmarkOrderByWithRelationInput | Prisma.CommentBookmarkOrderByWithRelationInput[]
+  cursor?: Prisma.CommentBookmarkWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommentBookmarkScalarFieldEnum | Prisma.CommentBookmarkScalarFieldEnum[]
+}
+
+/**
+ * User.commentRetweets
+ */
+export type User$commentRetweetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommentRetweet
+   */
+  select?: Prisma.CommentRetweetSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CommentRetweet
+   */
+  omit?: Prisma.CommentRetweetOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentRetweetInclude<ExtArgs> | null
+  where?: Prisma.CommentRetweetWhereInput
+  orderBy?: Prisma.CommentRetweetOrderByWithRelationInput | Prisma.CommentRetweetOrderByWithRelationInput[]
+  cursor?: Prisma.CommentRetweetWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommentRetweetScalarFieldEnum | Prisma.CommentRetweetScalarFieldEnum[]
 }
 
 /**

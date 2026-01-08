@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { SignedIn, SignedOut, RedirectToSignIn, useUser } from "@clerk/nextjs";
 import { Sidebar } from "@/components/sidebar";
 import { RightSidebar } from "@/components/right-sidebar";
-import { Bookmark, MessageCircle, Repeat2, Heart, Trash2, ArrowLeft } from "lucide-react";
+import { Bookmark, MessageCircle, Repeat2, Heart, ArrowLeft } from "lucide-react";
 import { useTheme } from "@/providers/theme-provider";
 import { bookmarkAPI, userAPI } from "@/lib/api";
 
@@ -21,7 +21,7 @@ interface BookmarkedTweet {
   likeCount: number;
   retweetCount: number;
   commentsEnabled: boolean;
-  comments?: any[];
+  comments?: { id: number; content: string }[];
   createdAt: string;
   bookmarkedAt?: string;
 }

@@ -456,14 +456,6 @@ export type MessageMediaUncheckedUpdateManyWithoutMessageNestedInput = {
   deleteMany?: Prisma.MessageMediaScalarWhereInput | Prisma.MessageMediaScalarWhereInput[]
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type MessageMediaCreateWithoutMessageInput = {
   mediaUrl: string
   mediaType: string

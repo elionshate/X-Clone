@@ -1,8 +1,21 @@
 import { PrismaClient } from '../src/generated/prisma/client';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import * as path from 'path';
+import * as fs from 'fs';
 
-const dbPath = path.resolve(__dirname, '..', 'dev.db');
+// Resolve database path - use environment variable or default to dev.db in backend folder
+const backendDir = path.resolve(__dirname, '..');
+const dbPath = process.env.DATABASE_PATH || path.join(backendDir, 'dev.db');
+
+console.log('========================================');
+console.log('🌱 X-Clone Database Seeder');
+console.log('========================================');
+console.log(`📁 Working directory: ${process.cwd()}`);
+console.log(`📁 Backend directory: ${backendDir}`);
+console.log(`💾 Database path: ${dbPath}`);
+console.log(`💾 Database exists: ${fs.existsSync(dbPath)}`);
+console.log('========================================');
+
 const adapter = new PrismaBetterSqlite3({ url: `file:${dbPath}` });
 const prisma = new PrismaClient({ adapter });
 
@@ -582,11 +595,17 @@ async function main() {
   console.log('   - 2 group chats including @elionsh');
   console.log('   - Notifications for @elionsh');
   console.log(`   - @elionsh user ${realUser ? 'preserved' : 'created'}`);
+  console.log('========================================');
+  console.log('✅ Seeding completed successfully!');
+  console.log('========================================');
 }
 
 main()
   .catch((e) => {
+    console.error('========================================');
+    console.error('❌ Seeding failed with error:');
     console.error(e);
+    console.error('========================================');
     process.exit(1);
   })
   .finally(async () => {

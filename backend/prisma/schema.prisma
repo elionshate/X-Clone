@@ -71,6 +71,15 @@ model User {
 
   // Likes by this user
   likes Like[]
+
+  // Comment likes by this user
+  commentLikes CommentLike[]
+
+  // Comment bookmarks by this user
+  commentBookmarks CommentBookmark[]
+
+  // Comment retweets by this user
+  commentRetweets CommentRetweet[]
 }
 
 model UserFollow {
@@ -150,26 +159,87 @@ model TweetMedia {
   id        Int       @default(autoincrement()) @id
   tweet     Tweet     @relation(fields: [tweetId], references: [id], onDelete: Cascade)
   tweetId   Int
-  mediaUrl  String    // URL to image
-  mediaType String    @default("image") // image, video, etc.
+  mediaUrl  String    // URL to image or video
+  mediaType String    @default("image") // "image" or "video"
+  thumbnailUrl String? // Thumbnail for videos
+  duration  Int?      // Video duration in seconds
   createdAt DateTime  @default(now())
 
   @@index([tweetId])
 }
 
 model Comment {
-  id        Int       @default(autoincrement()) @id
-  content   String    // Comment text content
-  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId  Int
-  tweet     Tweet     @relation(fields: [tweetId], references: [id], onDelete: Cascade)
-  tweetId   Int
-  likeCount Int       @default(0)     // Number of likes on the comment
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id           Int       @default(autoincrement()) @id
+  content      String    // Comment text content
+  author       User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId     Int
+  tweet        Tweet     @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+  tweetId      Int
+  likeCount    Int       @default(0)     // Number of likes on the comment
+  viewCount    Int       @default(0)     // Number of views on the comment
+  retweetCount Int       @default(0)     // Number of retweets on the comment
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Reply support - parent comment reference
+  parentId  Int?
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[] @relation("CommentReplies")
+
+  // Comment likes
+  likes     CommentLike[]
+  
+  // Comment bookmarks
+  bookmarks CommentBookmark[]
+  
+  // Comment retweets
+  retweets  CommentRetweet[]
 
   @@index([authorId])
   @@index([tweetId])
+  @@index([parentId])
+}
+
+// Model for tracking who liked a comment
+model CommentLike {
+  id        Int       @default(autoincrement()) @id
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  comment   Comment   @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId Int
+  createdAt DateTime  @default(now())
+
+  @@unique([userId, commentId]) // Prevent duplicate likes
+  @@index([userId])
+  @@index([commentId])
+}
+
+// Model for tracking who bookmarked a comment
+model CommentBookmark {
+  id        Int       @default(autoincrement()) @id
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  comment   Comment   @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId Int
+  createdAt DateTime  @default(now())
+
+  @@unique([userId, commentId]) // Prevent duplicate bookmarks
+  @@index([userId])
+  @@index([commentId])
+}
+
+// Model for tracking who retweeted a comment
+model CommentRetweet {
+  id        Int       @default(autoincrement()) @id
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  comment   Comment   @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId Int
+  createdAt DateTime  @default(now())
+
+  @@unique([userId, commentId]) // Prevent duplicate retweets
+  @@index([userId])
+  @@index([commentId])
 }
 
 model Bookmark {

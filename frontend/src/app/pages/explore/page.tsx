@@ -3,7 +3,7 @@
 import { SignedIn, SignedOut, RedirectToSignIn, useUser } from "@clerk/nextjs";
 import { Sidebar } from "@/components/sidebar";
 import { RightSidebar } from "@/components/right-sidebar";
-import { Search, UserPlus, Check, TrendingUp, Newspaper, Trophy, Film, Sparkles, ExternalLink } from "lucide-react";
+import { Search, TrendingUp, Newspaper, Trophy, Film, Sparkles, ExternalLink } from "lucide-react";
 import { useTheme } from "@/providers/theme-provider";
 import { useEffect, useState } from "react";
 import { userAPI } from "@/lib/api";
@@ -424,7 +424,7 @@ function ExploreContent() {
             </h2>
             {trendingHashtags.map((item, idx) => (
               <div
-                key={idx}
+                key={`hashtag-${item.hashtag}-${idx}`}
                 className={`p-4 cursor-pointer transition-colors border-b ${
                   theme === 'dark' ? 'border-gray-700 hover:bg-gray-900' : 'border-gray-200 hover:bg-gray-50'
                 }`}

@@ -35,7 +35,7 @@ export default function Home() {
               {/* Title */}
               <div>
                 <h1 className="text-4xl font-bold text-gray-900 mb-2">
-                  What's happening!?
+                  What&apos;s happening!?
                 </h1>
                 <p className="text-xl text-gray-600">
                   Join X Clone and join the conversation.

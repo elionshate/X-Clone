@@ -1,5 +1,13 @@
 import { IsString, IsNumber, IsArray, IsOptional, IsUrl, IsBoolean } from 'class-validator';
 
+// Media item structure for tweets
+export interface MediaItem {
+  url: string;
+  type: 'image' | 'video';
+  thumbnailUrl?: string;
+  duration?: number;
+}
+
 export class CreateTweetDto {
   @IsString()
   content: string;
@@ -10,6 +18,14 @@ export class CreateTweetDto {
   @IsOptional()
   @IsArray()
   mediaUrls?: string[];
+
+  @IsOptional()
+  @IsArray()
+  videoUrls?: string[];
+
+  @IsOptional()
+  @IsArray()
+  mediaItems?: MediaItem[];
 
   @IsOptional()
   @IsBoolean()
@@ -36,6 +52,14 @@ export class UpdateTweetDto {
   @IsOptional()
   @IsArray()
   mediaUrls?: string[];
+
+  @IsOptional()
+  @IsArray()
+  videoUrls?: string[];
+
+  @IsOptional()
+  @IsArray()
+  mediaItems?: MediaItem[];
 
   @IsOptional()
   @IsArray()

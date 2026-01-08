@@ -241,16 +241,13 @@ function UserProfileContent() {
   };
 
   const handleCopyLink = () => {
-    const url = `${window.location.origin}/pages/user/${profile?.username}`;
-    navigator.clipboard.writeText(url);
+    const profileUrl = `${window.location.origin}/pages/user/${profile?.username}`;
+    navigator.clipboard.writeText(profileUrl);
     showMessage('Link copied to clipboard!');
     setShowOptionsMenu(false);
   };
 
   const handleShareVia = (platform: string) => {
-    const url = `${window.location.origin}/pages/user/${profile?.username}`;
-    const text = `Check out @${profile?.username} on X Clone!`;
-    
     // Mock share - in production these would open actual share dialogs
     showMessage(`Shared via ${platform}! (Mock)`);
     setShowShareMenu(false);
@@ -262,7 +259,7 @@ function UserProfileContent() {
     
     try {
       // Create or find direct chat
-      const chat = await chatAPI.findOrCreateDirectChat(backendUserId, profile.id);
+      await chatAPI.findOrCreateDirectChat(backendUserId, profile.id);
       router.push('/pages/chat');
     } catch (error) {
       console.error('Error creating chat:', error);
@@ -307,10 +304,10 @@ function UserProfileContent() {
             <div className="flex flex-col items-center justify-center h-full p-8">
               <Ban size={64} className={theme === 'dark' ? 'text-gray-600' : 'text-gray-300'} />
               <h2 className={`text-2xl font-bold mt-4 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
-                You're blocked
+                You&apos;re blocked
               </h2>
               <p className={`text-center mt-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                You can't view or interact with @{username}'s profile.
+                You can&apos;t view or interact with @{username}&apos;s profile.
               </p>
             </div>
           </main>
@@ -660,7 +657,7 @@ function UserProfileContent() {
             </div>
             
             <p className={`mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-              Help us understand what's happening with this account.
+              Help us understand what&apos;s happening with this account.
             </p>
             
             <textarea

@@ -58,6 +58,9 @@ export const ModelName = {
   Like: 'Like',
   TweetMedia: 'TweetMedia',
   Comment: 'Comment',
+  CommentLike: 'CommentLike',
+  CommentBookmark: 'CommentBookmark',
+  CommentRetweet: 'CommentRetweet',
   Bookmark: 'Bookmark',
   Chat: 'Chat',
   ChatMember: 'ChatMember',
@@ -149,6 +152,8 @@ export const TweetMediaScalarFieldEnum = {
   tweetId: 'tweetId',
   mediaUrl: 'mediaUrl',
   mediaType: 'mediaType',
+  thumbnailUrl: 'thumbnailUrl',
+  duration: 'duration',
   createdAt: 'createdAt'
 } as const
 
@@ -161,11 +166,44 @@ export const CommentScalarFieldEnum = {
   authorId: 'authorId',
   tweetId: 'tweetId',
   likeCount: 'likeCount',
+  viewCount: 'viewCount',
+  retweetCount: 'retweetCount',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  parentId: 'parentId'
 } as const
 
 export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+
+
+export const CommentLikeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  commentId: 'commentId',
+  createdAt: 'createdAt'
+} as const
+
+export type CommentLikeScalarFieldEnum = (typeof CommentLikeScalarFieldEnum)[keyof typeof CommentLikeScalarFieldEnum]
+
+
+export const CommentBookmarkScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  commentId: 'commentId',
+  createdAt: 'createdAt'
+} as const
+
+export type CommentBookmarkScalarFieldEnum = (typeof CommentBookmarkScalarFieldEnum)[keyof typeof CommentBookmarkScalarFieldEnum]
+
+
+export const CommentRetweetScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  commentId: 'commentId',
+  createdAt: 'createdAt'
+} as const
+
+export type CommentRetweetScalarFieldEnum = (typeof CommentRetweetScalarFieldEnum)[keyof typeof CommentRetweetScalarFieldEnum]
 
 
 export const BookmarkScalarFieldEnum = {

@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import { SignedIn, SignedOut, RedirectToSignIn, useUser } from "@clerk/nextjs";
 import { Sidebar } from "@/components/sidebar";
 import { RightSidebar } from "@/components/right-sidebar";
-import { userAPI, tweetAPI } from "@/lib/api";
+import { userAPI, tweetAPI, commentAPI } from "@/lib/api";
 import { useTheme } from "@/providers/theme-provider";
-import { Trash2, MessageCircle, Repeat2, Heart, Edit2, MapPin } from 'lucide-react';
+import { Trash2, MessageCircle, Repeat2, Heart, Edit2, MapPin, Reply, Send } from 'lucide-react';
 import { EditProfileModal } from "@/components/edit-profile-modal";
 import { EditPostModal } from "@/components/edit-post-modal";
 
@@ -19,7 +19,41 @@ interface ProfileUser {
   avatar?: string;
 }
 
-type ProfileTab = 'posts' | 'reposts' | 'likes';
+interface Comment {
+  id: number;
+  content: string;
+  createdAt: string;
+  likeCount: number;
+  author: {
+    id: number;
+    name: string;
+    username: string;
+    avatar?: string;
+  };
+  tweet: {
+    id: number;
+    content: string;
+    author: {
+      id: number;
+      name: string;
+      username: string;
+    };
+    media?: any[];
+  };
+  parent?: {
+    id: number;
+    author: {
+      name: string;
+      username: string;
+    };
+  };
+  likes?: any[];
+  _count?: {
+    replies: number;
+  };
+}
+
+type ProfileTab = 'posts' | 'reposts' | 'likes' | 'comments';
 
 function ProfileContent() {
   const { theme } = useTheme();
@@ -28,6 +62,10 @@ function ProfileContent() {
   const [tweets, setTweets] = useState<any[]>([]);
   const [retweets, setRetweets] = useState<any[]>([]);
   const [likedTweets, setLikedTweets] = useState<any[]>([]);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [likedComments, setLikedComments] = useState<Set<number>>(new Set());
+  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+  const [replyContent, setReplyContent] = useState('');
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -55,6 +93,21 @@ function ProfileContent() {
         const userLikes = await tweetAPI.getLikesByUserId(userProfile.id, 0, 10);
         setLikedTweets(userLikes || []);
 
+        // Fetch comments on user's posts
+        const userPostComments = await commentAPI.getCommentsOnUserPosts(userProfile.id, 0, 20);
+        setComments(userPostComments || []);
+
+        // Check which comments the user has liked
+        if (userPostComments && userPostComments.length > 0) {
+          const likedSet = new Set<number>();
+          for (const comment of userPostComments) {
+            if (comment.likes?.some((like: any) => like.userId === userProfile.id)) {
+              likedSet.add(comment.id);
+            }
+          }
+          setLikedComments(likedSet);
+        }
+
         // Fetch followers and following
         const followersList = await userAPI.getFollowers(userProfile.id);
         const followingList = await userAPI.getFollowing(userProfile.id);
@@ -71,6 +124,64 @@ function ProfileContent() {
   useEffect(() => {
     loadProfile();
   }, [clerkUser?.username]);
+
+  // Comment handlers
+  const handleDeleteComment = async (commentId: number) => {
+    if (!confirm('Are you sure you want to delete this comment?')) return;
+    
+    try {
+      await commentAPI.deleteComment(commentId);
+      setComments(prev => prev.filter(c => c.id !== commentId));
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+    }
+  };
+
+  const handleLikeComment = async (commentId: number) => {
+    if (!profile) return;
+    
+    try {
+      if (likedComments.has(commentId)) {
+        await commentAPI.unlikeComment(commentId, profile.id);
+        setLikedComments(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(commentId);
+          return newSet;
+        });
+        setComments(prev => prev.map(c => 
+          c.id === commentId ? { ...c, likeCount: c.likeCount - 1 } : c
+        ));
+      } else {
+        await commentAPI.likeComment(commentId, profile.id);
+        setLikedComments(prev => new Set(prev).add(commentId));
+        setComments(prev => prev.map(c => 
+          c.id === commentId ? { ...c, likeCount: c.likeCount + 1 } : c
+        ));
+      }
+    } catch (error) {
+      console.error('Error liking/unliking comment:', error);
+    }
+  };
+
+  const handleReplyToComment = async (comment: Comment) => {
+    if (!profile || !replyContent.trim()) return;
+    
+    try {
+      await commentAPI.createReply({
+        content: replyContent,
+        tweetId: comment.tweet.id,
+        authorId: profile.id,
+        parentId: comment.id,
+      });
+      setReplyContent('');
+      setReplyingTo(null);
+      // Reload comments to show the new reply
+      const userPostComments = await commentAPI.getCommentsOnUserPosts(profile.id, 0, 20);
+      setComments(userPostComments || []);
+    } catch (error) {
+      console.error('Error replying to comment:', error);
+    }
+  };
 
   const handleDeleteTweet = async (tweetId: number) => {
     if (!confirm('Are you sure you want to delete this post?')) return;
@@ -189,7 +300,7 @@ function ProfileContent() {
           </div>
 
           {/* Tabs */}
-          <div className={`flex gap-8 border-b ${
+          <div className={`flex gap-6 border-b ${
             theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
           }`}>
             <button 
@@ -221,6 +332,16 @@ function ProfileContent() {
               }`}
             >
               Likes
+            </button>
+            <button 
+              onClick={() => setActiveTab('comments')}
+              className={`py-4 font-semibold ${
+                activeTab === 'comments' 
+                  ? 'border-b-2 border-blue-500 text-blue-500' 
+                  : theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
+              }`}
+            >
+              Comments
             </button>
           </div>
 
@@ -447,7 +568,7 @@ function ProfileContent() {
                   </div>
                 ))
               )
-            ) : (
+            ) : activeTab === 'likes' ? (
               likedTweets.length === 0 ? (
                 <p className={`text-center py-12 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                   No liked posts yet
@@ -550,7 +671,153 @@ function ProfileContent() {
                   </div>
                 ))
               )
-            )}
+            ) : activeTab === 'comments' ? (
+              comments.length === 0 ? (
+                <p className={`text-center py-12 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                  No comments on your posts yet
+                </p>
+              ) : (
+                comments.map((comment) => (
+                  <div key={`comment-${comment.id}`} className={`w-full border-b p-4 ${
+                    theme === 'dark' 
+                      ? 'border-gray-700 bg-black hover:bg-gray-900/50' 
+                      : 'border-gray-200 bg-white hover:bg-gray-50'
+                  }`}>
+                    {/* Original post reference */}
+                    <div className={`mb-3 p-3 rounded-lg ${
+                      theme === 'dark' ? 'bg-gray-800/50' : 'bg-gray-100'
+                    }`}>
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}>
+                          On your post:
+                        </span>
+                      </div>
+                      <p className={`text-sm mt-1 line-clamp-2 ${
+                        theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                      }`}>
+                        {comment.tweet.content}
+                      </p>
+                    </div>
+
+                    {/* If it's a reply, show what it's replying to */}
+                    {comment.parent && (
+                      <div className={`mb-2 text-sm ${
+                        theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
+                      }`}>
+                        <Reply size={12} className="inline mr-1" />
+                        Replying to @{comment.parent.author.username}
+                      </div>
+                    )}
+
+                    {/* Comment content */}
+                    <div className="flex gap-3">
+                      <div className={`w-10 h-10 rounded-full flex-shrink-0 overflow-hidden ${
+                        theme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'
+                      }`}>
+                        {comment.author?.avatar && (
+                          <img src={comment.author.avatar} alt="" className="w-full h-full object-cover" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+                              {comment.author?.name}
+                            </span>
+                            <span className={theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}>
+                              @{comment.author?.username}
+                            </span>
+                            <span className={theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}>·</span>
+                            <span className={theme === 'dark' ? 'text-gray-500' : 'text-gray-600'}>
+                              {formatDate(comment.createdAt)}
+                            </span>
+                          </div>
+                          <button 
+                            onClick={() => handleDeleteComment(comment.id)}
+                            className={`p-2 rounded-full transition-colors ${
+                              theme === 'dark' 
+                                ? 'hover:bg-red-900/30 text-gray-500 hover:text-red-500' 
+                                : 'hover:bg-red-100 text-gray-400 hover:text-red-500'
+                            }`}
+                            title="Delete comment"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
+                        <p className={`mt-1 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+                          {comment.content}
+                        </p>
+
+                        {/* Comment actions */}
+                        <div className={`flex gap-6 mt-3 text-sm ${
+                          theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
+                        }`}>
+                          <button 
+                            onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
+                            className={`flex items-center gap-1 hover:text-blue-500 transition-colors ${
+                              replyingTo === comment.id ? 'text-blue-500' : ''
+                            }`}
+                          >
+                            <Reply size={14} /> Reply {comment._count?.replies ? `(${comment._count.replies})` : ''}
+                          </button>
+                          <button 
+                            onClick={() => handleLikeComment(comment.id)}
+                            className={`flex items-center gap-1 transition-colors ${
+                              likedComments.has(comment.id) 
+                                ? 'text-red-500' 
+                                : 'hover:text-red-500'
+                            }`}
+                          >
+                            <Heart 
+                              size={14} 
+                              fill={likedComments.has(comment.id) ? 'currentColor' : 'none'}
+                            /> 
+                            {comment.likeCount || 0}
+                          </button>
+                        </div>
+
+                        {/* Reply input */}
+                        {replyingTo === comment.id && (
+                          <div className={`mt-3 flex gap-2 ${
+                            theme === 'dark' ? 'text-white' : 'text-black'
+                          }`}>
+                            <input
+                              type="text"
+                              value={replyContent}
+                              onChange={(e) => setReplyContent(e.target.value)}
+                              placeholder="Write a reply..."
+                              className={`flex-1 px-3 py-2 rounded-full text-sm ${
+                                theme === 'dark' 
+                                  ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500' 
+                                  : 'bg-gray-100 border-gray-300 text-black placeholder-gray-500'
+                              } border focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' && replyContent.trim()) {
+                                  handleReplyToComment(comment);
+                                }
+                              }}
+                            />
+                            <button
+                              onClick={() => handleReplyToComment(comment)}
+                              disabled={!replyContent.trim()}
+                              className={`p-2 rounded-full transition-colors ${
+                                replyContent.trim()
+                                  ? 'bg-blue-500 text-white hover:bg-blue-600'
+                                  : theme === 'dark' 
+                                    ? 'bg-gray-700 text-gray-500' 
+                                    : 'bg-gray-200 text-gray-400'
+                              }`}
+                            >
+                              <Send size={16} />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )
+            ) : null}
           </div>
         </div>
       </main>

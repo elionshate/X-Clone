@@ -160,8 +160,8 @@ function SettingsContent() {
                 <p className={`mb-6 ${
                   theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                 }`}>
-                  When you block someone, they won't be able to find you, see your posts, 
-                  or interact with you. You also won't see their content.
+                  When you block someone, they won&apos;t be able to find you, see your posts, 
+                  or interact with you. You also won&apos;t see their content.
                 </p>
 
                 {loading ? (
@@ -175,7 +175,7 @@ function SettingsContent() {
                     theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                   }`}>
                     <UserX size={48} className="mx-auto mb-4 opacity-50" />
-                    <p>You haven't blocked anyone yet</p>
+                    <p>You haven&apos;t blocked anyone yet</p>
                   </div>
                 ) : (
                   <div className="space-y-2">

@@ -132,6 +132,10 @@ function NotificationContent() {
         return <Repeat2 className="text-green-500" size={20} />;
       case 'comment':
         return <MessageCircle className="text-blue-500" size={20} />;
+      case 'comment_like':
+        return <Heart className="text-pink-500" size={20} fill="currentColor" />;
+      case 'comment_reply':
+        return <MessageCircle className="text-blue-500" size={20} fill="currentColor" />;
       case 'follow':
         return <UserPlus className="text-blue-500" size={20} />;
       default:
@@ -147,6 +151,10 @@ function NotificationContent() {
         return 'reposted your post';
       case 'comment':
         return 'commented on your post';
+      case 'comment_like':
+        return 'liked your comment';
+      case 'comment_reply':
+        return 'replied to your comment';
       case 'follow':
         return 'followed you';
       default:
@@ -231,7 +239,7 @@ function NotificationContent() {
                 theme === 'dark' ? 'text-white' : 'text-black'
               }`}>No notifications yet</h3>
               <p className={`text-center ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                When someone likes, reposts, or comments on your posts, you'll see it here
+                When someone likes, reposts, or comments on your posts, you&apos;ll see it here
               </p>
             </div>
           ) : (

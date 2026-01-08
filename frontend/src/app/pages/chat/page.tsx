@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { SignedIn, SignedOut, RedirectToSignIn, useUser } from "@clerk/nextjs";
 import { Sidebar } from "@/components/sidebar";
-import { MessageCircle, Send, Plus, Users, ArrowLeft, Settings, X, Image, Paperclip } from "lucide-react";
+import { MessageCircle, Send, Plus, Users, ArrowLeft, X, Image, Paperclip } from "lucide-react";
 import { useTheme } from "@/providers/theme-provider";
 import { chatAPI, userAPI } from "@/lib/api";
 

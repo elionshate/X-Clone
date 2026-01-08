@@ -53,6 +53,21 @@ export type TweetMedia = Prisma.TweetMediaModel
  */
 export type Comment = Prisma.CommentModel
 /**
+ * Model CommentLike
+ * 
+ */
+export type CommentLike = Prisma.CommentLikeModel
+/**
+ * Model CommentBookmark
+ * 
+ */
+export type CommentBookmark = Prisma.CommentBookmarkModel
+/**
+ * Model CommentRetweet
+ * 
+ */
+export type CommentRetweet = Prisma.CommentRetweetModel
+/**
  * Model Bookmark
  * 
  */

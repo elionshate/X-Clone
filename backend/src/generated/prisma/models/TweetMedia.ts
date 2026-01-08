@@ -29,11 +29,13 @@ export type AggregateTweetMedia = {
 export type TweetMediaAvgAggregateOutputType = {
   id: number | null
   tweetId: number | null
+  duration: number | null
 }
 
 export type TweetMediaSumAggregateOutputType = {
   id: number | null
   tweetId: number | null
+  duration: number | null
 }
 
 export type TweetMediaMinAggregateOutputType = {
@@ -41,6 +43,8 @@ export type TweetMediaMinAggregateOutputType = {
   tweetId: number | null
   mediaUrl: string | null
   mediaType: string | null
+  thumbnailUrl: string | null
+  duration: number | null
   createdAt: Date | null
 }
 
@@ -49,6 +53,8 @@ export type TweetMediaMaxAggregateOutputType = {
   tweetId: number | null
   mediaUrl: string | null
   mediaType: string | null
+  thumbnailUrl: string | null
+  duration: number | null
   createdAt: Date | null
 }
 
@@ -57,6 +63,8 @@ export type TweetMediaCountAggregateOutputType = {
   tweetId: number
   mediaUrl: number
   mediaType: number
+  thumbnailUrl: number
+  duration: number
   createdAt: number
   _all: number
 }
@@ -65,11 +73,13 @@ export type TweetMediaCountAggregateOutputType = {
 export type TweetMediaAvgAggregateInputType = {
   id?: true
   tweetId?: true
+  duration?: true
 }
 
 export type TweetMediaSumAggregateInputType = {
   id?: true
   tweetId?: true
+  duration?: true
 }
 
 export type TweetMediaMinAggregateInputType = {
@@ -77,6 +87,8 @@ export type TweetMediaMinAggregateInputType = {
   tweetId?: true
   mediaUrl?: true
   mediaType?: true
+  thumbnailUrl?: true
+  duration?: true
   createdAt?: true
 }
 
@@ -85,6 +97,8 @@ export type TweetMediaMaxAggregateInputType = {
   tweetId?: true
   mediaUrl?: true
   mediaType?: true
+  thumbnailUrl?: true
+  duration?: true
   createdAt?: true
 }
 
@@ -93,6 +107,8 @@ export type TweetMediaCountAggregateInputType = {
   tweetId?: true
   mediaUrl?: true
   mediaType?: true
+  thumbnailUrl?: true
+  duration?: true
   createdAt?: true
   _all?: true
 }
@@ -188,6 +204,8 @@ export type TweetMediaGroupByOutputType = {
   tweetId: number
   mediaUrl: string
   mediaType: string
+  thumbnailUrl: string | null
+  duration: number | null
   createdAt: Date
   _count: TweetMediaCountAggregateOutputType | null
   _avg: TweetMediaAvgAggregateOutputType | null
@@ -219,6 +237,8 @@ export type TweetMediaWhereInput = {
   tweetId?: Prisma.IntFilter<"TweetMedia"> | number
   mediaUrl?: Prisma.StringFilter<"TweetMedia"> | string
   mediaType?: Prisma.StringFilter<"TweetMedia"> | string
+  thumbnailUrl?: Prisma.StringNullableFilter<"TweetMedia"> | string | null
+  duration?: Prisma.IntNullableFilter<"TweetMedia"> | number | null
   createdAt?: Prisma.DateTimeFilter<"TweetMedia"> | Date | string
   tweet?: Prisma.XOR<Prisma.TweetScalarRelationFilter, Prisma.TweetWhereInput>
 }
@@ -228,6 +248,8 @@ export type TweetMediaOrderByWithRelationInput = {
   tweetId?: Prisma.SortOrder
   mediaUrl?: Prisma.SortOrder
   mediaType?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  duration?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   tweet?: Prisma.TweetOrderByWithRelationInput
 }
@@ -240,6 +262,8 @@ export type TweetMediaWhereUniqueInput = Prisma.AtLeast<{
   tweetId?: Prisma.IntFilter<"TweetMedia"> | number
   mediaUrl?: Prisma.StringFilter<"TweetMedia"> | string
   mediaType?: Prisma.StringFilter<"TweetMedia"> | string
+  thumbnailUrl?: Prisma.StringNullableFilter<"TweetMedia"> | string | null
+  duration?: Prisma.IntNullableFilter<"TweetMedia"> | number | null
   createdAt?: Prisma.DateTimeFilter<"TweetMedia"> | Date | string
   tweet?: Prisma.XOR<Prisma.TweetScalarRelationFilter, Prisma.TweetWhereInput>
 }, "id">
@@ -249,6 +273,8 @@ export type TweetMediaOrderByWithAggregationInput = {
   tweetId?: Prisma.SortOrder
   mediaUrl?: Prisma.SortOrder
   mediaType?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  duration?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.TweetMediaCountOrderByAggregateInput
   _avg?: Prisma.TweetMediaAvgOrderByAggregateInput
@@ -265,12 +291,16 @@ export type TweetMediaScalarWhereWithAggregatesInput = {
   tweetId?: Prisma.IntWithAggregatesFilter<"TweetMedia"> | number
   mediaUrl?: Prisma.StringWithAggregatesFilter<"TweetMedia"> | string
   mediaType?: Prisma.StringWithAggregatesFilter<"TweetMedia"> | string
+  thumbnailUrl?: Prisma.StringNullableWithAggregatesFilter<"TweetMedia"> | string | null
+  duration?: Prisma.IntNullableWithAggregatesFilter<"TweetMedia"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TweetMedia"> | Date | string
 }
 
 export type TweetMediaCreateInput = {
   mediaUrl: string
   mediaType?: string
+  thumbnailUrl?: string | null
+  duration?: number | null
   createdAt?: Date | string
   tweet: Prisma.TweetCreateNestedOneWithoutMediaInput
 }
@@ -280,12 +310,16 @@ export type TweetMediaUncheckedCreateInput = {
   tweetId: number
   mediaUrl: string
   mediaType?: string
+  thumbnailUrl?: string | null
+  duration?: number | null
   createdAt?: Date | string
 }
 
 export type TweetMediaUpdateInput = {
   mediaUrl?: Prisma.StringFieldUpdateOperationsInput | string
   mediaType?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tweet?: Prisma.TweetUpdateOneRequiredWithoutMediaNestedInput
 }
@@ -295,6 +329,8 @@ export type TweetMediaUncheckedUpdateInput = {
   tweetId?: Prisma.IntFieldUpdateOperationsInput | number
   mediaUrl?: Prisma.StringFieldUpdateOperationsInput | string
   mediaType?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -303,12 +339,16 @@ export type TweetMediaCreateManyInput = {
   tweetId: number
   mediaUrl: string
   mediaType?: string
+  thumbnailUrl?: string | null
+  duration?: number | null
   createdAt?: Date | string
 }
 
 export type TweetMediaUpdateManyMutationInput = {
   mediaUrl?: Prisma.StringFieldUpdateOperationsInput | string
   mediaType?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -317,6 +357,8 @@ export type TweetMediaUncheckedUpdateManyInput = {
   tweetId?: Prisma.IntFieldUpdateOperationsInput | number
   mediaUrl?: Prisma.StringFieldUpdateOperationsInput | string
   mediaType?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -335,12 +377,15 @@ export type TweetMediaCountOrderByAggregateInput = {
   tweetId?: Prisma.SortOrder
   mediaUrl?: Prisma.SortOrder
   mediaType?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
+  duration?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type TweetMediaAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tweetId?: Prisma.SortOrder
+  duration?: Prisma.SortOrder
 }
 
 export type TweetMediaMaxOrderByAggregateInput = {
@@ -348,6 +393,8 @@ export type TweetMediaMaxOrderByAggregateInput = {
   tweetId?: Prisma.SortOrder
   mediaUrl?: Prisma.SortOrder
   mediaType?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
+  duration?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -356,12 +403,15 @@ export type TweetMediaMinOrderByAggregateInput = {
   tweetId?: Prisma.SortOrder
   mediaUrl?: Prisma.SortOrder
   mediaType?: Prisma.SortOrder
+  thumbnailUrl?: Prisma.SortOrder
+  duration?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type TweetMediaSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tweetId?: Prisma.SortOrder
+  duration?: Prisma.SortOrder
 }
 
 export type TweetMediaCreateNestedManyWithoutTweetInput = {
@@ -406,9 +456,19 @@ export type TweetMediaUncheckedUpdateManyWithoutTweetNestedInput = {
   deleteMany?: Prisma.TweetMediaScalarWhereInput | Prisma.TweetMediaScalarWhereInput[]
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type TweetMediaCreateWithoutTweetInput = {
   mediaUrl: string
   mediaType?: string
+  thumbnailUrl?: string | null
+  duration?: number | null
   createdAt?: Date | string
 }
 
@@ -416,6 +476,8 @@ export type TweetMediaUncheckedCreateWithoutTweetInput = {
   id?: number
   mediaUrl: string
   mediaType?: string
+  thumbnailUrl?: string | null
+  duration?: number | null
   createdAt?: Date | string
 }
 
@@ -452,6 +514,8 @@ export type TweetMediaScalarWhereInput = {
   tweetId?: Prisma.IntFilter<"TweetMedia"> | number
   mediaUrl?: Prisma.StringFilter<"TweetMedia"> | string
   mediaType?: Prisma.StringFilter<"TweetMedia"> | string
+  thumbnailUrl?: Prisma.StringNullableFilter<"TweetMedia"> | string | null
+  duration?: Prisma.IntNullableFilter<"TweetMedia"> | number | null
   createdAt?: Prisma.DateTimeFilter<"TweetMedia"> | Date | string
 }
 
@@ -459,12 +523,16 @@ export type TweetMediaCreateManyTweetInput = {
   id?: number
   mediaUrl: string
   mediaType?: string
+  thumbnailUrl?: string | null
+  duration?: number | null
   createdAt?: Date | string
 }
 
 export type TweetMediaUpdateWithoutTweetInput = {
   mediaUrl?: Prisma.StringFieldUpdateOperationsInput | string
   mediaType?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -472,6 +540,8 @@ export type TweetMediaUncheckedUpdateWithoutTweetInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   mediaUrl?: Prisma.StringFieldUpdateOperationsInput | string
   mediaType?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -479,6 +549,8 @@ export type TweetMediaUncheckedUpdateManyWithoutTweetInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   mediaUrl?: Prisma.StringFieldUpdateOperationsInput | string
   mediaType?: Prisma.StringFieldUpdateOperationsInput | string
+  thumbnailUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  duration?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -489,6 +561,8 @@ export type TweetMediaSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   tweetId?: boolean
   mediaUrl?: boolean
   mediaType?: boolean
+  thumbnailUrl?: boolean
+  duration?: boolean
   createdAt?: boolean
   tweet?: boolean | Prisma.TweetDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tweetMedia"]>
@@ -498,6 +572,8 @@ export type TweetMediaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   tweetId?: boolean
   mediaUrl?: boolean
   mediaType?: boolean
+  thumbnailUrl?: boolean
+  duration?: boolean
   createdAt?: boolean
   tweet?: boolean | Prisma.TweetDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tweetMedia"]>
@@ -507,6 +583,8 @@ export type TweetMediaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   tweetId?: boolean
   mediaUrl?: boolean
   mediaType?: boolean
+  thumbnailUrl?: boolean
+  duration?: boolean
   createdAt?: boolean
   tweet?: boolean | Prisma.TweetDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tweetMedia"]>
@@ -516,10 +594,12 @@ export type TweetMediaSelectScalar = {
   tweetId?: boolean
   mediaUrl?: boolean
   mediaType?: boolean
+  thumbnailUrl?: boolean
+  duration?: boolean
   createdAt?: boolean
 }
 
-export type TweetMediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tweetId" | "mediaUrl" | "mediaType" | "createdAt", ExtArgs["result"]["tweetMedia"]>
+export type TweetMediaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tweetId" | "mediaUrl" | "mediaType" | "thumbnailUrl" | "duration" | "createdAt", ExtArgs["result"]["tweetMedia"]>
 export type TweetMediaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tweet?: boolean | Prisma.TweetDefaultArgs<ExtArgs>
 }
@@ -540,6 +620,8 @@ export type $TweetMediaPayload<ExtArgs extends runtime.Types.Extensions.Internal
     tweetId: number
     mediaUrl: string
     mediaType: string
+    thumbnailUrl: string | null
+    duration: number | null
     createdAt: Date
   }, ExtArgs["result"]["tweetMedia"]>
   composites: {}
@@ -969,6 +1051,8 @@ export interface TweetMediaFieldRefs {
   readonly tweetId: Prisma.FieldRef<"TweetMedia", 'Int'>
   readonly mediaUrl: Prisma.FieldRef<"TweetMedia", 'String'>
   readonly mediaType: Prisma.FieldRef<"TweetMedia", 'String'>
+  readonly thumbnailUrl: Prisma.FieldRef<"TweetMedia", 'String'>
+  readonly duration: Prisma.FieldRef<"TweetMedia", 'Int'>
   readonly createdAt: Prisma.FieldRef<"TweetMedia", 'DateTime'>
 }
     

@@ -7,6 +7,8 @@ import { useTheme } from '@/providers/theme-provider';
 import { useUser } from '@clerk/nextjs';
 import { tweetAPI, userAPI, commentAPI, bookmarkAPI } from '@/lib/api';
 import { CommentModal } from './comment-modal';
+import { PostDetailModal } from './post-detail-modal';
+import { ExpandedPost } from './expanded-post';
 
 interface Tweet {
   id: number;
@@ -54,6 +56,13 @@ export function Feed({ tab, onTabChange }: FeedProps) {
   // Comment modal state
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [selectedTweet, setSelectedTweet] = useState<Tweet | null>(null);
+  
+  // Post detail modal state (for posts with images)
+  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
+  const [postDetailTweet, setPostDetailTweet] = useState<Tweet | null>(null);
+  
+  // Expanded post state (for posts without images)
+  const [expandedTweetId, setExpandedTweetId] = useState<number | null>(null);
 
   // Get or create backend user
   useEffect(() => {
@@ -362,6 +371,23 @@ export function Feed({ tab, onTabChange }: FeedProps) {
     }
   };
 
+  // Handle clicking on a post to show detail view
+  const handlePostClick = (tweet: Tweet) => {
+    // If the post has media/images, show the modal
+    if (tweet.media && tweet.media.length > 0) {
+      setPostDetailTweet(tweet);
+      setIsPostModalOpen(true);
+    } else {
+      // If no images, expand the post inline
+      setExpandedTweetId(expandedTweetId === tweet.id ? null : tweet.id);
+    }
+  };
+
+  // Handle closing expanded post
+  const handleCloseExpandedPost = () => {
+    setExpandedTweetId(null);
+  };
+
   return (
     <>
       <main className={`flex-1 border-r max-w-2xl ${
@@ -419,8 +445,23 @@ export function Feed({ tab, onTabChange }: FeedProps) {
             </div>
           ) : (
             tweets.map((tweet) => (
+              expandedTweetId === tweet.id ? (
+                <ExpandedPost
+                  key={tweet.id}
+                  tweet={tweet}
+                  currentUserId={backendUserId || null}
+                  onClose={handleCloseExpandedPost}
+                  onLikeTweet={() => handleLike(tweet.id)}
+                  onRetweetTweet={() => handleRetweet(tweet.id)}
+                  onBookmarkTweet={() => handleBookmark(tweet.id)}
+                  isLiked={liked.has(tweet.id)}
+                  isRetweeted={retweeted.has(tweet.id)}
+                  isBookmarked={bookmarked.has(tweet.id)}
+                />
+              ) : (
               <div
                 key={tweet.id}
+                onClick={() => handlePostClick(tweet)}
                 className={`border-b p-4 cursor-pointer transition-colors ${
                   theme === 'dark'
                     ? 'border-gray-700 hover:bg-gray-900 bg-black'
@@ -496,22 +537,36 @@ export function Feed({ tab, onTabChange }: FeedProps) {
                       </div>
                     )}
                     
-                    {/* Tweet Media/Images */}
+                    {/* Tweet Media/Images/Videos */}
                     {tweet.media && tweet.media.length > 0 && (
                       <div className={`mt-3 rounded-2xl overflow-hidden ${
                         tweet.media.length === 1 ? '' : 'grid grid-cols-2 gap-0.5'
                       }`}>
                         {tweet.media.map((media, index) => (
-                          <img 
-                            key={media.id || index}
-                            src={media.mediaUrl} 
-                            alt={`Tweet media ${index + 1}`}
-                            className={`w-full object-cover ${
-                              tweet.media!.length === 1 
-                                ? 'max-h-96 rounded-2xl' 
-                                : 'h-48'
-                            }`}
-                          />
+                          media.mediaType === 'video' ? (
+                            <video 
+                              key={media.id || index}
+                              src={media.mediaUrl}
+                              controls
+                              className={`w-full ${
+                                tweet.media!.length === 1 
+                                  ? 'max-h-96 rounded-2xl' 
+                                  : 'h-48 object-cover'
+                              }`}
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                          ) : (
+                            <img 
+                              key={media.id || index}
+                              src={media.mediaUrl} 
+                              alt={`Tweet media ${index + 1}`}
+                              className={`w-full object-cover ${
+                                tweet.media!.length === 1 
+                                  ? 'max-h-96 rounded-2xl' 
+                                  : 'h-48'
+                              }`}
+                            />
+                          )
                         ))}
                       </div>
                     )}
@@ -580,6 +635,7 @@ export function Feed({ tab, onTabChange }: FeedProps) {
                   </div>
                 </div>
               </div>
+              )
             ))
           )}
         </div>
@@ -610,6 +666,25 @@ export function Feed({ tab, onTabChange }: FeedProps) {
           tweetAuthor={selectedTweet.author?.name || 'Unknown'}
           userId={backendUserId}
           onCommentCreated={handleCommentCreated}
+        />
+      )}
+
+      {/* Post Detail Modal - for posts with images */}
+      {postDetailTweet && (
+        <PostDetailModal
+          isOpen={isPostModalOpen}
+          onClose={() => {
+            setIsPostModalOpen(false);
+            setPostDetailTweet(null);
+          }}
+          tweet={postDetailTweet}
+          currentUserId={backendUserId || null}
+          onLikeTweet={() => handleLike(postDetailTweet.id)}
+          onRetweetTweet={() => handleRetweet(postDetailTweet.id)}
+          onBookmarkTweet={() => handleBookmark(postDetailTweet.id)}
+          isLiked={liked.has(postDetailTweet.id)}
+          isRetweeted={retweeted.has(postDetailTweet.id)}
+          isBookmarked={bookmarked.has(postDetailTweet.id)}
         />
       )}
     </>

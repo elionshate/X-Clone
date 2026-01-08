@@ -1,9 +1,16 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { X, Image, Smile, MapPin, Calendar, MessageCircle } from 'lucide-react';
+import { X, Image, Smile, MapPin, Calendar, MessageCircle, Video } from 'lucide-react';
 import { useTheme } from '@/providers/theme-provider';
 import { tweetAPI } from '@/lib/api';
+
+interface MediaItem {
+  url: string;
+  type: 'image' | 'video';
+  thumbnailUrl?: string;
+  duration?: number;
+}
 
 interface PostModalProps {
   isOpen: boolean;
@@ -15,13 +22,14 @@ interface PostModalProps {
 export function PostModal({ isOpen, onClose, onPostCreated, userId }: PostModalProps) {
   const { theme } = useTheme();
   const [content, setContent] = useState('');
-  const [images, setImages] = useState<string[]>([]);
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
   const [isPosting, setIsPosting] = useState(false);
   const [commentsEnabled, setCommentsEnabled] = useState(true);
   const [location, setLocation] = useState<string | null>(null);
   const [locationCoords, setLocationCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
 
   if (!isOpen) return null;
 
@@ -69,13 +77,14 @@ export function PostModal({ isOpen, onClose, onPostCreated, userId }: PostModalP
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
-      const newImages: string[] = [];
       Array.from(files).forEach(file => {
         const reader = new FileReader();
         reader.onload = (e) => {
           if (e.target?.result) {
-            newImages.push(e.target.result as string);
-            setImages(prev => [...prev, e.target!.result as string]);
+            setMediaItems(prev => [...prev, {
+              url: e.target!.result as string,
+              type: 'image'
+            }]);
           }
         };
         reader.readAsDataURL(file);
@@ -83,8 +92,40 @@ export function PostModal({ isOpen, onClose, onPostCreated, userId }: PostModalP
     }
   };
 
-  const removeImage = (index: number) => {
-    setImages(prev => prev.filter((_, i) => i !== index));
+  const handleVideoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      Array.from(files).forEach(file => {
+        // Check file size (limit to 50MB for base64)
+        if (file.size > 50 * 1024 * 1024) {
+          alert('Video file is too large. Maximum size is 50MB.');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target?.result) {
+            // Create a video element to get duration
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            video.onloadedmetadata = () => {
+              const duration = Math.round(video.duration);
+              setMediaItems(prev => [...prev, {
+                url: e.target!.result as string,
+                type: 'video',
+                duration
+              }]);
+            };
+            video.src = e.target.result as string;
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
+
+  const removeMedia = (index: number) => {
+    setMediaItems(prev => prev.filter((_, i) => i !== index));
   };
 
   const handlePost = async () => {
@@ -98,18 +139,18 @@ export function PostModal({ isOpen, onClose, onPostCreated, userId }: PostModalP
     
     setIsPosting(true);
     try {
-      console.log('Creating tweet with userId:', userId, 'content:', content.trim(), 'images:', images.length);
+      console.log('Creating tweet with userId:', userId, 'content:', content.trim(), 'media items:', mediaItems.length);
       await tweetAPI.createTweet({
         content: content.trim(),
         authorId: userId,
         commentsEnabled,
-        mediaUrls: images.length > 0 ? images : undefined,
+        mediaItems: mediaItems.length > 0 ? mediaItems : undefined,
         location: location || undefined,
         latitude: locationCoords?.lat,
         longitude: locationCoords?.lng,
       });
       setContent('');
-      setImages([]);
+      setMediaItems([]);
       setCommentsEnabled(true);
       setLocation(null);
       setLocationCoords(null);
@@ -177,18 +218,35 @@ export function PostModal({ isOpen, onClose, onPostCreated, userId }: PostModalP
                 autoFocus
               />
               
-              {/* Image Preview */}
-              {images.length > 0 && (
+              {/* Media Preview (Images and Videos) */}
+              {mediaItems.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-4">
-                  {images.map((img, index) => (
+                  {mediaItems.map((media, index) => (
                     <div key={index} className="relative">
-                      <img 
-                        src={img} 
-                        alt={`Upload ${index + 1}`}
-                        className="w-24 h-24 object-cover rounded-lg"
-                      />
+                      {media.type === 'image' ? (
+                        <img 
+                          src={media.url} 
+                          alt={`Upload ${index + 1}`}
+                          className="w-24 h-24 object-cover rounded-lg"
+                        />
+                      ) : (
+                        <div className="relative w-24 h-24">
+                          <video 
+                            src={media.url}
+                            className="w-24 h-24 object-cover rounded-lg"
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-lg">
+                            <Video size={24} className="text-white" />
+                          </div>
+                          {media.duration && (
+                            <span className="absolute bottom-1 right-1 text-xs text-white bg-black/70 px-1 rounded">
+                              {Math.floor(media.duration / 60)}:{(media.duration % 60).toString().padStart(2, '0')}
+                            </span>
+                          )}
+                        </div>
+                      )}
                       <button
-                        onClick={() => removeImage(index)}
+                        onClick={() => removeMedia(index)}
                         className="absolute -top-2 -right-2 bg-black text-white rounded-full p-1"
                       >
                         <X size={14} />
@@ -206,19 +264,36 @@ export function PostModal({ isOpen, onClose, onPostCreated, userId }: PostModalP
           theme === 'dark' ? 'border-gray-700' : 'border-gray-200'
         }`}>
           <div className="flex gap-4 items-center">
+            {/* Image Input */}
             <input
               type="file"
-              ref={fileInputRef}
+              ref={imageInputRef}
               onChange={handleImageSelect}
               accept="image/*"
               multiple
               className="hidden"
             />
+            {/* Video Input */}
+            <input
+              type="file"
+              ref={videoInputRef}
+              onChange={handleVideoSelect}
+              accept="video/*"
+              className="hidden"
+            />
             <button 
-              onClick={() => fileInputRef.current?.click()}
+              onClick={() => imageInputRef.current?.click()}
               className="text-blue-500 hover:bg-blue-500/10 p-2 rounded-full"
+              title="Add images"
             >
               <Image size={20} />
+            </button>
+            <button 
+              onClick={() => videoInputRef.current?.click()}
+              className="text-blue-500 hover:bg-blue-500/10 p-2 rounded-full"
+              title="Add video"
+            >
+              <Video size={20} />
             </button>
             <button className="text-blue-500 hover:bg-blue-500/10 p-2 rounded-full">
               <Smile size={20} />

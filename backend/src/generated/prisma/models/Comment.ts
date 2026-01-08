@@ -31,6 +31,9 @@ export type CommentAvgAggregateOutputType = {
   authorId: number | null
   tweetId: number | null
   likeCount: number | null
+  viewCount: number | null
+  retweetCount: number | null
+  parentId: number | null
 }
 
 export type CommentSumAggregateOutputType = {
@@ -38,6 +41,9 @@ export type CommentSumAggregateOutputType = {
   authorId: number | null
   tweetId: number | null
   likeCount: number | null
+  viewCount: number | null
+  retweetCount: number | null
+  parentId: number | null
 }
 
 export type CommentMinAggregateOutputType = {
@@ -46,8 +52,11 @@ export type CommentMinAggregateOutputType = {
   authorId: number | null
   tweetId: number | null
   likeCount: number | null
+  viewCount: number | null
+  retweetCount: number | null
   createdAt: Date | null
   updatedAt: Date | null
+  parentId: number | null
 }
 
 export type CommentMaxAggregateOutputType = {
@@ -56,8 +65,11 @@ export type CommentMaxAggregateOutputType = {
   authorId: number | null
   tweetId: number | null
   likeCount: number | null
+  viewCount: number | null
+  retweetCount: number | null
   createdAt: Date | null
   updatedAt: Date | null
+  parentId: number | null
 }
 
 export type CommentCountAggregateOutputType = {
@@ -66,8 +78,11 @@ export type CommentCountAggregateOutputType = {
   authorId: number
   tweetId: number
   likeCount: number
+  viewCount: number
+  retweetCount: number
   createdAt: number
   updatedAt: number
+  parentId: number
   _all: number
 }
 
@@ -77,6 +92,9 @@ export type CommentAvgAggregateInputType = {
   authorId?: true
   tweetId?: true
   likeCount?: true
+  viewCount?: true
+  retweetCount?: true
+  parentId?: true
 }
 
 export type CommentSumAggregateInputType = {
@@ -84,6 +102,9 @@ export type CommentSumAggregateInputType = {
   authorId?: true
   tweetId?: true
   likeCount?: true
+  viewCount?: true
+  retweetCount?: true
+  parentId?: true
 }
 
 export type CommentMinAggregateInputType = {
@@ -92,8 +113,11 @@ export type CommentMinAggregateInputType = {
   authorId?: true
   tweetId?: true
   likeCount?: true
+  viewCount?: true
+  retweetCount?: true
   createdAt?: true
   updatedAt?: true
+  parentId?: true
 }
 
 export type CommentMaxAggregateInputType = {
@@ -102,8 +126,11 @@ export type CommentMaxAggregateInputType = {
   authorId?: true
   tweetId?: true
   likeCount?: true
+  viewCount?: true
+  retweetCount?: true
   createdAt?: true
   updatedAt?: true
+  parentId?: true
 }
 
 export type CommentCountAggregateInputType = {
@@ -112,8 +139,11 @@ export type CommentCountAggregateInputType = {
   authorId?: true
   tweetId?: true
   likeCount?: true
+  viewCount?: true
+  retweetCount?: true
   createdAt?: true
   updatedAt?: true
+  parentId?: true
   _all?: true
 }
 
@@ -209,8 +239,11 @@ export type CommentGroupByOutputType = {
   authorId: number
   tweetId: number
   likeCount: number
+  viewCount: number
+  retweetCount: number
   createdAt: Date
   updatedAt: Date
+  parentId: number | null
   _count: CommentCountAggregateOutputType | null
   _avg: CommentAvgAggregateOutputType | null
   _sum: CommentSumAggregateOutputType | null
@@ -242,10 +275,18 @@ export type CommentWhereInput = {
   authorId?: Prisma.IntFilter<"Comment"> | number
   tweetId?: Prisma.IntFilter<"Comment"> | number
   likeCount?: Prisma.IntFilter<"Comment"> | number
+  viewCount?: Prisma.IntFilter<"Comment"> | number
+  retweetCount?: Prisma.IntFilter<"Comment"> | number
   createdAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
+  parentId?: Prisma.IntNullableFilter<"Comment"> | number | null
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   tweet?: Prisma.XOR<Prisma.TweetScalarRelationFilter, Prisma.TweetWhereInput>
+  parent?: Prisma.XOR<Prisma.CommentNullableScalarRelationFilter, Prisma.CommentWhereInput> | null
+  replies?: Prisma.CommentListRelationFilter
+  likes?: Prisma.CommentLikeListRelationFilter
+  bookmarks?: Prisma.CommentBookmarkListRelationFilter
+  retweets?: Prisma.CommentRetweetListRelationFilter
 }
 
 export type CommentOrderByWithRelationInput = {
@@ -254,10 +295,18 @@ export type CommentOrderByWithRelationInput = {
   authorId?: Prisma.SortOrder
   tweetId?: Prisma.SortOrder
   likeCount?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  retweetCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   author?: Prisma.UserOrderByWithRelationInput
   tweet?: Prisma.TweetOrderByWithRelationInput
+  parent?: Prisma.CommentOrderByWithRelationInput
+  replies?: Prisma.CommentOrderByRelationAggregateInput
+  likes?: Prisma.CommentLikeOrderByRelationAggregateInput
+  bookmarks?: Prisma.CommentBookmarkOrderByRelationAggregateInput
+  retweets?: Prisma.CommentRetweetOrderByRelationAggregateInput
 }
 
 export type CommentWhereUniqueInput = Prisma.AtLeast<{
@@ -269,10 +318,18 @@ export type CommentWhereUniqueInput = Prisma.AtLeast<{
   authorId?: Prisma.IntFilter<"Comment"> | number
   tweetId?: Prisma.IntFilter<"Comment"> | number
   likeCount?: Prisma.IntFilter<"Comment"> | number
+  viewCount?: Prisma.IntFilter<"Comment"> | number
+  retweetCount?: Prisma.IntFilter<"Comment"> | number
   createdAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
+  parentId?: Prisma.IntNullableFilter<"Comment"> | number | null
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   tweet?: Prisma.XOR<Prisma.TweetScalarRelationFilter, Prisma.TweetWhereInput>
+  parent?: Prisma.XOR<Prisma.CommentNullableScalarRelationFilter, Prisma.CommentWhereInput> | null
+  replies?: Prisma.CommentListRelationFilter
+  likes?: Prisma.CommentLikeListRelationFilter
+  bookmarks?: Prisma.CommentBookmarkListRelationFilter
+  retweets?: Prisma.CommentRetweetListRelationFilter
 }, "id">
 
 export type CommentOrderByWithAggregationInput = {
@@ -281,8 +338,11 @@ export type CommentOrderByWithAggregationInput = {
   authorId?: Prisma.SortOrder
   tweetId?: Prisma.SortOrder
   likeCount?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  retweetCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  parentId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CommentCountOrderByAggregateInput
   _avg?: Prisma.CommentAvgOrderByAggregateInput
   _max?: Prisma.CommentMaxOrderByAggregateInput
@@ -299,17 +359,27 @@ export type CommentScalarWhereWithAggregatesInput = {
   authorId?: Prisma.IntWithAggregatesFilter<"Comment"> | number
   tweetId?: Prisma.IntWithAggregatesFilter<"Comment"> | number
   likeCount?: Prisma.IntWithAggregatesFilter<"Comment"> | number
+  viewCount?: Prisma.IntWithAggregatesFilter<"Comment"> | number
+  retweetCount?: Prisma.IntWithAggregatesFilter<"Comment"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Comment"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Comment"> | Date | string
+  parentId?: Prisma.IntNullableWithAggregatesFilter<"Comment"> | number | null
 }
 
 export type CommentCreateInput = {
   content: string
   likeCount?: number
+  viewCount?: number
+  retweetCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutCommentsInput
   tweet: Prisma.TweetCreateNestedOneWithoutCommentsInput
+  parent?: Prisma.CommentCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.CommentCreateNestedManyWithoutParentInput
+  likes?: Prisma.CommentLikeCreateNestedManyWithoutCommentInput
+  bookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutCommentInput
+  retweets?: Prisma.CommentRetweetCreateNestedManyWithoutCommentInput
 }
 
 export type CommentUncheckedCreateInput = {
@@ -318,17 +388,31 @@ export type CommentUncheckedCreateInput = {
   authorId: number
   tweetId: number
   likeCount?: number
+  viewCount?: number
+  retweetCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  parentId?: number | null
+  replies?: Prisma.CommentUncheckedCreateNestedManyWithoutParentInput
+  likes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutCommentInput
+  bookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutCommentInput
+  retweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutCommentInput
 }
 
 export type CommentUpdateInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutCommentsNestedInput
   tweet?: Prisma.TweetUpdateOneRequiredWithoutCommentsNestedInput
+  parent?: Prisma.CommentUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.CommentUpdateManyWithoutParentNestedInput
+  likes?: Prisma.CommentLikeUpdateManyWithoutCommentNestedInput
+  bookmarks?: Prisma.CommentBookmarkUpdateManyWithoutCommentNestedInput
+  retweets?: Prisma.CommentRetweetUpdateManyWithoutCommentNestedInput
 }
 
 export type CommentUncheckedUpdateInput = {
@@ -337,8 +421,15 @@ export type CommentUncheckedUpdateInput = {
   authorId?: Prisma.IntFieldUpdateOperationsInput | number
   tweetId?: Prisma.IntFieldUpdateOperationsInput | number
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  replies?: Prisma.CommentUncheckedUpdateManyWithoutParentNestedInput
+  likes?: Prisma.CommentLikeUncheckedUpdateManyWithoutCommentNestedInput
+  bookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutCommentNestedInput
+  retweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutCommentNestedInput
 }
 
 export type CommentCreateManyInput = {
@@ -347,13 +438,18 @@ export type CommentCreateManyInput = {
   authorId: number
   tweetId: number
   likeCount?: number
+  viewCount?: number
+  retweetCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  parentId?: number | null
 }
 
 export type CommentUpdateManyMutationInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -364,8 +460,11 @@ export type CommentUncheckedUpdateManyInput = {
   authorId?: Prisma.IntFieldUpdateOperationsInput | number
   tweetId?: Prisma.IntFieldUpdateOperationsInput | number
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type CommentListRelationFilter = {
@@ -378,14 +477,22 @@ export type CommentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type CommentNullableScalarRelationFilter = {
+  is?: Prisma.CommentWhereInput | null
+  isNot?: Prisma.CommentWhereInput | null
+}
+
 export type CommentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
   tweetId?: Prisma.SortOrder
   likeCount?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  retweetCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
 }
 
 export type CommentAvgOrderByAggregateInput = {
@@ -393,6 +500,9 @@ export type CommentAvgOrderByAggregateInput = {
   authorId?: Prisma.SortOrder
   tweetId?: Prisma.SortOrder
   likeCount?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  retweetCount?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
 }
 
 export type CommentMaxOrderByAggregateInput = {
@@ -401,8 +511,11 @@ export type CommentMaxOrderByAggregateInput = {
   authorId?: Prisma.SortOrder
   tweetId?: Prisma.SortOrder
   likeCount?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  retweetCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
 }
 
 export type CommentMinOrderByAggregateInput = {
@@ -411,8 +524,11 @@ export type CommentMinOrderByAggregateInput = {
   authorId?: Prisma.SortOrder
   tweetId?: Prisma.SortOrder
   likeCount?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  retweetCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
 }
 
 export type CommentSumOrderByAggregateInput = {
@@ -420,6 +536,14 @@ export type CommentSumOrderByAggregateInput = {
   authorId?: Prisma.SortOrder
   tweetId?: Prisma.SortOrder
   likeCount?: Prisma.SortOrder
+  viewCount?: Prisma.SortOrder
+  retweetCount?: Prisma.SortOrder
+  parentId?: Prisma.SortOrder
+}
+
+export type CommentScalarRelationFilter = {
+  is?: Prisma.CommentWhereInput
+  isNot?: Prisma.CommentWhereInput
 }
 
 export type CommentCreateNestedManyWithoutAuthorInput = {
@@ -506,12 +630,119 @@ export type CommentUncheckedUpdateManyWithoutTweetNestedInput = {
   deleteMany?: Prisma.CommentScalarWhereInput | Prisma.CommentScalarWhereInput[]
 }
 
+export type CommentCreateNestedOneWithoutRepliesInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutRepliesInput, Prisma.CommentUncheckedCreateWithoutRepliesInput>
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutRepliesInput
+  connect?: Prisma.CommentWhereUniqueInput
+}
+
+export type CommentCreateNestedManyWithoutParentInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutParentInput, Prisma.CommentUncheckedCreateWithoutParentInput> | Prisma.CommentCreateWithoutParentInput[] | Prisma.CommentUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutParentInput | Prisma.CommentCreateOrConnectWithoutParentInput[]
+  createMany?: Prisma.CommentCreateManyParentInputEnvelope
+  connect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+}
+
+export type CommentUncheckedCreateNestedManyWithoutParentInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutParentInput, Prisma.CommentUncheckedCreateWithoutParentInput> | Prisma.CommentCreateWithoutParentInput[] | Prisma.CommentUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutParentInput | Prisma.CommentCreateOrConnectWithoutParentInput[]
+  createMany?: Prisma.CommentCreateManyParentInputEnvelope
+  connect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+}
+
+export type CommentUpdateOneWithoutRepliesNestedInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutRepliesInput, Prisma.CommentUncheckedCreateWithoutRepliesInput>
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutRepliesInput
+  upsert?: Prisma.CommentUpsertWithoutRepliesInput
+  disconnect?: Prisma.CommentWhereInput | boolean
+  delete?: Prisma.CommentWhereInput | boolean
+  connect?: Prisma.CommentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CommentUpdateToOneWithWhereWithoutRepliesInput, Prisma.CommentUpdateWithoutRepliesInput>, Prisma.CommentUncheckedUpdateWithoutRepliesInput>
+}
+
+export type CommentUpdateManyWithoutParentNestedInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutParentInput, Prisma.CommentUncheckedCreateWithoutParentInput> | Prisma.CommentCreateWithoutParentInput[] | Prisma.CommentUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutParentInput | Prisma.CommentCreateOrConnectWithoutParentInput[]
+  upsert?: Prisma.CommentUpsertWithWhereUniqueWithoutParentInput | Prisma.CommentUpsertWithWhereUniqueWithoutParentInput[]
+  createMany?: Prisma.CommentCreateManyParentInputEnvelope
+  set?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  disconnect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  delete?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  connect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  update?: Prisma.CommentUpdateWithWhereUniqueWithoutParentInput | Prisma.CommentUpdateWithWhereUniqueWithoutParentInput[]
+  updateMany?: Prisma.CommentUpdateManyWithWhereWithoutParentInput | Prisma.CommentUpdateManyWithWhereWithoutParentInput[]
+  deleteMany?: Prisma.CommentScalarWhereInput | Prisma.CommentScalarWhereInput[]
+}
+
+export type CommentUncheckedUpdateManyWithoutParentNestedInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutParentInput, Prisma.CommentUncheckedCreateWithoutParentInput> | Prisma.CommentCreateWithoutParentInput[] | Prisma.CommentUncheckedCreateWithoutParentInput[]
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutParentInput | Prisma.CommentCreateOrConnectWithoutParentInput[]
+  upsert?: Prisma.CommentUpsertWithWhereUniqueWithoutParentInput | Prisma.CommentUpsertWithWhereUniqueWithoutParentInput[]
+  createMany?: Prisma.CommentCreateManyParentInputEnvelope
+  set?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  disconnect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  delete?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  connect?: Prisma.CommentWhereUniqueInput | Prisma.CommentWhereUniqueInput[]
+  update?: Prisma.CommentUpdateWithWhereUniqueWithoutParentInput | Prisma.CommentUpdateWithWhereUniqueWithoutParentInput[]
+  updateMany?: Prisma.CommentUpdateManyWithWhereWithoutParentInput | Prisma.CommentUpdateManyWithWhereWithoutParentInput[]
+  deleteMany?: Prisma.CommentScalarWhereInput | Prisma.CommentScalarWhereInput[]
+}
+
+export type CommentCreateNestedOneWithoutLikesInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutLikesInput, Prisma.CommentUncheckedCreateWithoutLikesInput>
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutLikesInput
+  connect?: Prisma.CommentWhereUniqueInput
+}
+
+export type CommentUpdateOneRequiredWithoutLikesNestedInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutLikesInput, Prisma.CommentUncheckedCreateWithoutLikesInput>
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutLikesInput
+  upsert?: Prisma.CommentUpsertWithoutLikesInput
+  connect?: Prisma.CommentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CommentUpdateToOneWithWhereWithoutLikesInput, Prisma.CommentUpdateWithoutLikesInput>, Prisma.CommentUncheckedUpdateWithoutLikesInput>
+}
+
+export type CommentCreateNestedOneWithoutBookmarksInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutBookmarksInput, Prisma.CommentUncheckedCreateWithoutBookmarksInput>
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutBookmarksInput
+  connect?: Prisma.CommentWhereUniqueInput
+}
+
+export type CommentUpdateOneRequiredWithoutBookmarksNestedInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutBookmarksInput, Prisma.CommentUncheckedCreateWithoutBookmarksInput>
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutBookmarksInput
+  upsert?: Prisma.CommentUpsertWithoutBookmarksInput
+  connect?: Prisma.CommentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CommentUpdateToOneWithWhereWithoutBookmarksInput, Prisma.CommentUpdateWithoutBookmarksInput>, Prisma.CommentUncheckedUpdateWithoutBookmarksInput>
+}
+
+export type CommentCreateNestedOneWithoutRetweetsInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutRetweetsInput, Prisma.CommentUncheckedCreateWithoutRetweetsInput>
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutRetweetsInput
+  connect?: Prisma.CommentWhereUniqueInput
+}
+
+export type CommentUpdateOneRequiredWithoutRetweetsNestedInput = {
+  create?: Prisma.XOR<Prisma.CommentCreateWithoutRetweetsInput, Prisma.CommentUncheckedCreateWithoutRetweetsInput>
+  connectOrCreate?: Prisma.CommentCreateOrConnectWithoutRetweetsInput
+  upsert?: Prisma.CommentUpsertWithoutRetweetsInput
+  connect?: Prisma.CommentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CommentUpdateToOneWithWhereWithoutRetweetsInput, Prisma.CommentUpdateWithoutRetweetsInput>, Prisma.CommentUncheckedUpdateWithoutRetweetsInput>
+}
+
 export type CommentCreateWithoutAuthorInput = {
   content: string
   likeCount?: number
+  viewCount?: number
+  retweetCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   tweet: Prisma.TweetCreateNestedOneWithoutCommentsInput
+  parent?: Prisma.CommentCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.CommentCreateNestedManyWithoutParentInput
+  likes?: Prisma.CommentLikeCreateNestedManyWithoutCommentInput
+  bookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutCommentInput
+  retweets?: Prisma.CommentRetweetCreateNestedManyWithoutCommentInput
 }
 
 export type CommentUncheckedCreateWithoutAuthorInput = {
@@ -519,8 +750,15 @@ export type CommentUncheckedCreateWithoutAuthorInput = {
   content: string
   tweetId: number
   likeCount?: number
+  viewCount?: number
+  retweetCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  parentId?: number | null
+  replies?: Prisma.CommentUncheckedCreateNestedManyWithoutParentInput
+  likes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutCommentInput
+  bookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutCommentInput
+  retweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutCommentInput
 }
 
 export type CommentCreateOrConnectWithoutAuthorInput = {
@@ -557,16 +795,26 @@ export type CommentScalarWhereInput = {
   authorId?: Prisma.IntFilter<"Comment"> | number
   tweetId?: Prisma.IntFilter<"Comment"> | number
   likeCount?: Prisma.IntFilter<"Comment"> | number
+  viewCount?: Prisma.IntFilter<"Comment"> | number
+  retweetCount?: Prisma.IntFilter<"Comment"> | number
   createdAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Comment"> | Date | string
+  parentId?: Prisma.IntNullableFilter<"Comment"> | number | null
 }
 
 export type CommentCreateWithoutTweetInput = {
   content: string
   likeCount?: number
+  viewCount?: number
+  retweetCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutCommentsInput
+  parent?: Prisma.CommentCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.CommentCreateNestedManyWithoutParentInput
+  likes?: Prisma.CommentLikeCreateNestedManyWithoutCommentInput
+  bookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutCommentInput
+  retweets?: Prisma.CommentRetweetCreateNestedManyWithoutCommentInput
 }
 
 export type CommentUncheckedCreateWithoutTweetInput = {
@@ -574,8 +822,15 @@ export type CommentUncheckedCreateWithoutTweetInput = {
   content: string
   authorId: number
   likeCount?: number
+  viewCount?: number
+  retweetCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  parentId?: number | null
+  replies?: Prisma.CommentUncheckedCreateNestedManyWithoutParentInput
+  likes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutCommentInput
+  bookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutCommentInput
+  retweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutCommentInput
 }
 
 export type CommentCreateOrConnectWithoutTweetInput = {
@@ -603,21 +858,399 @@ export type CommentUpdateManyWithWhereWithoutTweetInput = {
   data: Prisma.XOR<Prisma.CommentUpdateManyMutationInput, Prisma.CommentUncheckedUpdateManyWithoutTweetInput>
 }
 
+export type CommentCreateWithoutRepliesInput = {
+  content: string
+  likeCount?: number
+  viewCount?: number
+  retweetCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  author: Prisma.UserCreateNestedOneWithoutCommentsInput
+  tweet: Prisma.TweetCreateNestedOneWithoutCommentsInput
+  parent?: Prisma.CommentCreateNestedOneWithoutRepliesInput
+  likes?: Prisma.CommentLikeCreateNestedManyWithoutCommentInput
+  bookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutCommentInput
+  retweets?: Prisma.CommentRetweetCreateNestedManyWithoutCommentInput
+}
+
+export type CommentUncheckedCreateWithoutRepliesInput = {
+  id?: number
+  content: string
+  authorId: number
+  tweetId: number
+  likeCount?: number
+  viewCount?: number
+  retweetCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  parentId?: number | null
+  likes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutCommentInput
+  bookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutCommentInput
+  retweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutCommentInput
+}
+
+export type CommentCreateOrConnectWithoutRepliesInput = {
+  where: Prisma.CommentWhereUniqueInput
+  create: Prisma.XOR<Prisma.CommentCreateWithoutRepliesInput, Prisma.CommentUncheckedCreateWithoutRepliesInput>
+}
+
+export type CommentCreateWithoutParentInput = {
+  content: string
+  likeCount?: number
+  viewCount?: number
+  retweetCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  author: Prisma.UserCreateNestedOneWithoutCommentsInput
+  tweet: Prisma.TweetCreateNestedOneWithoutCommentsInput
+  replies?: Prisma.CommentCreateNestedManyWithoutParentInput
+  likes?: Prisma.CommentLikeCreateNestedManyWithoutCommentInput
+  bookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutCommentInput
+  retweets?: Prisma.CommentRetweetCreateNestedManyWithoutCommentInput
+}
+
+export type CommentUncheckedCreateWithoutParentInput = {
+  id?: number
+  content: string
+  authorId: number
+  tweetId: number
+  likeCount?: number
+  viewCount?: number
+  retweetCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  replies?: Prisma.CommentUncheckedCreateNestedManyWithoutParentInput
+  likes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutCommentInput
+  bookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutCommentInput
+  retweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutCommentInput
+}
+
+export type CommentCreateOrConnectWithoutParentInput = {
+  where: Prisma.CommentWhereUniqueInput
+  create: Prisma.XOR<Prisma.CommentCreateWithoutParentInput, Prisma.CommentUncheckedCreateWithoutParentInput>
+}
+
+export type CommentCreateManyParentInputEnvelope = {
+  data: Prisma.CommentCreateManyParentInput | Prisma.CommentCreateManyParentInput[]
+}
+
+export type CommentUpsertWithoutRepliesInput = {
+  update: Prisma.XOR<Prisma.CommentUpdateWithoutRepliesInput, Prisma.CommentUncheckedUpdateWithoutRepliesInput>
+  create: Prisma.XOR<Prisma.CommentCreateWithoutRepliesInput, Prisma.CommentUncheckedCreateWithoutRepliesInput>
+  where?: Prisma.CommentWhereInput
+}
+
+export type CommentUpdateToOneWithWhereWithoutRepliesInput = {
+  where?: Prisma.CommentWhereInput
+  data: Prisma.XOR<Prisma.CommentUpdateWithoutRepliesInput, Prisma.CommentUncheckedUpdateWithoutRepliesInput>
+}
+
+export type CommentUpdateWithoutRepliesInput = {
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  author?: Prisma.UserUpdateOneRequiredWithoutCommentsNestedInput
+  tweet?: Prisma.TweetUpdateOneRequiredWithoutCommentsNestedInput
+  parent?: Prisma.CommentUpdateOneWithoutRepliesNestedInput
+  likes?: Prisma.CommentLikeUpdateManyWithoutCommentNestedInput
+  bookmarks?: Prisma.CommentBookmarkUpdateManyWithoutCommentNestedInput
+  retweets?: Prisma.CommentRetweetUpdateManyWithoutCommentNestedInput
+}
+
+export type CommentUncheckedUpdateWithoutRepliesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.IntFieldUpdateOperationsInput | number
+  tweetId?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  likes?: Prisma.CommentLikeUncheckedUpdateManyWithoutCommentNestedInput
+  bookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutCommentNestedInput
+  retweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutCommentNestedInput
+}
+
+export type CommentUpsertWithWhereUniqueWithoutParentInput = {
+  where: Prisma.CommentWhereUniqueInput
+  update: Prisma.XOR<Prisma.CommentUpdateWithoutParentInput, Prisma.CommentUncheckedUpdateWithoutParentInput>
+  create: Prisma.XOR<Prisma.CommentCreateWithoutParentInput, Prisma.CommentUncheckedCreateWithoutParentInput>
+}
+
+export type CommentUpdateWithWhereUniqueWithoutParentInput = {
+  where: Prisma.CommentWhereUniqueInput
+  data: Prisma.XOR<Prisma.CommentUpdateWithoutParentInput, Prisma.CommentUncheckedUpdateWithoutParentInput>
+}
+
+export type CommentUpdateManyWithWhereWithoutParentInput = {
+  where: Prisma.CommentScalarWhereInput
+  data: Prisma.XOR<Prisma.CommentUpdateManyMutationInput, Prisma.CommentUncheckedUpdateManyWithoutParentInput>
+}
+
+export type CommentCreateWithoutLikesInput = {
+  content: string
+  likeCount?: number
+  viewCount?: number
+  retweetCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  author: Prisma.UserCreateNestedOneWithoutCommentsInput
+  tweet: Prisma.TweetCreateNestedOneWithoutCommentsInput
+  parent?: Prisma.CommentCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.CommentCreateNestedManyWithoutParentInput
+  bookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutCommentInput
+  retweets?: Prisma.CommentRetweetCreateNestedManyWithoutCommentInput
+}
+
+export type CommentUncheckedCreateWithoutLikesInput = {
+  id?: number
+  content: string
+  authorId: number
+  tweetId: number
+  likeCount?: number
+  viewCount?: number
+  retweetCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  parentId?: number | null
+  replies?: Prisma.CommentUncheckedCreateNestedManyWithoutParentInput
+  bookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutCommentInput
+  retweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutCommentInput
+}
+
+export type CommentCreateOrConnectWithoutLikesInput = {
+  where: Prisma.CommentWhereUniqueInput
+  create: Prisma.XOR<Prisma.CommentCreateWithoutLikesInput, Prisma.CommentUncheckedCreateWithoutLikesInput>
+}
+
+export type CommentUpsertWithoutLikesInput = {
+  update: Prisma.XOR<Prisma.CommentUpdateWithoutLikesInput, Prisma.CommentUncheckedUpdateWithoutLikesInput>
+  create: Prisma.XOR<Prisma.CommentCreateWithoutLikesInput, Prisma.CommentUncheckedCreateWithoutLikesInput>
+  where?: Prisma.CommentWhereInput
+}
+
+export type CommentUpdateToOneWithWhereWithoutLikesInput = {
+  where?: Prisma.CommentWhereInput
+  data: Prisma.XOR<Prisma.CommentUpdateWithoutLikesInput, Prisma.CommentUncheckedUpdateWithoutLikesInput>
+}
+
+export type CommentUpdateWithoutLikesInput = {
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  author?: Prisma.UserUpdateOneRequiredWithoutCommentsNestedInput
+  tweet?: Prisma.TweetUpdateOneRequiredWithoutCommentsNestedInput
+  parent?: Prisma.CommentUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.CommentUpdateManyWithoutParentNestedInput
+  bookmarks?: Prisma.CommentBookmarkUpdateManyWithoutCommentNestedInput
+  retweets?: Prisma.CommentRetweetUpdateManyWithoutCommentNestedInput
+}
+
+export type CommentUncheckedUpdateWithoutLikesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.IntFieldUpdateOperationsInput | number
+  tweetId?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  replies?: Prisma.CommentUncheckedUpdateManyWithoutParentNestedInput
+  bookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutCommentNestedInput
+  retweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutCommentNestedInput
+}
+
+export type CommentCreateWithoutBookmarksInput = {
+  content: string
+  likeCount?: number
+  viewCount?: number
+  retweetCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  author: Prisma.UserCreateNestedOneWithoutCommentsInput
+  tweet: Prisma.TweetCreateNestedOneWithoutCommentsInput
+  parent?: Prisma.CommentCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.CommentCreateNestedManyWithoutParentInput
+  likes?: Prisma.CommentLikeCreateNestedManyWithoutCommentInput
+  retweets?: Prisma.CommentRetweetCreateNestedManyWithoutCommentInput
+}
+
+export type CommentUncheckedCreateWithoutBookmarksInput = {
+  id?: number
+  content: string
+  authorId: number
+  tweetId: number
+  likeCount?: number
+  viewCount?: number
+  retweetCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  parentId?: number | null
+  replies?: Prisma.CommentUncheckedCreateNestedManyWithoutParentInput
+  likes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutCommentInput
+  retweets?: Prisma.CommentRetweetUncheckedCreateNestedManyWithoutCommentInput
+}
+
+export type CommentCreateOrConnectWithoutBookmarksInput = {
+  where: Prisma.CommentWhereUniqueInput
+  create: Prisma.XOR<Prisma.CommentCreateWithoutBookmarksInput, Prisma.CommentUncheckedCreateWithoutBookmarksInput>
+}
+
+export type CommentUpsertWithoutBookmarksInput = {
+  update: Prisma.XOR<Prisma.CommentUpdateWithoutBookmarksInput, Prisma.CommentUncheckedUpdateWithoutBookmarksInput>
+  create: Prisma.XOR<Prisma.CommentCreateWithoutBookmarksInput, Prisma.CommentUncheckedCreateWithoutBookmarksInput>
+  where?: Prisma.CommentWhereInput
+}
+
+export type CommentUpdateToOneWithWhereWithoutBookmarksInput = {
+  where?: Prisma.CommentWhereInput
+  data: Prisma.XOR<Prisma.CommentUpdateWithoutBookmarksInput, Prisma.CommentUncheckedUpdateWithoutBookmarksInput>
+}
+
+export type CommentUpdateWithoutBookmarksInput = {
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  author?: Prisma.UserUpdateOneRequiredWithoutCommentsNestedInput
+  tweet?: Prisma.TweetUpdateOneRequiredWithoutCommentsNestedInput
+  parent?: Prisma.CommentUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.CommentUpdateManyWithoutParentNestedInput
+  likes?: Prisma.CommentLikeUpdateManyWithoutCommentNestedInput
+  retweets?: Prisma.CommentRetweetUpdateManyWithoutCommentNestedInput
+}
+
+export type CommentUncheckedUpdateWithoutBookmarksInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.IntFieldUpdateOperationsInput | number
+  tweetId?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  replies?: Prisma.CommentUncheckedUpdateManyWithoutParentNestedInput
+  likes?: Prisma.CommentLikeUncheckedUpdateManyWithoutCommentNestedInput
+  retweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutCommentNestedInput
+}
+
+export type CommentCreateWithoutRetweetsInput = {
+  content: string
+  likeCount?: number
+  viewCount?: number
+  retweetCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  author: Prisma.UserCreateNestedOneWithoutCommentsInput
+  tweet: Prisma.TweetCreateNestedOneWithoutCommentsInput
+  parent?: Prisma.CommentCreateNestedOneWithoutRepliesInput
+  replies?: Prisma.CommentCreateNestedManyWithoutParentInput
+  likes?: Prisma.CommentLikeCreateNestedManyWithoutCommentInput
+  bookmarks?: Prisma.CommentBookmarkCreateNestedManyWithoutCommentInput
+}
+
+export type CommentUncheckedCreateWithoutRetweetsInput = {
+  id?: number
+  content: string
+  authorId: number
+  tweetId: number
+  likeCount?: number
+  viewCount?: number
+  retweetCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  parentId?: number | null
+  replies?: Prisma.CommentUncheckedCreateNestedManyWithoutParentInput
+  likes?: Prisma.CommentLikeUncheckedCreateNestedManyWithoutCommentInput
+  bookmarks?: Prisma.CommentBookmarkUncheckedCreateNestedManyWithoutCommentInput
+}
+
+export type CommentCreateOrConnectWithoutRetweetsInput = {
+  where: Prisma.CommentWhereUniqueInput
+  create: Prisma.XOR<Prisma.CommentCreateWithoutRetweetsInput, Prisma.CommentUncheckedCreateWithoutRetweetsInput>
+}
+
+export type CommentUpsertWithoutRetweetsInput = {
+  update: Prisma.XOR<Prisma.CommentUpdateWithoutRetweetsInput, Prisma.CommentUncheckedUpdateWithoutRetweetsInput>
+  create: Prisma.XOR<Prisma.CommentCreateWithoutRetweetsInput, Prisma.CommentUncheckedCreateWithoutRetweetsInput>
+  where?: Prisma.CommentWhereInput
+}
+
+export type CommentUpdateToOneWithWhereWithoutRetweetsInput = {
+  where?: Prisma.CommentWhereInput
+  data: Prisma.XOR<Prisma.CommentUpdateWithoutRetweetsInput, Prisma.CommentUncheckedUpdateWithoutRetweetsInput>
+}
+
+export type CommentUpdateWithoutRetweetsInput = {
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  author?: Prisma.UserUpdateOneRequiredWithoutCommentsNestedInput
+  tweet?: Prisma.TweetUpdateOneRequiredWithoutCommentsNestedInput
+  parent?: Prisma.CommentUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.CommentUpdateManyWithoutParentNestedInput
+  likes?: Prisma.CommentLikeUpdateManyWithoutCommentNestedInput
+  bookmarks?: Prisma.CommentBookmarkUpdateManyWithoutCommentNestedInput
+}
+
+export type CommentUncheckedUpdateWithoutRetweetsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.IntFieldUpdateOperationsInput | number
+  tweetId?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  replies?: Prisma.CommentUncheckedUpdateManyWithoutParentNestedInput
+  likes?: Prisma.CommentLikeUncheckedUpdateManyWithoutCommentNestedInput
+  bookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutCommentNestedInput
+}
+
 export type CommentCreateManyAuthorInput = {
   id?: number
   content: string
   tweetId: number
   likeCount?: number
+  viewCount?: number
+  retweetCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  parentId?: number | null
 }
 
 export type CommentUpdateWithoutAuthorInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tweet?: Prisma.TweetUpdateOneRequiredWithoutCommentsNestedInput
+  parent?: Prisma.CommentUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.CommentUpdateManyWithoutParentNestedInput
+  likes?: Prisma.CommentLikeUpdateManyWithoutCommentNestedInput
+  bookmarks?: Prisma.CommentBookmarkUpdateManyWithoutCommentNestedInput
+  retweets?: Prisma.CommentRetweetUpdateManyWithoutCommentNestedInput
 }
 
 export type CommentUncheckedUpdateWithoutAuthorInput = {
@@ -625,8 +1258,15 @@ export type CommentUncheckedUpdateWithoutAuthorInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   tweetId?: Prisma.IntFieldUpdateOperationsInput | number
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  replies?: Prisma.CommentUncheckedUpdateManyWithoutParentNestedInput
+  likes?: Prisma.CommentLikeUncheckedUpdateManyWithoutCommentNestedInput
+  bookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutCommentNestedInput
+  retweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutCommentNestedInput
 }
 
 export type CommentUncheckedUpdateManyWithoutAuthorInput = {
@@ -634,8 +1274,11 @@ export type CommentUncheckedUpdateManyWithoutAuthorInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   tweetId?: Prisma.IntFieldUpdateOperationsInput | number
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type CommentCreateManyTweetInput = {
@@ -643,16 +1286,26 @@ export type CommentCreateManyTweetInput = {
   content: string
   authorId: number
   likeCount?: number
+  viewCount?: number
+  retweetCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  parentId?: number | null
 }
 
 export type CommentUpdateWithoutTweetInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutCommentsNestedInput
+  parent?: Prisma.CommentUpdateOneWithoutRepliesNestedInput
+  replies?: Prisma.CommentUpdateManyWithoutParentNestedInput
+  likes?: Prisma.CommentLikeUpdateManyWithoutCommentNestedInput
+  bookmarks?: Prisma.CommentBookmarkUpdateManyWithoutCommentNestedInput
+  retweets?: Prisma.CommentRetweetUpdateManyWithoutCommentNestedInput
 }
 
 export type CommentUncheckedUpdateWithoutTweetInput = {
@@ -660,8 +1313,15 @@ export type CommentUncheckedUpdateWithoutTweetInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.IntFieldUpdateOperationsInput | number
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  replies?: Prisma.CommentUncheckedUpdateManyWithoutParentNestedInput
+  likes?: Prisma.CommentLikeUncheckedUpdateManyWithoutCommentNestedInput
+  bookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutCommentNestedInput
+  retweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutCommentNestedInput
 }
 
 export type CommentUncheckedUpdateManyWithoutTweetInput = {
@@ -669,10 +1329,124 @@ export type CommentUncheckedUpdateManyWithoutTweetInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.IntFieldUpdateOperationsInput | number
   likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  parentId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+}
+
+export type CommentCreateManyParentInput = {
+  id?: number
+  content: string
+  authorId: number
+  tweetId: number
+  likeCount?: number
+  viewCount?: number
+  retweetCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type CommentUpdateWithoutParentInput = {
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  author?: Prisma.UserUpdateOneRequiredWithoutCommentsNestedInput
+  tweet?: Prisma.TweetUpdateOneRequiredWithoutCommentsNestedInput
+  replies?: Prisma.CommentUpdateManyWithoutParentNestedInput
+  likes?: Prisma.CommentLikeUpdateManyWithoutCommentNestedInput
+  bookmarks?: Prisma.CommentBookmarkUpdateManyWithoutCommentNestedInput
+  retweets?: Prisma.CommentRetweetUpdateManyWithoutCommentNestedInput
+}
+
+export type CommentUncheckedUpdateWithoutParentInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.IntFieldUpdateOperationsInput | number
+  tweetId?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  replies?: Prisma.CommentUncheckedUpdateManyWithoutParentNestedInput
+  likes?: Prisma.CommentLikeUncheckedUpdateManyWithoutCommentNestedInput
+  bookmarks?: Prisma.CommentBookmarkUncheckedUpdateManyWithoutCommentNestedInput
+  retweets?: Prisma.CommentRetweetUncheckedUpdateManyWithoutCommentNestedInput
+}
+
+export type CommentUncheckedUpdateManyWithoutParentInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.IntFieldUpdateOperationsInput | number
+  tweetId?: Prisma.IntFieldUpdateOperationsInput | number
+  likeCount?: Prisma.IntFieldUpdateOperationsInput | number
+  viewCount?: Prisma.IntFieldUpdateOperationsInput | number
+  retweetCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type CommentCountOutputType
+ */
+
+export type CommentCountOutputType = {
+  replies: number
+  likes: number
+  bookmarks: number
+  retweets: number
+}
+
+export type CommentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  replies?: boolean | CommentCountOutputTypeCountRepliesArgs
+  likes?: boolean | CommentCountOutputTypeCountLikesArgs
+  bookmarks?: boolean | CommentCountOutputTypeCountBookmarksArgs
+  retweets?: boolean | CommentCountOutputTypeCountRetweetsArgs
+}
+
+/**
+ * CommentCountOutputType without action
+ */
+export type CommentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommentCountOutputType
+   */
+  select?: Prisma.CommentCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * CommentCountOutputType without action
+ */
+export type CommentCountOutputTypeCountRepliesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommentWhereInput
+}
+
+/**
+ * CommentCountOutputType without action
+ */
+export type CommentCountOutputTypeCountLikesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommentLikeWhereInput
+}
+
+/**
+ * CommentCountOutputType without action
+ */
+export type CommentCountOutputTypeCountBookmarksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommentBookmarkWhereInput
+}
+
+/**
+ * CommentCountOutputType without action
+ */
+export type CommentCountOutputTypeCountRetweetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CommentRetweetWhereInput
+}
 
 
 export type CommentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -681,10 +1455,19 @@ export type CommentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   authorId?: boolean
   tweetId?: boolean
   likeCount?: boolean
+  viewCount?: boolean
+  retweetCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  parentId?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   tweet?: boolean | Prisma.TweetDefaultArgs<ExtArgs>
+  parent?: boolean | Prisma.Comment$parentArgs<ExtArgs>
+  replies?: boolean | Prisma.Comment$repliesArgs<ExtArgs>
+  likes?: boolean | Prisma.Comment$likesArgs<ExtArgs>
+  bookmarks?: boolean | Prisma.Comment$bookmarksArgs<ExtArgs>
+  retweets?: boolean | Prisma.Comment$retweetsArgs<ExtArgs>
+  _count?: boolean | Prisma.CommentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["comment"]>
 
 export type CommentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -693,10 +1476,14 @@ export type CommentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   authorId?: boolean
   tweetId?: boolean
   likeCount?: boolean
+  viewCount?: boolean
+  retweetCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  parentId?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   tweet?: boolean | Prisma.TweetDefaultArgs<ExtArgs>
+  parent?: boolean | Prisma.Comment$parentArgs<ExtArgs>
 }, ExtArgs["result"]["comment"]>
 
 export type CommentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -705,10 +1492,14 @@ export type CommentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   authorId?: boolean
   tweetId?: boolean
   likeCount?: boolean
+  viewCount?: boolean
+  retweetCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  parentId?: boolean
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   tweet?: boolean | Prisma.TweetDefaultArgs<ExtArgs>
+  parent?: boolean | Prisma.Comment$parentArgs<ExtArgs>
 }, ExtArgs["result"]["comment"]>
 
 export type CommentSelectScalar = {
@@ -717,22 +1508,33 @@ export type CommentSelectScalar = {
   authorId?: boolean
   tweetId?: boolean
   likeCount?: boolean
+  viewCount?: boolean
+  retweetCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  parentId?: boolean
 }
 
-export type CommentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "content" | "authorId" | "tweetId" | "likeCount" | "createdAt" | "updatedAt", ExtArgs["result"]["comment"]>
+export type CommentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "content" | "authorId" | "tweetId" | "likeCount" | "viewCount" | "retweetCount" | "createdAt" | "updatedAt" | "parentId", ExtArgs["result"]["comment"]>
 export type CommentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   tweet?: boolean | Prisma.TweetDefaultArgs<ExtArgs>
+  parent?: boolean | Prisma.Comment$parentArgs<ExtArgs>
+  replies?: boolean | Prisma.Comment$repliesArgs<ExtArgs>
+  likes?: boolean | Prisma.Comment$likesArgs<ExtArgs>
+  bookmarks?: boolean | Prisma.Comment$bookmarksArgs<ExtArgs>
+  retweets?: boolean | Prisma.Comment$retweetsArgs<ExtArgs>
+  _count?: boolean | Prisma.CommentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CommentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   tweet?: boolean | Prisma.TweetDefaultArgs<ExtArgs>
+  parent?: boolean | Prisma.Comment$parentArgs<ExtArgs>
 }
 export type CommentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   tweet?: boolean | Prisma.TweetDefaultArgs<ExtArgs>
+  parent?: boolean | Prisma.Comment$parentArgs<ExtArgs>
 }
 
 export type $CommentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -740,6 +1542,11 @@ export type $CommentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     author: Prisma.$UserPayload<ExtArgs>
     tweet: Prisma.$TweetPayload<ExtArgs>
+    parent: Prisma.$CommentPayload<ExtArgs> | null
+    replies: Prisma.$CommentPayload<ExtArgs>[]
+    likes: Prisma.$CommentLikePayload<ExtArgs>[]
+    bookmarks: Prisma.$CommentBookmarkPayload<ExtArgs>[]
+    retweets: Prisma.$CommentRetweetPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -747,8 +1554,11 @@ export type $CommentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     authorId: number
     tweetId: number
     likeCount: number
+    viewCount: number
+    retweetCount: number
     createdAt: Date
     updatedAt: Date
+    parentId: number | null
   }, ExtArgs["result"]["comment"]>
   composites: {}
 }
@@ -1145,6 +1955,11 @@ export interface Prisma__CommentClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   author<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   tweet<T extends Prisma.TweetDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TweetDefaultArgs<ExtArgs>>): Prisma.Prisma__TweetClient<runtime.Types.Result.GetResult<Prisma.$TweetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  parent<T extends Prisma.Comment$parentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Comment$parentArgs<ExtArgs>>): Prisma.Prisma__CommentClient<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  replies<T extends Prisma.Comment$repliesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Comment$repliesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  likes<T extends Prisma.Comment$likesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Comment$likesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bookmarks<T extends Prisma.Comment$bookmarksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Comment$bookmarksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentBookmarkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  retweets<T extends Prisma.Comment$retweetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Comment$retweetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentRetweetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1179,8 +1994,11 @@ export interface CommentFieldRefs {
   readonly authorId: Prisma.FieldRef<"Comment", 'Int'>
   readonly tweetId: Prisma.FieldRef<"Comment", 'Int'>
   readonly likeCount: Prisma.FieldRef<"Comment", 'Int'>
+  readonly viewCount: Prisma.FieldRef<"Comment", 'Int'>
+  readonly retweetCount: Prisma.FieldRef<"Comment", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Comment", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Comment", 'DateTime'>
+  readonly parentId: Prisma.FieldRef<"Comment", 'Int'>
 }
     
 
@@ -1572,6 +2390,121 @@ export type CommentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Comments to delete.
    */
   limit?: number
+}
+
+/**
+ * Comment.parent
+ */
+export type Comment$parentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Comment
+   */
+  select?: Prisma.CommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Comment
+   */
+  omit?: Prisma.CommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentInclude<ExtArgs> | null
+  where?: Prisma.CommentWhereInput
+}
+
+/**
+ * Comment.replies
+ */
+export type Comment$repliesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Comment
+   */
+  select?: Prisma.CommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Comment
+   */
+  omit?: Prisma.CommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentInclude<ExtArgs> | null
+  where?: Prisma.CommentWhereInput
+  orderBy?: Prisma.CommentOrderByWithRelationInput | Prisma.CommentOrderByWithRelationInput[]
+  cursor?: Prisma.CommentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
+}
+
+/**
+ * Comment.likes
+ */
+export type Comment$likesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommentLike
+   */
+  select?: Prisma.CommentLikeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CommentLike
+   */
+  omit?: Prisma.CommentLikeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentLikeInclude<ExtArgs> | null
+  where?: Prisma.CommentLikeWhereInput
+  orderBy?: Prisma.CommentLikeOrderByWithRelationInput | Prisma.CommentLikeOrderByWithRelationInput[]
+  cursor?: Prisma.CommentLikeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommentLikeScalarFieldEnum | Prisma.CommentLikeScalarFieldEnum[]
+}
+
+/**
+ * Comment.bookmarks
+ */
+export type Comment$bookmarksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommentBookmark
+   */
+  select?: Prisma.CommentBookmarkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CommentBookmark
+   */
+  omit?: Prisma.CommentBookmarkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentBookmarkInclude<ExtArgs> | null
+  where?: Prisma.CommentBookmarkWhereInput
+  orderBy?: Prisma.CommentBookmarkOrderByWithRelationInput | Prisma.CommentBookmarkOrderByWithRelationInput[]
+  cursor?: Prisma.CommentBookmarkWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommentBookmarkScalarFieldEnum | Prisma.CommentBookmarkScalarFieldEnum[]
+}
+
+/**
+ * Comment.retweets
+ */
+export type Comment$retweetsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CommentRetweet
+   */
+  select?: Prisma.CommentRetweetSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CommentRetweet
+   */
+  omit?: Prisma.CommentRetweetOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CommentRetweetInclude<ExtArgs> | null
+  where?: Prisma.CommentRetweetWhereInput
+  orderBy?: Prisma.CommentRetweetOrderByWithRelationInput | Prisma.CommentRetweetOrderByWithRelationInput[]
+  cursor?: Prisma.CommentRetweetWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CommentRetweetScalarFieldEnum | Prisma.CommentRetweetScalarFieldEnum[]
 }
 
 /**

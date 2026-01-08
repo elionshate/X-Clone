@@ -391,6 +391,9 @@ export const ModelName = {
   Like: 'Like',
   TweetMedia: 'TweetMedia',
   Comment: 'Comment',
+  CommentLike: 'CommentLike',
+  CommentBookmark: 'CommentBookmark',
+  CommentRetweet: 'CommentRetweet',
   Bookmark: 'Bookmark',
   Chat: 'Chat',
   ChatMember: 'ChatMember',
@@ -415,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "userFollow" | "tweet" | "retweet" | "like" | "tweetMedia" | "comment" | "bookmark" | "chat" | "chatMember" | "message" | "messageMedia" | "block" | "mute" | "report" | "notification"
+    modelProps: "user" | "userFollow" | "tweet" | "retweet" | "like" | "tweetMedia" | "comment" | "commentLike" | "commentBookmark" | "commentRetweet" | "bookmark" | "chat" | "chatMember" | "message" | "messageMedia" | "block" | "mute" | "report" | "notification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -934,6 +937,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CommentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CommentCountAggregateOutputType> | number
+        }
+      }
+    }
+    CommentLike: {
+      payload: Prisma.$CommentLikePayload<ExtArgs>
+      fields: Prisma.CommentLikeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommentLikeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentLikePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommentLikeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentLikePayload>
+        }
+        findFirst: {
+          args: Prisma.CommentLikeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentLikePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommentLikeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentLikePayload>
+        }
+        findMany: {
+          args: Prisma.CommentLikeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentLikePayload>[]
+        }
+        create: {
+          args: Prisma.CommentLikeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentLikePayload>
+        }
+        createMany: {
+          args: Prisma.CommentLikeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommentLikeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentLikePayload>[]
+        }
+        delete: {
+          args: Prisma.CommentLikeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentLikePayload>
+        }
+        update: {
+          args: Prisma.CommentLikeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentLikePayload>
+        }
+        deleteMany: {
+          args: Prisma.CommentLikeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommentLikeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommentLikeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentLikePayload>[]
+        }
+        upsert: {
+          args: Prisma.CommentLikeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentLikePayload>
+        }
+        aggregate: {
+          args: Prisma.CommentLikeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommentLike>
+        }
+        groupBy: {
+          args: Prisma.CommentLikeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommentLikeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommentLikeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommentLikeCountAggregateOutputType> | number
+        }
+      }
+    }
+    CommentBookmark: {
+      payload: Prisma.$CommentBookmarkPayload<ExtArgs>
+      fields: Prisma.CommentBookmarkFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommentBookmarkFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentBookmarkPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommentBookmarkFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentBookmarkPayload>
+        }
+        findFirst: {
+          args: Prisma.CommentBookmarkFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentBookmarkPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommentBookmarkFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentBookmarkPayload>
+        }
+        findMany: {
+          args: Prisma.CommentBookmarkFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentBookmarkPayload>[]
+        }
+        create: {
+          args: Prisma.CommentBookmarkCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentBookmarkPayload>
+        }
+        createMany: {
+          args: Prisma.CommentBookmarkCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommentBookmarkCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentBookmarkPayload>[]
+        }
+        delete: {
+          args: Prisma.CommentBookmarkDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentBookmarkPayload>
+        }
+        update: {
+          args: Prisma.CommentBookmarkUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentBookmarkPayload>
+        }
+        deleteMany: {
+          args: Prisma.CommentBookmarkDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommentBookmarkUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommentBookmarkUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentBookmarkPayload>[]
+        }
+        upsert: {
+          args: Prisma.CommentBookmarkUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentBookmarkPayload>
+        }
+        aggregate: {
+          args: Prisma.CommentBookmarkAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommentBookmark>
+        }
+        groupBy: {
+          args: Prisma.CommentBookmarkGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommentBookmarkGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommentBookmarkCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommentBookmarkCountAggregateOutputType> | number
+        }
+      }
+    }
+    CommentRetweet: {
+      payload: Prisma.$CommentRetweetPayload<ExtArgs>
+      fields: Prisma.CommentRetweetFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CommentRetweetFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentRetweetPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CommentRetweetFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentRetweetPayload>
+        }
+        findFirst: {
+          args: Prisma.CommentRetweetFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentRetweetPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CommentRetweetFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentRetweetPayload>
+        }
+        findMany: {
+          args: Prisma.CommentRetweetFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentRetweetPayload>[]
+        }
+        create: {
+          args: Prisma.CommentRetweetCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentRetweetPayload>
+        }
+        createMany: {
+          args: Prisma.CommentRetweetCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CommentRetweetCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentRetweetPayload>[]
+        }
+        delete: {
+          args: Prisma.CommentRetweetDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentRetweetPayload>
+        }
+        update: {
+          args: Prisma.CommentRetweetUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentRetweetPayload>
+        }
+        deleteMany: {
+          args: Prisma.CommentRetweetDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CommentRetweetUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CommentRetweetUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentRetweetPayload>[]
+        }
+        upsert: {
+          args: Prisma.CommentRetweetUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CommentRetweetPayload>
+        }
+        aggregate: {
+          args: Prisma.CommentRetweetAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCommentRetweet>
+        }
+        groupBy: {
+          args: Prisma.CommentRetweetGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommentRetweetGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CommentRetweetCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CommentRetweetCountAggregateOutputType> | number
         }
       }
     }
@@ -1706,6 +1931,8 @@ export const TweetMediaScalarFieldEnum = {
   tweetId: 'tweetId',
   mediaUrl: 'mediaUrl',
   mediaType: 'mediaType',
+  thumbnailUrl: 'thumbnailUrl',
+  duration: 'duration',
   createdAt: 'createdAt'
 } as const
 
@@ -1718,11 +1945,44 @@ export const CommentScalarFieldEnum = {
   authorId: 'authorId',
   tweetId: 'tweetId',
   likeCount: 'likeCount',
+  viewCount: 'viewCount',
+  retweetCount: 'retweetCount',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  parentId: 'parentId'
 } as const
 
 export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+
+
+export const CommentLikeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  commentId: 'commentId',
+  createdAt: 'createdAt'
+} as const
+
+export type CommentLikeScalarFieldEnum = (typeof CommentLikeScalarFieldEnum)[keyof typeof CommentLikeScalarFieldEnum]
+
+
+export const CommentBookmarkScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  commentId: 'commentId',
+  createdAt: 'createdAt'
+} as const
+
+export type CommentBookmarkScalarFieldEnum = (typeof CommentBookmarkScalarFieldEnum)[keyof typeof CommentBookmarkScalarFieldEnum]
+
+
+export const CommentRetweetScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  commentId: 'commentId',
+  createdAt: 'createdAt'
+} as const
+
+export type CommentRetweetScalarFieldEnum = (typeof CommentRetweetScalarFieldEnum)[keyof typeof CommentRetweetScalarFieldEnum]
 
 
 export const BookmarkScalarFieldEnum = {
@@ -1987,6 +2247,9 @@ export type GlobalOmitConfig = {
   like?: Prisma.LikeOmit
   tweetMedia?: Prisma.TweetMediaOmit
   comment?: Prisma.CommentOmit
+  commentLike?: Prisma.CommentLikeOmit
+  commentBookmark?: Prisma.CommentBookmarkOmit
+  commentRetweet?: Prisma.CommentRetweetOmit
   bookmark?: Prisma.BookmarkOmit
   chat?: Prisma.ChatOmit
   chatMember?: Prisma.ChatMemberOmit
