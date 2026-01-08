@@ -138,6 +138,3 @@ DATABASE_URL="file:./dev.db"
 - **CORS errors**: Ensure backend is running on port 3000 and frontend on port 3001
 - **Authentication errors**: Verify your Clerk API keys in `frontend/.env.local` and `backend/.env`
 
-## License
-
-MIT
