@@ -69,6 +69,31 @@ export const userAPI = {
     return authenticatedFetch(`${API_BASE_URL}/users/username/${username}`, {}, true);
   },
 
+  // Search users by username/name, sorted by follower count
+  async searchUsers(query: string, limit = 10) {
+    return authenticatedFetch(`${API_BASE_URL}/users/search?q=${encodeURIComponent(query)}&limit=${limit}`);
+  },
+
+  // Get trending hashtags
+  async getTrendingHashtags(limit = 10) {
+    return authenticatedFetch(`${API_BASE_URL}/users/hashtags/trending?limit=${limit}`);
+  },
+
+  // Search hashtags
+  async searchHashtags(query: string, limit = 5) {
+    return authenticatedFetch(`${API_BASE_URL}/users/hashtags/search?q=${encodeURIComponent(query)}&limit=${limit}`);
+  },
+
+  // Get suggested users (users the current user doesn't follow)
+  async getSuggestedUsers(userId: number, limit = 10) {
+    try {
+      return await authenticatedFetch(`${API_BASE_URL}/users/suggestions/${userId}?limit=${limit}`);
+    } catch (error) {
+      console.error('Error fetching suggested users:', error);
+      return [];
+    }
+  },
+
   async updateUser(id: number, userData: Partial<{ name: string; email: string; username: string; bio: string; avatar: string }>) {
     return authenticatedFetch(`${API_BASE_URL}/users/${id}`, {
       method: 'PATCH',
@@ -455,5 +480,151 @@ export const notificationAPI = {
     return authenticatedFetch(`${API_BASE_URL}/notifications/${notificationId}`, {
       method: 'DELETE',
     });
+  },
+};
+
+// News API - Using completely free APIs (no API key required)
+export const newsAPI = {
+  // Get global tech news using Hacker News API (completely free, no API key needed)
+  async getGlobalNews(limit = 5) {
+    try {
+      // Fetch top stories from Hacker News
+      const topStoriesRes = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
+      if (!topStoriesRes.ok) return null;
+      
+      const topStoryIds = await topStoriesRes.json();
+      const storyIds = topStoryIds.slice(0, limit);
+      
+      // Fetch details for each story
+      const stories = await Promise.all(
+        storyIds.map(async (id: number) => {
+          const res = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
+          return res.json();
+        })
+      );
+      
+      return stories
+        .filter((story: any) => story && story.title)
+        .map((story: any) => ({
+          title: story.title,
+          description: story.text ? story.text.substring(0, 100) + '...' : null,
+          source: 'Hacker News',
+          url: story.url || `https://news.ycombinator.com/item?id=${story.id}`,
+          publishedAt: new Date(story.time * 1000).toISOString(),
+          score: story.score,
+        }));
+    } catch (error) {
+      console.error('Error fetching global news:', error);
+      return null;
+    }
+  },
+
+  // Get latest news using Hacker News "new" stories (completely free, CORS-friendly)
+  async getCountryNews(countryCode: string, limit = 5) {
+    try {
+      // Use Hacker News "best" stories for a different set than top stories
+      const bestStoriesRes = await fetch('https://hacker-news.firebaseio.com/v0/beststories.json');
+      if (!bestStoriesRes.ok) return null;
+      
+      const bestStoryIds = await bestStoriesRes.json();
+      // Skip the first few to get different stories than global news
+      const storyIds = bestStoryIds.slice(5, 5 + limit);
+      
+      // Fetch details for each story
+      const stories = await Promise.all(
+        storyIds.map(async (id: number) => {
+          const res = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
+          return res.json();
+        })
+      );
+      
+      return stories
+        .filter((story: any) => story && story.title)
+        .map((story: any) => ({
+          title: story.title,
+          description: story.text ? story.text.substring(0, 100) + '...' : null,
+          source: 'Hacker News',
+          url: story.url || `https://news.ycombinator.com/item?id=${story.id}`,
+          publishedAt: new Date(story.time * 1000).toISOString(),
+          score: story.score,
+        }));
+    } catch (error) {
+      console.error('Error fetching country news:', error);
+      return null;
+    }
+  },
+
+  // Get user's country using multiple free CORS-friendly APIs with fallbacks
+  async getUserCountry() {
+    // Try multiple free geolocation APIs
+    const apis = [
+      {
+        url: 'https://ipwho.is/',
+        parse: (data: any) => ({
+          countryCode: data.country_code?.toLowerCase() || 'us',
+          countryName: data.country || 'United States',
+          city: data.city || null,
+        }),
+      },
+      {
+        url: 'https://api.country.is/',
+        parse: (data: any) => {
+          const countryNames: Record<string, string> = {
+            US: 'United States', GB: 'United Kingdom', CA: 'Canada', AU: 'Australia',
+            DE: 'Germany', FR: 'France', IT: 'Italy', ES: 'Spain', NL: 'Netherlands',
+            BR: 'Brazil', MX: 'Mexico', IN: 'India', JP: 'Japan', CN: 'China',
+            KR: 'South Korea', RU: 'Russia', PL: 'Poland', SE: 'Sweden', NO: 'Norway',
+            DK: 'Denmark', FI: 'Finland', CH: 'Switzerland', AT: 'Austria', BE: 'Belgium',
+            PT: 'Portugal', IE: 'Ireland', NZ: 'New Zealand', SG: 'Singapore', HK: 'Hong Kong',
+            AE: 'United Arab Emirates', SA: 'Saudi Arabia', ZA: 'South Africa', EG: 'Egypt',
+            NG: 'Nigeria', KE: 'Kenya', AR: 'Argentina', CL: 'Chile', CO: 'Colombia',
+            PH: 'Philippines', ID: 'Indonesia', MY: 'Malaysia', TH: 'Thailand', VN: 'Vietnam',
+            PK: 'Pakistan', BD: 'Bangladesh', TR: 'Turkey', IL: 'Israel', GR: 'Greece',
+            CZ: 'Czech Republic', HU: 'Hungary', RO: 'Romania', UA: 'Ukraine',
+          };
+          const code = data.country?.toUpperCase() || 'US';
+          return {
+            countryCode: code.toLowerCase(),
+            countryName: countryNames[code] || code,
+            city: null,
+          };
+        },
+      },
+      {
+        url: 'https://freeipapi.com/api/json',
+        parse: (data: any) => ({
+          countryCode: data.countryCode?.toLowerCase() || 'us',
+          countryName: data.countryName || 'United States',
+          city: data.cityName || null,
+        }),
+      },
+    ];
+
+    for (const api of apis) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+        
+        const response = await fetch(api.url, { 
+          signal: controller.signal,
+          cache: 'no-store',
+        });
+        clearTimeout(timeoutId);
+        
+        if (response.ok) {
+          const data = await response.json();
+          const result = api.parse(data);
+          console.log('Geolocation detected:', result);
+          return result;
+        }
+      } catch (error) {
+        console.log(`Geolocation API ${api.url} failed, trying next...`);
+        continue;
+      }
+    }
+    
+    // All APIs failed, return default
+    console.log('All geolocation APIs failed, using default US');
+    return { countryCode: 'us', countryName: 'United States', city: null };
   },
 };

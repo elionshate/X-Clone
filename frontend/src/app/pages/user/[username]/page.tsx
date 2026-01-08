@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { SignedIn, SignedOut, RedirectToSignIn, useUser } from "@clerk/nextjs";
 import { Sidebar } from "@/components/sidebar";
+import { RightSidebar } from "@/components/right-sidebar";
 import { userAPI, tweetAPI, chatAPI } from "@/lib/api";
 import { useTheme } from "@/providers/theme-provider";
 import { 
@@ -576,7 +577,7 @@ function UserProfileContent() {
           <button className={`flex-1 py-4 font-semibold ${
             theme === 'dark' ? 'text-gray-500' : 'text-gray-600'
           }`}>
-            Likes
+            Media
           </button>
         </div>
 
@@ -710,6 +711,9 @@ function UserProfileContent() {
           </div>
         </div>
       )}
+
+        {/* Right Sidebar */}
+        <RightSidebar />
       </div>
     </div>
   );

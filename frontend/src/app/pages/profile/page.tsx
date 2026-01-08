@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { SignedIn, SignedOut, RedirectToSignIn, useUser } from "@clerk/nextjs";
 import { Sidebar } from "@/components/sidebar";
+import { RightSidebar } from "@/components/right-sidebar";
 import { userAPI, tweetAPI } from "@/lib/api";
 import { useTheme } from "@/providers/theme-provider";
 import { Trash2, MessageCircle, Repeat2, Heart, Edit2, MapPin } from 'lucide-react';
@@ -553,6 +554,9 @@ function ProfileContent() {
           </div>
         </div>
       </main>
+
+        {/* Right Sidebar */}
+        <RightSidebar />
       </div>
 
       {/* Edit Profile Modal */}

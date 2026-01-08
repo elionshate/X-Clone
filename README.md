@@ -101,3 +101,43 @@ X-clone/
 └── README.md
 ```
 
+## Troubleshooting
+
+### Database Auto-Seed Not Working
+
+The application automatically seeds the database with sample users and tweets on first launch. If this doesn't work:
+
+1. **Manual Seed**: Run the seed script manually:
+```bash
+cd backend
+npx tsx prisma/seed.ts
+```
+
+2. **Database Not Found**: If you get a database error, ensure the database exists:
+```bash
+cd backend
+npx prisma migrate dev
+```
+
+3. **Clear and Reseed**: To reset the database completely:
+```bash
+cd backend
+rm dev.db  # On Windows: del dev.db
+npx prisma migrate dev
+npx tsx prisma/seed.ts
+```
+
+4. **Check Database Path**: The database file should be at `backend/dev.db`. If it's elsewhere, check your `DATABASE_URL` in `.env`:
+```
+DATABASE_URL="file:./dev.db"
+```
+
+### Common Issues
+
+- **Port already in use**: Kill existing Node processes or change the port in `backend/src/main.ts`
+- **CORS errors**: Ensure backend is running on port 3000 and frontend on port 3001
+- **Authentication errors**: Verify your Clerk API keys in `frontend/.env.local` and `backend/.env`
+
+## License
+
+MIT

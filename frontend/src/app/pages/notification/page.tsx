@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { SignedIn, SignedOut, RedirectToSignIn, useUser } from "@clerk/nextjs";
 import { Sidebar } from "@/components/sidebar";
+import { RightSidebar } from "@/components/right-sidebar";
 import { Bell, Heart, Repeat2, MessageCircle, UserPlus, Check } from "lucide-react";
 import { useTheme } from "@/providers/theme-provider";
 import { notificationAPI, userAPI } from "@/lib/api";
@@ -311,6 +312,9 @@ function NotificationContent() {
           )}
         </div>
       </main>
+
+        {/* Right Sidebar */}
+        <RightSidebar />
       </div>
     </div>
   );

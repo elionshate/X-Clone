@@ -27,6 +27,43 @@ export class UserController {
     return this.userService.getAllUsers();
   }
 
+  // Search users by username/name, sorted by follower count
+  @Get('search')
+  async searchUsers(
+    @Query('q') query: string,
+    @Query('limit') limit?: string,
+  ) {
+    const limitNum = limit ? parseInt(limit) : 10;
+    return this.userService.searchUsers(query, limitNum);
+  }
+
+  // Get trending hashtags
+  @Get('hashtags/trending')
+  async getTrendingHashtags(@Query('limit') limit?: string) {
+    const limitNum = limit ? parseInt(limit) : 10;
+    return this.userService.getTrendingHashtags(limitNum);
+  }
+
+  // Search hashtags
+  @Get('hashtags/search')
+  async searchHashtags(
+    @Query('q') query: string,
+    @Query('limit') limit?: string,
+  ) {
+    const limitNum = limit ? parseInt(limit) : 5;
+    return this.userService.searchHashtags(query, limitNum);
+  }
+
+  // Get suggested users (users the current user doesn't follow)
+  @Get('suggestions/:userId')
+  async getSuggestedUsers(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Query('limit') limit?: string,
+  ) {
+    const limitNum = limit ? parseInt(limit) : 10;
+    return this.userService.getSuggestedUsers(userId, limitNum);
+  }
+
   @Get(':id')
   async getUserById(@Param('id', ParseIntPipe) id: number) {
     return this.userService.getUserById(id);

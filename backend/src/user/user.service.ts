@@ -208,6 +208,139 @@ export class UserService {
     });
   }
 
+  // Get suggested users (users the current user doesn't follow), sorted by follower count
+  async getSuggestedUsers(userId: number, limit = 10) {
+    // Get users that the current user is NOT following
+    const suggestedUsers = await this.prisma.user.findMany({
+      where: {
+        AND: [
+          { id: { not: userId } }, // Exclude current user
+          {
+            // Exclude users the current user already follows
+            followers: {
+              none: {
+                followerId: userId,
+              },
+            },
+          },
+          {
+            // Exclude users who have blocked the current user or are blocked by them
+            AND: [
+              { blockedBy: { none: { blockerId: userId } } },
+              { blockedUsers: { none: { blockedId: userId } } },
+            ],
+          },
+        ],
+      },
+      include: {
+        _count: {
+          select: { followers: true, following: true, tweets: true },
+        },
+      },
+      take: limit * 2, // Get more to sort properly
+    });
+
+    // Sort by follower count (highest first) and limit
+    return suggestedUsers
+      .sort((a: any, b: any) => b._count.followers - a._count.followers)
+      .slice(0, limit);
+  }
+
+  // Search users by username or name, sorted by follower count (highest first)
+  async searchUsers(query: string, limit = 10) {
+    if (!query || query.trim().length === 0) {
+      return [];
+    }
+
+    const searchTerm = query.toLowerCase().trim();
+
+    const users = await this.prisma.user.findMany({
+      where: {
+        OR: [
+          { username: { contains: searchTerm } },
+          { name: { contains: searchTerm } },
+        ],
+      },
+      include: {
+        _count: {
+          select: { followers: true, following: true },
+        },
+      },
+      take: limit * 2, // Get more to sort properly
+    });
+
+    // Sort by follower count (highest first) and limit
+    return users
+      .sort((a, b) => b._count.followers - a._count.followers)
+      .slice(0, limit);
+  }
+
+  // Get trending hashtags from tweets
+  async getTrendingHashtags(limit = 10) {
+    // Get recent tweets from the last 7 days
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const tweets = await this.prisma.tweet.findMany({
+      where: {
+        createdAt: { gte: sevenDaysAgo },
+      },
+      select: { content: true },
+    });
+
+    // Extract hashtags from tweets
+    const hashtagCounts: Record<string, number> = {};
+    const hashtagRegex = /#[a-zA-Z0-9_]+/g;
+
+    for (const tweet of tweets) {
+      const hashtags = tweet.content.match(hashtagRegex) || [];
+      for (const tag of hashtags) {
+        const normalizedTag = tag.toLowerCase();
+        hashtagCounts[normalizedTag] = (hashtagCounts[normalizedTag] || 0) + 1;
+      }
+    }
+
+    // Sort by count and return top hashtags
+    return Object.entries(hashtagCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, limit)
+      .map(([hashtag, count]) => ({ hashtag, count }));
+  }
+
+  // Search hashtags that match the query
+  async searchHashtags(query: string, limit = 5) {
+    if (!query || query.trim().length === 0) {
+      return [];
+    }
+
+    const searchTerm = query.toLowerCase().replace('#', '').trim();
+    
+    // Get recent tweets
+    const tweets = await this.prisma.tweet.findMany({
+      select: { content: true },
+    });
+
+    // Extract and count hashtags
+    const hashtagCounts: Record<string, number> = {};
+    const hashtagRegex = /#[a-zA-Z0-9_]+/g;
+
+    for (const tweet of tweets) {
+      const hashtags = tweet.content.match(hashtagRegex) || [];
+      for (const tag of hashtags) {
+        const normalizedTag = tag.toLowerCase();
+        if (normalizedTag.includes(searchTerm) || normalizedTag.replace('#', '').includes(searchTerm)) {
+          hashtagCounts[normalizedTag] = (hashtagCounts[normalizedTag] || 0) + 1;
+        }
+      }
+    }
+
+    // Sort by count and return matching hashtags
+    return Object.entries(hashtagCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, limit)
+      .map(([hashtag, count]) => ({ hashtag, count }));
+  }
+
   async followUser(followerId: number, followingId: number) {
     const follow = await this.prisma.userFollow.create({
       data: {

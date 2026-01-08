@@ -6,6 +6,7 @@ import { CommentModule } from './comment/comment.module';
 import { BookmarkModule } from './bookmark/bookmark.module';
 import { ChatModule } from './chat/chat.module';
 import { NotificationModule } from './notification/notification.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { NotificationModule } from './notification/notification.module';
     BookmarkModule,
     ChatModule,
     NotificationModule,
+    SeedModule,
   ],
 })
 export class AppModule {}

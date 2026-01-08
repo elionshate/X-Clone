@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { SignedIn, SignedOut, RedirectToSignIn, useUser } from "@clerk/nextjs";
 import { Sidebar } from "@/components/sidebar";
+import { RightSidebar } from "@/components/right-sidebar";
 import { Bookmark, MessageCircle, Repeat2, Heart, Trash2, ArrowLeft } from "lucide-react";
 import { useTheme } from "@/providers/theme-provider";
 import { bookmarkAPI, userAPI } from "@/lib/api";
@@ -215,8 +216,10 @@ function BookmarksContent() {
               </div>
             ))}
           </div>
-        )}
-      </main>
+        )}n      </main>
+
+        {/* Right Sidebar */}
+        <RightSidebar />
       </div>
     </div>
   );
